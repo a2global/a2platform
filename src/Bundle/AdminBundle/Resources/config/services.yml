@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    A2Global\A2Platform\Bundle\AdminBundle\:
+        resource: '../../'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Tests/'
+
+    A2Global\A2Platform\Bundle\AdminBundle\EventSubscriber\KnpMenuBuilderSubscriber:
+        arguments:
+            $adminResourceControllers: !tagged_iterator a2platform.controller.admin.resource

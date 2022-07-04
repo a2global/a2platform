@@ -1,0 +1,7 @@
+{% extends '@Core/frontend/base.html.twig' %}
+
+{% block body %}
+    <code>{{ subjectName }}#{{ subjectResource.id }}</code>:
+    <hr>
+    {{ dump(subjectResource) }}
+{% endblock %}

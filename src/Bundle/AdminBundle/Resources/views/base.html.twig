@@ -1,0 +1,78 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {# <link rel="stylesheet" type="text/css" href="{{ asset('bundles/a2crm/css/datasheet.css') }}"> #}
+    <style>
+        .changed-field {
+            color: #cc0000;
+            font-weight: 800;
+        }
+    </style>
+    {% if app.environment == 'dev' %}
+        <style>
+            .main-header * {
+                background: #555555 !important;
+            }
+
+            .content-header {
+                display: none;
+            }
+
+            .changed-field {
+                color: #cc0000;
+                font-weight: 800;
+            }
+        </style>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# <script src="{{ asset('bundles/a2crm/js/datasheet.js') }}"></script> #}
+    {# {% if enableThirdpartyResources %} #}
+    {# <script defer #}
+    {# src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdmNvJyAkPKvb_WzGyhOqJV-Y-80kaOPw&libraries=places"></script> #}
+    {# {% endif %} #}
+{% endblock %}
+
+{% block title %}
+    Admin | CarCar
+{% endblock %}
+
+{% block logo_mini %}
+    <b>CC</b>
+{% endblock %}
+
+{% block logo_large %}
+    <b>CarCar</b>.app
+{% endblock %}
+
+{% block page_title %}
+    &nbsp;
+{% endblock %}
+
+{% block page_subtitle %}
+    &nbsp;
+{% endblock %}
+
+{% block page_content %}
+    {% block body %}
+        Body goes here...
+    {% endblock %}
+{% endblock %}
+
+{% block sidebar_search %}
+    <!-- search form -->
+    {# <form action="{{ path('admin_search') }}" method="get" class="sidebar-form"> #}
+    {# <div class="input-group"> #}
+    {# <input type="text" name="searchQuery" class="form-control" #}
+    {# placeholder="{{ 'Search'|trans({}, 'AdminLTEBundle') }}..." autofocus/> #}
+    {# <span class="input-group-btn"> #}
+    {# <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i #}
+    {# class="fas fa-search"></i></button> #}
+    {# </span> #}
+    {# </div> #}
+    {# </form> #}
+    <!-- /.search form -->
+{% endblock %}

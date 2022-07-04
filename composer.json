@@ -1,0 +1,31 @@
+{
+    "name": "a2global/a2platform",
+    "description": "Digital platform",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Advanced",
+            "email": "alexander.advanced@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "symfony/workflow": "^5.0",
+        "gedmo/doctrine-extensions": "^3.7",
+        "stof/doctrine-extensions-bundle": "^1.7",
+        "kevinpapst/adminlte-bundle": "^3.0",
+        "knplabs/knp-menu-bundle": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "A2Global\\A2Platform\\Bundle\\": "src/Bundle"
+        }
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": "true"
+        }
+    }
+}

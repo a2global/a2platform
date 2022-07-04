@@ -1,0 +1,9 @@
+{% extends '@Core/frontend/base.html.twig' %}
+
+{% block body %}
+    Index of <code>{{ subjectName }}</code>:
+    <hr>
+    {% for item in subjectResource %}
+        {{ dump(item) }}
+    {% endfor %}
+{% endblock %}

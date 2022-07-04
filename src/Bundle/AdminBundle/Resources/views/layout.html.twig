@@ -1,0 +1,107 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {# <link rel="stylesheet" type="text/css" href="{{ asset('bundles/a2crm/css/datasheet.css') }}"> #}
+    {# <style> #}
+    {# .changed-field { #}
+    {# color: #cc0000; #}
+    {# font-weight: 800; #}
+    {# } #}
+    {# </style> #}
+{#    {% if app.environment == 'dev' %}#}
+{#        <style>#}
+{#            .main-header .navbar {#}
+{#                background-color: #e8053a !important;#}
+{#            }#}
+
+{#            .main-header .navbar .sidebar-toggle:hover,#}
+{#            .main-header .logo {#}
+{#                background-color: #a10026 !important;#}
+{#            }#}
+{#        </style>#}
+{#    {% else %}#}
+{#        <style>#}
+{#            .main-header .navbar {#}
+{#                background-color: #667788 !important;#}
+{#            }#}
+
+{#            .main-header .logo {#}
+{#                background-color: #445566 !important;#}
+{#            }#}
+{#        </style>#}
+{#    {% endif %}#}
+    <style>
+        .content-header {
+            display: none;
+        }
+
+        .changed-field {
+            color: #cc0000;
+            font-weight: 800;
+        }
+
+        .ellipsis {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+    </style>
+{% endblock %}
+{# #}
+{# {% block javascripts %} #}
+{# {{ parent() }} #}
+{# <script src="{{ asset('bundles/a2crm/js/datasheet.js') }}"></script> #}
+{# {% endblock %} #}
+
+{% block title %}
+    Admin | A2Platform
+{% endblock %}
+
+{% block logo_mini %}
+    <b>A2</b>
+{% endblock %}
+
+{% block logo_large %}
+    <b>A2</b>Platform
+{% endblock %}
+
+
+{% block page_title %}
+{% endblock %}
+
+{% block page_subtitle %}
+{% endblock %}
+
+
+{% block page_content %}
+    Content goes here...
+{% endblock %}
+
+{% block footer %}
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+            <a href="https://adminlte.io/themes/v3/index.html" target="_blank">AdminLTE Sample</a>
+        </div>
+        <!-- Default to the left -->
+        <strong><a href="#">A2Platform</a></strong> Your digital platform
+    </footer>
+{% endblock %}
+
+{# #}
+{# {% block sidebar_search %} #}
+{# <!-- search form --> #}
+{# <form action="{{ path('admin_search') }}" method="get" class="sidebar-form"> #}
+{# <div class="input-group"> #}
+{# <input type="text" name="searchQuery" class="form-control" #}
+{# placeholder="{{ 'Search'|trans({}, 'AdminLTEBundle') }}..." autofocus/> #}
+{# <span class="input-group-btn"> #}
+{# <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i #}
+{# class="fas fa-search"></i></button> #}
+{# </span> #}
+{# </div> #}
+{# </form> #}
+{# <!-- /.search form --> #}
+{# {% endblock %}  #}

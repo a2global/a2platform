@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    A2Global\A2Platform\Bundle\DatasheetBundle\:
+        resource: '../../'
+        exclude:
+            - '../src/Component/'
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Migrations/'
+            - '../src/Tests/'
+            - '../src/Utility/'
+
+    A2Global\A2Platform\Bundle\DatasheetBundle\Builder\DatasheetBuilder:
+        arguments:
+            $dataReaders: !tagged_iterator a2platform.data.reader
+

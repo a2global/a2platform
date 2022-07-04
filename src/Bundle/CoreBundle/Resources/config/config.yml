@@ -1,0 +1,20 @@
+twig:
+    form_themes:
+        - 'bootstrap_4_layout.html.twig'
+
+#doctrine_migrations:
+#    migrations_paths:
+#        'A2Global\A2Platform\Bundle\CoreBundle\Migrations': '@CoreBundle/Migrations'
+#
+security:
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: name
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            timestampable: true
+#            sluggable: false

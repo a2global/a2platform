@@ -1,0 +1,40 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    A2Global\A2Platform\Bundle\CoreBundle\:
+        resource: '../../'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Data/Filter/'
+            - '../src/Migrations/'
+            - '../src/Tests/'
+            - '../src/Utility/'
+            - '../src/Request/ResourceRequestConfiguration.php'
+
+#    A2Global\CRM\ShopBundle\Command\:
+#        resource: '../../Command/'
+#        tags: ['console.command']
+#
+#    A2Global\CRM\ShopBundle\Provider\PaymentGatewayProvider:
+#        bind:
+#            $paymentGateways: !tagged app.gateway.payment
+#
+#    A2Global\CRM\ShopBundle\Provider\ShippingGatewayProvider:
+#        bind:
+#            $shippingGateways: !tagged app.gateway.shipping
+#
+#parameters:
+#    shop.payment.methods: '%env(csv:SHOP_PAYMENT_METHODS)%'
+#    shop.shipping.methods: '%env(csv:SHOP_SHIPPING_METHODS)%'
+#    shop.proposal.images.path: 'data/shop/proposal'
+#    liqpay.public.key: '%env(resolve:LIQPAY_PUBLIC_API_KEY)%'
+#    liqpay.private.key: '%env(resolve:LIQPAY_PRIVATE_API_KEY)%'
+#    liqpay.url.callback: '%env(resolve:LIQPAY_URL_CALLBACK)%'
+#    wayforpay.account: '%env(resolve:WAYFORPAY_MERCHANT_ACCOUNT)%'
+#    wayforpay.domain: '%env(resolve:WAYFORPAY_MERCHANT_DOMAIN)%'
+#    wayforpay.secret.key: '%env(resolve:WAYFORPAY_SECRET_KEY)%'
+#    novaposhta.public.key: '%env(resolve:NOVAPOSHTA_API_KEY)%'
+#    shop.enabled: '%env(resolve:APP_SHOP_ENABLED)%'

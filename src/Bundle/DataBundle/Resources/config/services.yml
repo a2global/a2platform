@@ -1,0 +1,23 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    A2Global\A2Platform\Bundle\DataBundle\:
+        resource: '../../'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Component/'
+            - '../src/Filter/'
+            - '../src/Migrations/'
+            - '../src/Tests/'
+            - '../src/Utility/'
+
+    _instanceof:
+        A2Global\A2Platform\Bundle\DataBundle\Reader\DataReaderInterface:
+            tags: [ 'a2platform.data.reader' ]
+
+    A2Global\A2Platform\Bundle\DataBundle\Listener\EntityPostLoadListener:
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
