@@ -7,3 +7,5 @@ security:
             logout:
                 path: authentication_logout
                 target: app_default
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }

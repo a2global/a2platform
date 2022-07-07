@@ -25,7 +25,7 @@ class AuthController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
-            $userPasswordHasher->hashPassword(
+                $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
@@ -34,7 +34,12 @@ class AuthController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute($this->getParameter('app.route.default.name'));
+            if ($user->getId() === 1) {
+                $user->setRoles(['ROLE_ADMIN']);
+                $entityManager->flush();
+            }
+
+            return $this->redirectToRoute('authentication_login');
         }
 
         return $this->render('@Auth/registration.html.twig', [

@@ -2,7 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\AuthBundle\Form;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Entity\BaseUser;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -36,7 +36,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Please enter a password',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 5,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
@@ -49,7 +49,7 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => BaseUser::class,
+            'data_class' => User::class,
         ]);
     }
 }

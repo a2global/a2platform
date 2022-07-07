@@ -32,7 +32,7 @@
                     <a class="nav-link" href="{{ path('authentication_registration') }}">Register</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('admin_homepage') }}">Admin</a>
+                    <a class="nav-link" href="{{ path('admin_default') }}">Admin</a>
                 </li>
             </ul>
             {# <form class="form-inline mt-2 mt-md-0"> #}
@@ -47,8 +47,6 @@
 <main role="main" class="flex-shrink-0">
     <div class="container">
         {% block body %}
-            <h1>A2Platform</h1>
-            <p class="lead">Digital platform for your business</p>
         {% endblock %}
     </div>
 </main>

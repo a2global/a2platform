@@ -21,22 +21,22 @@ abstract class BaseUser implements UserInterface, PasswordAuthenticatedUserInter
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    protected $roles = [];
 
     /**
      * @ORM\Column(type="string")
      */
-    private $password;
+    protected $password;
 
     public function getId(): ?int
     {
