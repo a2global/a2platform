@@ -2,7 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\AdminBundle\EventSubscriber;
 
-use App\Utility\StringUtility;
+use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use Doctrine\Common\Annotations\AnnotationReader;
 use KevinPapst\AdminLTEBundle\Event\KnpMenuEvent;
 use Knp\Menu\ItemInterface;

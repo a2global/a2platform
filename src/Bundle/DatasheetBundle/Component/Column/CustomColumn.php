@@ -5,7 +5,7 @@ namespace A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 
-class CustomColumn extends DatasheetColumn
+class CustomColumn extends DatasheetColumn implements DatasheetColumnInterface
 {
     protected $handler;
 
@@ -14,7 +14,7 @@ class CustomColumn extends DatasheetColumn
         $this->handler = $function;
     }
 
-    public function getView(DataItem $dataItem): string
+    public function getView(DataItem $dataItem): ?string
     {
         $handler = $this->handler;
 

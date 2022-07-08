@@ -25,6 +25,6 @@ class DatasheetViewBuilder
 
     public function getDatasheetCellView(DataItem $dataItem, DatasheetColumn $column): string
     {
-        return $column->getView($dataItem);
+        return $column->getView($dataItem) ?? '';
     }
 }

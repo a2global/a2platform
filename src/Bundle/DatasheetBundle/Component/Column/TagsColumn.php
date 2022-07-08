@@ -6,11 +6,11 @@ use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\Tag;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 
-class TagsColumn extends DatasheetColumn
+class TagsColumn extends DatasheetColumn implements DatasheetColumnInterface
 {
     protected ?int $width = 200;
 
-    public function getView(DataItem $dataItem): string
+    public function getView(DataItem $dataItem): ?string
     {
         $tags = [];
 

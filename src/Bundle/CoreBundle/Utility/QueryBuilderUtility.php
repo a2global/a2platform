@@ -2,6 +2,14 @@
 
 namespace A2Global\A2Platform\Bundle\CoreBundle\Utility;
 
+use A2Global\A2Platform\Bundle\DataBundle\DataType\BooleanType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\DateTimeType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\DateType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\FloatType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\IntegerType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\ObjectType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\StringType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\TextType;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Query\Expr\Join;
@@ -36,20 +44,33 @@ class QueryBuilderUtility
 
     public static function getEntityFields($class): array
     {
+        $dataTypeMapping = [
+            'boolean' => BooleanType::class,
+            'integer' => IntegerType::class,
+            'float' => FloatType::class,
+            'decimal' => DecimalType::class,
+            'date' => DateType::class,
+            'datetime' => DateTimeType::class,
+            'string' => StringType::class,
+            'text' => TextType::class,
+            'array' => ObjectType::class,
+            'json' => ObjectType::class,
+        ];
         $annotationReader = new AnnotationReader();
         $reflectionClass = new ReflectionClass($class);
         $properties = $reflectionClass->getProperties();
         $fields = [];
 
-        foreach($properties as $property){
+        foreach ($properties as $property) {
             $annotation = $annotationReader->getPropertyAnnotation($property, Column::class);
 
-            if(!$annotation){
+            if (!$annotation) {
                 continue;
             }
             $fields[] = [
                 'name' => $annotation->name ?? $property->getName(),
                 'type' => $annotation->type,
+                'typeResolved' => $dataTypeMapping[$annotation->type] ?? null,
             ];
         }
 

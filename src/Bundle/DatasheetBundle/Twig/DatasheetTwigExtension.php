@@ -7,6 +7,7 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Builder\DatasheetBuilder;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Builder\DatasheetViewBuilder;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Datasheet;
+use Throwable;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -28,9 +29,18 @@ class DatasheetTwigExtension extends AbstractExtension
 
     public function getDatasheet(Datasheet $datasheet): string
     {
-        return $this->datasheetViewBuilder->getDatasheetView(
-            $this->datasheetBuilder->build($datasheet)
-        );
+        try {
+            $datasheet = $this->datasheetBuilder->build($datasheet);
+
+            return $this->datasheetViewBuilder->getDatasheetView($datasheet);
+        } catch (Throwable $exception) {
+            return implode('', [
+                '<div class="alert alert-danger">',
+                'Failed to build datasheet: ' . $exception->getMessage() . '<br>',
+                'on ' . $exception->getFile() . ':' . $exception->getLine(),
+                '</div>',
+            ]);
+        }
     }
 
     public function getDatasheetCell(DataItem $dataItem, DatasheetColumn $column): string
