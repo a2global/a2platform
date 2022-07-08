@@ -28,7 +28,7 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
     {
         $menu = $event->getMenu();
         $this->addAdminResourceControllers($menu);
-//
+
 //        $menu->addChild('Dashboard', [
 //            'route' => 'admin_default',
 //        ])->setLabelAttribute('icon', 'fas fa-th-large');

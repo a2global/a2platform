@@ -3,12 +3,9 @@ services:
         autowire: true
         autoconfigure: true
 
-    A2Global\A2Platform\Bundle\DatasheetBundle\:
+    A2Global\A2Platform\Bundle\DevelopmentBundle\:
         resource: '../../'
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
-            - '../src/Migrations/'
             - '../src/Tests/'
-            - '../src/Utility/'
-            - '../src/Component/'

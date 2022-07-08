@@ -16,15 +16,13 @@ class DatasheetExposed
     /** @var DatasheetColumn[] */
     protected array $sortedColumns = [];
 
-    protected ?string $title = null;
+    protected ?string $title;
 
-    protected $data;
+    protected ?array $config;
+
+    protected ?DataCollection $data = null;
 
     protected array $queryParameters;
-
-    public function __construct()
-    {
-    }
 
     public function getId(): ?string
     {
@@ -55,7 +53,7 @@ class DatasheetExposed
         return $this;
     }
 
-    public function getData(): DataCollection
+    public function getData(): ?DataCollection
     {
         return $this->data;
     }
@@ -84,9 +82,27 @@ class DatasheetExposed
         $this->queryParameters = $queryParameters;
     }
 
-//    protected function buildId()
-//    {
-//    }
+    public function getSortedColumns(): array
+    {
+        return $this->sortedColumns;
+    }
+
+    public function setSortedColumns(array $sortedColumns): self
+    {
+        $this->sortedColumns = $sortedColumns;
+        return $this;
+    }
+
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
+    public function setConfig(array $config): self
+    {
+        $this->config = $config;
+        return $this;
+    }
 
     protected function buildSortedColumns()
     {

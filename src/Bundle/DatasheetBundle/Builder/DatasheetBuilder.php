@@ -11,18 +11,22 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\StringColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Datasheet;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnAfterBuildEvent;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnColumnsBuildEvent;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnDataBuildEvent;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Provider\ColumnProvider;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Provider\FilterProvider;
 use Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class DatasheetBuilder
 {
     public function __construct(
-        protected $dataReaders,
         protected FilterProvider $filterProvider,
         protected RequestStack $requestStack,
         protected ColumnProvider $columnProvider,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -35,49 +39,70 @@ class DatasheetBuilder
      */
     public function build(Datasheet $datasheet): DatasheetExposed
     {
-        $config = $datasheet();
+        $datasheet = $this->expose($datasheet);
+        $this->eventDispatcher->dispatch(new OnDataBuildEvent($datasheet));
 
-        // Exposing
-        $datasheet = $this->expose($datasheet, $config);
-
-        // Get data reader
-        $dataReader = $this->getDatareader($datasheet, $config);
-
-        // Filters
-        $this->addFiltersToDataReader($datasheet, $dataReader);
-
-        // Get data
-        $dataCollection = $this->getData($dataReader);
-
-        // Get columns
-        $columns = $this->getColumns($dataCollection, $dataReader, $config);
-
-        // Modify columns
-        $columns = $this->showAddUpdateHideColumns($columns, $config);
-
-        // Typify
-        $columns = $this->typifyColumns($columns);
-
-        // Adding data
-        $datasheet->setData($dataCollection);
-
-        // Adding columns
-        foreach ($columns as $column) {
-            $datasheet->addColumn($column);
+        if (is_null($datasheet->getData())) {
+            throw new Exception('Data should be set for the datasheet');
         }
 
-        // Adding additional data
-        $request = $this->requestStack->getCurrentRequest();
-        $queryParams = FilterProvider::decapsulate($request->query, $datasheet->getId()) ?? [];
-        $datasheet->setQueryParameters($queryParams);
+        $this->eventDispatcher->dispatch(new OnColumnsBuildEvent($datasheet));
+
+        if (is_null($datasheet->getColumns())) {
+            throw new Exception('Columns should be set for the datasheet');
+        }
+
+        $this->eventDispatcher->dispatch(new OnAfterBuildEvent($datasheet));
+
+//        $this->eventDispatcher
+//            ->dispatch(new DatasheetBuildEvent($datasheet), DatasheetBuildEvent::ON_COLUMNS_BUILD);
+
+//        $this->eventDispatcher->dispatch(new OnBeforeAfterEvent($datasheet));
+//
+//
+//        // Exposing
+//
+//        // Get data reader
+//        $dataReader = $this->getDatareader($datasheet, $config);
+//
+//        // Filters
+//        $this->addFiltersToDataReader($datasheet, $dataReader);
+//
+//        // Get data
+//        $dataCollection = $this->getData($dataReader);
+//
+//        // Get columns
+//        $columns = $this->getColumns($dataCollection, $dataReader, $config);
+//
+//        // Modify columns
+//        $columns = $this->showAddUpdateHideColumns($columns, $config);
+//
+//        // Typify
+//        $columns = $this->typifyColumns($columns);
+//
+//        // Adding data
+//        $datasheet->setData($dataCollection);
+//
+//        // Adding columns
+//        foreach ($columns as $column) {
+//            $datasheet->addColumn($column);
+//        }
+//
+//        // Adding additional data
+//        $request = $this->requestStack->getCurrentRequest();
+//        $queryParams = FilterProvider::decapsulate($request->query, $datasheet->getId()) ?? [];
+//        $datasheet->setQueryParameters($queryParams);
 
         return $datasheet;
     }
 
-    protected function expose(Datasheet $datasheet, $config): DatasheetExposed
+    protected function expose(Datasheet $datasheet): DatasheetExposed
     {
+        $config = $datasheet();
         $datasheet = new DatasheetExposed();
-        $datasheet->setId($config['id'] ?? substr(md5($config['invokedAt']), 0, 5));
+        $datasheet
+            ->setId($config['id'] ?? substr(md5($config['invokedAt']), 0, 5))
+            ->setConfig($config);
 
         if (isset($config['title'])) {
             $datasheet->setTitle($config['title']);
