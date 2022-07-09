@@ -12,3 +12,11 @@ services:
             - '../src/Tests/'
             - '../src/Utility/'
             - '../src/Component/'
+
+    _instanceof:
+        A2Global\A2Platform\Bundle\DatasheetBundle\Filter\DatasheetFilterInterface:
+            tags: [ 'a2platform.datasheet.filter' ]
+
+    A2Global\A2Platform\Bundle\DatasheetBundle\Registry\DatasheetFilterRegistry:
+        arguments:
+            - !tagged_iterator a2platform.datasheet.filter

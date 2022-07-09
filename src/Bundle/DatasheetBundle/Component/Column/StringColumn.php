@@ -3,8 +3,6 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column;
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
-use A2Global\A2Platform\Bundle\DataBundle\DataType\FloatType;
-use A2Global\A2Platform\Bundle\DataBundle\DataType\IntegerType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\StringType;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 
@@ -27,6 +25,8 @@ class StringColumn extends DatasheetColumn implements DatasheetColumnInterface
         if (is_null($value)) {
             return '';
         }
+
+        return self::OBJECT_VALUE_STRING;
     }
 
     public static function supportsDataType($type): bool

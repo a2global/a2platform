@@ -3,9 +3,10 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnColumnsBuildEvent;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Provider\ColumnProvider;
+use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\QueryBuilder;
 use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,18 +27,41 @@ class GetColumnsForQueryBuilderDatasheetSubscriber implements EventSubscriberInt
 
     public function getColumnsForQueryBuilderDatasheet(OnColumnsBuildEvent $event)
     {
-        if (!$event->getDatasheet()->getConfig()['dataSource'] instanceof QueryBuilder) {
+        $queryBuilder = $event->getDatasheet()->getConfig()['dataSource'];
+
+        if (!$queryBuilder instanceof QueryBuilder) {
             return;
         }
         $columns = [];
-        $fields = QueryBuilderUtility::getEntityFields(
+        $entityFields = QueryBuilderUtility::getEntityFields(
             QueryBuilderUtility::getPrimaryClass($event->getDatasheet()->getConfig()['dataSource'])
         );
+        $selects = $queryBuilder->getDQLPart('select');
+        $primaryAlias = QueryBuilderUtility::getPrimaryAlias($queryBuilder);
 
-        foreach ($fields as $field) {
-            $columns[$field['name']] = $this->findSupportedColumn($field);
+        /** @var Select $select */
+        foreach ($selects as $select) {
+            $parts = $select->getParts();
+            $part = reset($parts);
+            $tmp = explode('.', $part);
+
+            if (count($tmp) !== 2 || $tmp[0] !== $primaryAlias) {
+                throw new DatasheetBuildException('Unsupported QueryBuilder select: ' . $part);
+            }
+            $fieldName = $tmp[1];
+            $field = $this->getFieldByName($fieldName, $entityFields);
+            $columns[] = $this->findSupportedColumn($field);
         }
         $event->setColumns($columns);
+    }
+
+    protected function getFieldByName($fieldName, $fields)
+    {
+        foreach ($fields as $field) {
+            if($field['name'] === $fieldName){
+                return $field;
+            }
+        }
     }
 
     protected function findSupportedColumn($field)

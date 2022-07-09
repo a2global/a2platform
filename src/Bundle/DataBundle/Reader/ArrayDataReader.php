@@ -17,11 +17,9 @@ class ArrayDataReader extends AbstractDataReader implements DataReaderInterface
     public function getData(): DataCollection
     {
         $collection = null;
+        $this->applyFilters();
 
-        foreach ($this->data as $row) {
-            if ($this->getFilters() && !$this->passFilters($row)) {
-                continue;
-            }
+        foreach ($this->source as $row) {
             if (!$collection) {
                 $collection = new DataCollection(array_keys($row));
             }
@@ -31,20 +29,8 @@ class ArrayDataReader extends AbstractDataReader implements DataReaderInterface
         return $collection;
     }
 
-    protected function passFilters($row)
+    public function getItemsTotal(): int
     {
-        foreach ($this->getFilters() as $filter) {
-            if ($filter instanceof FieldContainsFilter) {
-                if (!isset($row[$filter->getFieldName()])) {
-                    throw new Exception('Invalid filter: field not found: ' . $filter->getFieldName());
-                }
-
-                if (!stristr($row[$filter->getFieldName()], $filter->getContainsValue())) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return count($this->source);
     }
 }

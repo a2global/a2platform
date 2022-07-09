@@ -6,7 +6,7 @@ use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
 use Exception;
 
-class DatasheetExposed
+class DatasheetExposed implements DatasheetInterface
 {
     protected ?string $id;
 
@@ -16,13 +16,17 @@ class DatasheetExposed
     /** @var DatasheetColumn[] */
     protected array $sortedColumns = [];
 
-    protected ?string $title;
+    protected ?string $title = null;
 
-    protected ?array $config;
+    protected ?array $config = [];
 
     protected ?DataCollection $data = null;
 
-    protected array $queryParameters;
+    protected ?int $itemsTotal = null;
+
+    protected ?int $page = null;
+
+    protected ?int $perPage = null;
 
     public function getId(): ?string
     {
@@ -72,16 +76,6 @@ class DatasheetExposed
         return $this->sortedColumns;
     }
 
-    public function getQueryParameters()
-    {
-        return $this->queryParameters;
-    }
-
-    public function setQueryParameters($queryParameters): void
-    {
-        $this->queryParameters = $queryParameters;
-    }
-
     public function getSortedColumns(): array
     {
         return $this->sortedColumns;
@@ -101,6 +95,39 @@ class DatasheetExposed
     public function setConfig(array $config): self
     {
         $this->config = $config;
+        return $this;
+    }
+
+    public function getItemsTotal(): ?int
+    {
+        return $this->itemsTotal;
+    }
+
+    public function setItemsTotal(?int $itemsTotal): self
+    {
+        $this->itemsTotal = $itemsTotal;
+        return $this;
+    }
+
+    public function getPage(): ?int
+    {
+        return $this->page;
+    }
+
+    public function setPage(?int $page): self
+    {
+        $this->page = $page;
+        return $this;
+    }
+
+    public function getPerPage(): ?int
+    {
+        return $this->perPage;
+    }
+
+    public function setPerPage(?int $perPage): self
+    {
+        $this->perPage = $perPage;
         return $this;
     }
 

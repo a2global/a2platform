@@ -2,15 +2,8 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Registry;
 
-class DataReaderRegistry
-{
-    public function __construct(
-        protected $dataReaders
-    ) {
-    }
+use A2Global\A2Platform\Bundle\CoreBundle\Registry\AbstractRegistry;
 
-    public function get()
-    {
-        return $this->dataReaders;
-    }
+class DataReaderRegistry extends AbstractRegistry
+{
 }

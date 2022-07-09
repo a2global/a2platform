@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
 
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\StringColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnColumnsBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

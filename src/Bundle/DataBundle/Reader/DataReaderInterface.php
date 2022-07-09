@@ -8,9 +8,13 @@ interface DataReaderInterface
 {
     public function supports($data): bool;
 
+    public function getSource(): mixed;
+
     public function setSource($data): self;
 
     public function getData(): DataCollection;
 
     public function addFilter($filter): self;
+
+    public function getItemsTotal(): int;
 }

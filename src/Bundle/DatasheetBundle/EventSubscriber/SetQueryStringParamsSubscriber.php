@@ -7,7 +7,7 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Provider\FilterProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class SetQueryStringParamsSubscriber implements EventSubscriberInterface
+class SetQueryStringParamsSubscriber// implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
