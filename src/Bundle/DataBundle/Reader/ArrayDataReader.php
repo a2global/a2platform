@@ -17,20 +17,16 @@ class ArrayDataReader extends AbstractDataReader implements DataReaderInterface
     public function getData(): DataCollection
     {
         $collection = null;
+        $firstItem = array_shift($this->source);
+        $collection = new DataCollection(array_keys($firstItem));
         $this->applyFilters();
+        $this->itemsTotal = count($this->source);
+        $this->applyFilters(true);
 
         foreach ($this->source as $row) {
-            if (!$collection) {
-                $collection = new DataCollection(array_keys($row));
-            }
             $collection->addItem(new DataItem($row));
         }
 
         return $collection;
-    }
-
-    public function getItemsTotal(): int
-    {
-        return count($this->source);
     }
 }

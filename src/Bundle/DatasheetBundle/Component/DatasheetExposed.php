@@ -3,6 +3,7 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\Component;
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
+use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
 use Exception;
 
@@ -22,11 +23,13 @@ class DatasheetExposed implements DatasheetInterface
 
     protected ?DataCollection $data = null;
 
-    protected ?int $itemsTotal = null;
+    protected ?array $filters = [];
 
-    protected ?int $page = null;
+    protected ?int $itemsTotal = 1;
 
-    protected ?int $perPage = null;
+    protected ?int $page = 1;
+
+    protected ?int $perPage = 1;
 
     public function getId(): ?string
     {
@@ -98,6 +101,18 @@ class DatasheetExposed implements DatasheetInterface
         return $this;
     }
 
+    public function getFilters(): ?array
+    {
+        return $this->filters;
+    }
+
+    public function addFilter(FilterInterface $filter): self
+    {
+        $this->filters[] = $filter;
+
+        return $this;
+    }
+
     public function getItemsTotal(): ?int
     {
         return $this->itemsTotal;
@@ -129,6 +144,11 @@ class DatasheetExposed implements DatasheetInterface
     {
         $this->perPage = $perPage;
         return $this;
+    }
+
+    public function getPagesTotal(): int
+    {
+        return floor($this->itemsTotal / $this->perPage);
     }
 
     protected function buildSortedColumns()

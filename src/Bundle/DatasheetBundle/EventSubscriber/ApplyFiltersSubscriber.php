@@ -3,16 +3,12 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
 
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnDataBuildEvent;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Filter\DatasheetFilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Provider\FilterProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ApplyFilters implements EventSubscriberInterface
+class ApplyFiltersSubscriber implements EventSubscriberInterface
 {
-    public function __construct(
-        protected FilterProvider $filterProvider
-    ) {
-    }
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -22,7 +18,8 @@ class ApplyFilters implements EventSubscriberInterface
 
     public function applyFilters(OnDataBuildEvent $event)
     {
-        foreach ($this->filterProvider->getFilters($event->getDatasheet()->getId()) as $filter) {
+        /** @var DatasheetFilterInterface $filter */
+        foreach ($event->getDatasheet()->getFilters() as $filter) {
             $event->getDataReader()->addFilter($filter);
         }
     }

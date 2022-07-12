@@ -1,56 +1,95 @@
-<form action="?" method="get">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">{{ datasheet.title }}</h3>
-            <div class="card-tools">
-                {{ datasheet_pagination(datasheet) }}
+<div data-datasheet="{{ datasheet.id }}">
+    <form action="?" method="get" data-datasheet-form="{{ datasheet.id }}">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{ datasheet.title }}</h3>
+                <div class="card-tools">
+
+                    {{ datasheet.itemsTotal }} -
+                    {{ datasheet.page }} -
+                    {{ datasheet.perPage }}
+
+                    <ul class="pagination">
+                        {# <li class="paginate_button page-item previous disabled" id="example2_previous"> #}
+                        {# <a href="#" #}
+                        {# aria-controls="example2" #}
+                        {# data-dt-idx="0" #}
+                        {# tabindex="0" #}
+                        {# class="page-link">Previous</a> #}
+                        {# </li> #}
+
+                        {% for page in 0..datasheet.pagesTotal %}
+                            <li class="paginate_button page-item {{ datasheet.page == page ? 'active' : '' }}">
+                                <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0"
+                                   class="page-link">{{ page + 1 }}</a>
+                            </li>
+                        {% endfor %}
+                        {# <a href="#" aria-controls="example2" #}
+                        {# data-dt-idx="7" tabindex="0" #}
+                        {# class="page-link">Next</a> #}
+                        </li>
+                    </ul>
+                    <input type="submit">
+                    {% if app.environment == 'dev' %}
+                        <details>
+                            <summary>
+                                Debug
+                            </summary>
+                            {{ dump(datasheet) }}
+                        </details>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive" data-datasheet-id="{{ datasheet.id }}">
-                <table class="table table-striped table-bordered table-sm">
-                    <thead>
-                    <tr>
-                        {% for column in datasheet.columns %}
-                            <th>
-                                <div class="ellipsis"
-                                     style="width:{{ column.width }}px;text-align: {{ column.align }};">
-                                    {{ column.title }}
-                                </div>
-                            </th>
-                        {% endfor %}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        {% for column in datasheet.columns %}
-                            <td>
-                                {% if column.filterable %}
-                                    <div style="width:{{ column.width }}px;text-align: {{ column.align }};">
-                                        <input type="text" style="width:100%;text-align:{{ column.align }};"
-                                               name="ds{{ datasheet.id }}[filter][{{ column.name }}]"
-                                               value="{{ datasheet.queryParameters.filter[column.name] ?? '' }}"
-                                        >
+            <div class="card-body">
+                <div class="table-responsive" data-datasheet-id="{{ datasheet.id }}">
+                    <table class="table table-striped table-bordered table-sm">
+                        <thead>
+                        <tr>
+                            {% for column in datasheet.columns %}
+                                <th>
+                                    <div class="ellipsis"
+                                         style="width:{{ column.width }}px;text-align: {{ column.align }};">
+                                        {{ column.title }}
                                     </div>
-                                {% endif %}
-                            </td>
-                        {% endfor %}
-                    </tr>
-                    {% for dataItem in datasheet.data.items %}
+                                </th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             {% for column in datasheet.columns %}
                                 <td>
-                                    <div class="ellipsis"
-                                         style="width:{{ column.width }}px;text-align: {{ column.align }};">
-                                        {{ datasheet_cell(dataItem, column) }}
+                                    <select data-datasheet-column-filter-selector="{{ column.name }}" class="form-control">
+                                        {% for filter in datasheet_column_filters(column) %}
+                                            <option value="{{ filter.name }}" {{ filter.findAppliedFilter(datasheet, column) ? 'selected' : '' }}>{{ filter.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div data-datasheet-column-filters="{{ column.name }}">
+                                        {% for filter in datasheet_column_filters(column) %}
+                                            <div data-datasheet-column-filter="{{ filter.name }}">
+                                                {{ filter.viewControl(datasheet, column)|raw }}
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 </td>
                             {% endfor %}
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        {% for dataItem in datasheet.data.items %}
+                            <tr>
+                                {% for column in datasheet.columns %}
+                                    <td>
+                                        <div class="ellipsis"
+                                             style="width:{{ column.width }}px;text-align: {{ column.align }};">
+                                            {{ datasheet_cell(dataItem, column) }}
+                                        </div>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>

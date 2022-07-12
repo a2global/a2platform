@@ -6,17 +6,23 @@ use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\PaginationFilter;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class PaginationDatasheetFilter implements DatasheetFilterInterface
+class PaginationDatasheetFilter// extends AbstractDatasheetFilter implements DatasheetFilterInterface
 {
     const PAGE_PARAMETER = 'page';
     const PER_PAGE_PARAMETER = 'per_page';
 
-    public function supports(ParameterBag $query): bool
+    public function get(ParameterBag $parameters): DatasheetFilterInterface
+    {
+        $instance = $this->getInstanceBase($query);
+        $this->buildPagesLinks($query);
+    }
+
+    public function supports(ParameterBag $parameters): bool
     {
         return true;
     }
 
-    public function getDataFilter(ParameterBag $query): FilterInterface
+    public function buildDataFilter(ParameterBag $query): FilterInterface
     {
         $page = $query->get(self::PAGE_PARAMETER, 1);
         $page = max($page, 1) - 1;
@@ -25,5 +31,10 @@ class PaginationDatasheetFilter implements DatasheetFilterInterface
         $perPage = max($perPage, 1);
 
         return new PaginationFilter($page, $perPage);
+    }
+
+    protected function buildPagesLinks()
+    {
+
     }
 }

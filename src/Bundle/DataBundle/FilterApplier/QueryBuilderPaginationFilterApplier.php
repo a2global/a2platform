@@ -19,9 +19,10 @@ class QueryBuilderPaginationFilterApplier implements FilterApplierInterface
     {
         /** @var PaginationFilter $filter */
         /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $dataReader->getSource();
-        $queryBuilder
-            ->setFirstResult($filter->getPage() * $filter->getPerPage())
-            ->setMaxResults($filter->getPerPage());
+//        $queryBuilder = $dataReader->getSource();
+//        $queryBuilder
+//            ->setFirstResult($filter->getPage() * $filter->getPerPage())
+//            ->setFirstResult(null);
+//            ->setMaxResults($filter->getPerPage());
     }
 }

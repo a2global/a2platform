@@ -9,28 +9,28 @@
     {# font-weight: 800; #}
     {# } #}
     {# </style> #}
-{#    {% if app.environment == 'dev' %}#}
-{#        <style>#}
-{#            .main-header .navbar {#}
-{#                background-color: #e8053a !important;#}
-{#            }#}
+    {# {% if app.environment == 'dev' %} #}
+    {# <style> #}
+    {# .main-header .navbar { #}
+    {# background-color: #e8053a !important; #}
+    {# } #}
 
-{#            .main-header .navbar .sidebar-toggle:hover,#}
-{#            .main-header .logo {#}
-{#                background-color: #a10026 !important;#}
-{#            }#}
-{#        </style>#}
-{#    {% else %}#}
-{#        <style>#}
-{#            .main-header .navbar {#}
-{#                background-color: #667788 !important;#}
-{#            }#}
+    {# .main-header .navbar .sidebar-toggle:hover, #}
+    {# .main-header .logo { #}
+    {# background-color: #a10026 !important; #}
+    {# } #}
+    {# </style> #}
+    {# {% else %} #}
+    {# <style> #}
+    {# .main-header .navbar { #}
+    {# background-color: #667788 !important; #}
+    {# } #}
 
-{#            .main-header .logo {#}
-{#                background-color: #445566 !important;#}
-{#            }#}
-{#        </style>#}
-{#    {% endif %}#}
+    {# .main-header .logo { #}
+    {# background-color: #445566 !important; #}
+    {# } #}
+    {# </style> #}
+    {# {% endif %} #}
     <style>
         .content-header {
             display: none;
@@ -90,6 +90,11 @@
     </footer>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/bundles/datasheet/js/datasheet.js"></script>
+{% endblock %}
+
 {# #}
 {# {% block sidebar_search %} #}
 {# <!-- search form --> #}
@@ -104,4 +109,4 @@
 {# </div> #}
 {# </form> #}
 {# <!-- /.search form --> #}
-{# {% endblock %}  #}
+{# {% endblock %}   #}

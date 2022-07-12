@@ -2,11 +2,11 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Filter;
 
-class FieldContainsFilter implements FilterInterface
+class EqualsFilter implements FilterInterface
 {
     public function __construct(
         protected $fieldName,
-        protected $containsValue
+        protected $value
     ) {
     }
 
@@ -15,8 +15,8 @@ class FieldContainsFilter implements FilterInterface
         return $this->fieldName;
     }
 
-    public function getContainsValue()
+    public function getValue()
     {
-        return $this->containsValue;
+        return $this->value;
     }
 }
