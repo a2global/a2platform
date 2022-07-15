@@ -14,7 +14,7 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Twig\Environment;
 
-class EqualsDatasheetFilter extends AbstractDatasheetFilter implements DatasheetFilterInterface
+class EqualsDatasheetFilter// extends AbstractDatasheetFilter implements DatasheetFilterInterface
 {
     const NAME = 'equals';
     const FILTER_CLASS = EqualsFilter::class;

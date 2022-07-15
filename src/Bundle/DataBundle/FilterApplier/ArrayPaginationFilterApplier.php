@@ -19,7 +19,7 @@ class ArrayPaginationFilterApplier implements FilterApplierInterface
     {
         /** @var PaginationFilter $filter */
         $data = $dataReader->getSource();
-        $data = array_splice($data, $filter->getPage() * $filter->getPerPage(), $filter->getPerPage());
+        $data = array_splice($data, $filter->getPage() * $filter->getLimit(), $filter->getLimit());
         $dataReader->setSource($data);
     }
 }

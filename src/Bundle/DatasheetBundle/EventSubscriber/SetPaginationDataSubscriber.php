@@ -20,22 +20,22 @@ class SetPaginationDataSubscriber implements EventSubscriberInterface
 
     public function setPaginationData(OnDataBuildEvent $event)
     {
-        $this->setPaginationFilterData($event->getDatasheet());
-        $event->getDatasheet()->setItemsTotal($event->getDataReader()->getItemsTotal());
+//        $this->setPaginationFilterData($event->getDatasheet());
+//        $event->getDatasheet()->setItemsTotal($event->getDataReader()->getItemsTotal());
     }
 
     protected function setPaginationFilterData(DatasheetExposed $datasheet)
     {
-        /** @var DatasheetFilterInterface $filter */
-        foreach ($datasheet->getFilters() as $filter) {
-            if ($filter instanceof PaginationDatasheetFilter) {
-                $datasheet
-                    ->setPage($filter->getDataFilter()->getPage())
-                    ->setPerPage($filter->getDataFilter()->getPerPage());
-
-                return;
-            }
-        }
+//        /** @var DatasheetFilterInterface $filter */
+//        foreach ($datasheet->getFilters() as $filter) {
+//            if ($filter instanceof PaginationDatasheetFilter) {
+//                $datasheet
+//                    ->setPage($filter->getDataFilter()->getPage())
+//                    ->setPerPage($filter->getDataFilter()->getPerPage());
+//
+//                return;
+//            }
+//        }
 
 //        throw new DatasheetBuildException('Failed to set pagination data from PaginationDatasheetFilter');
     }

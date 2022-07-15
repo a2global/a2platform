@@ -5,9 +5,9 @@
                 <h3 class="card-title">{{ datasheet.title }}</h3>
                 <div class="card-tools">
 
-                    {{ datasheet.itemsTotal }} -
-                    {{ datasheet.page }} -
-                    {{ datasheet.perPage }}
+{#                    {{ datasheet.itemsTotal }} -#}
+{#                    {{ datasheet.page }} -#}
+{#                    {{ datasheet.perPage }}#}
 
                     <ul class="pagination">
                         {# <li class="paginate_button page-item previous disabled" id="example2_previous"> #}
@@ -18,12 +18,12 @@
                         {# class="page-link">Previous</a> #}
                         {# </li> #}
 
-                        {% for page in 0..datasheet.pagesTotal %}
-                            <li class="paginate_button page-item {{ datasheet.page == page ? 'active' : '' }}">
-                                <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0"
-                                   class="page-link">{{ page + 1 }}</a>
-                            </li>
-                        {% endfor %}
+{#                        {% for page in 0..datasheet. Total %}#}
+{#                            <li class="paginate_button page-item {{ datasheet.page == page ? 'active' : '' }}">#}
+{#                                <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0"#}
+{#                                   class="page-link">{{ page + 1 }}</a>#}
+{#                            </li>#}
+{#                        {% endfor %}#}
                         {# <a href="#" aria-controls="example2" #}
                         {# data-dt-idx="7" tabindex="0" #}
                         {# class="page-link">Next</a> #}
@@ -35,7 +35,15 @@
                             <summary>
                                 Debug
                             </summary>
+                            <hr>
                             {{ dump(datasheet) }}
+                            <hr>
+                            Filters:<br>
+                            {% for filterForm in datasheet.filtersForm %}
+                                <input type="text" name="{{ filterForm.name }}" value="{{ filterForm.value }}">
+                                ({{ filterForm.name }})<br>
+                            {% endfor %}
+                            <hr>
                         </details>
                     {% endif %}
                 </div>
@@ -59,18 +67,22 @@
                         <tr>
                             {% for column in datasheet.columns %}
                                 <td>
-                                    <select data-datasheet-column-filter-selector="{{ column.name }}" class="form-control">
-                                        {% for filter in datasheet_column_filters(column) %}
-                                            <option value="{{ filter.name }}" {{ filter.findAppliedFilter(datasheet, column) ? 'selected' : '' }}>{{ filter.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <div data-datasheet-column-filters="{{ column.name }}">
-                                        {% for filter in datasheet_column_filters(column) %}
-                                            <div data-datasheet-column-filter="{{ filter.name }}">
-                                                {{ filter.viewControl(datasheet, column)|raw }}
-                                            </div>
-                                        {% endfor %}
-                                    </div>
+                                    {% for filterForm in datasheet.filtersForm(column) %}
+                                        <input type="text" name="{{ filterForm.name }}" value="{{ filterForm.value }}">
+                                        ({{ filterForm.name }})<br>
+                                    {% endfor %}
+{#                                    <select data-datasheet-column-filter-selector="{{ column.name }}" class="form-control">#}
+{#                                        {% for filter in datasheet_column_filters(column) %}#}
+{#                                            <option value="{{ filter.name }}" {{ filter.findAppliedFilter(datasheet, column) ? 'selected' : '' }}>{{ filter.name }}</option>#}
+{#                                        {% endfor %}#}
+{#                                    </select>#}
+{#                                    <div data-datasheet-column-filters="{{ column.name }}">#}
+{#                                        {% for filter in datasheet_column_filters(column) %}#}
+{#                                            <div data-datasheet-column-filter="{{ filter.name }}">#}
+{#                                                {{ filter.viewControl(datasheet, column)|raw }}#}
+{#                                            </div>#}
+{#                                        {% endfor %}#}
+{#                                    </div>#}
                                 </td>
                             {% endfor %}
                         </tr>

@@ -6,7 +6,7 @@ class PaginationFilter implements FilterInterface
 {
     public function __construct(
         protected int $page,
-        protected int $perPage,
+        protected int $limit,
     ) {
     }
 
@@ -18,17 +18,18 @@ class PaginationFilter implements FilterInterface
     public function setPage(int $page): self
     {
         $this->page = $page;
+
         return $this;
     }
 
-    public function getPerPage(): int
+    public function getLimit(): int
     {
-        return $this->perPage;
+        return $this->limit;
     }
 
-    public function setPerPage(int $perPage): self
+    public function setLimit(int $limit): self
     {
-        $this->perPage = $perPage;
+        $this->limit = $limit;
         return $this;
     }
 }

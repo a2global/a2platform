@@ -2,13 +2,10 @@
 
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
 
-use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnAddFilterEvent;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnDataBuildEvent;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnFindFiltersEvent;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Filter\DatasheetFilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Registry\DatasheetFilterRegistry;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Resolver\FilterResolver;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -34,16 +31,27 @@ class ResolveFiltersSubscriber implements EventSubscriberInterface
             ->getCurrentRequest()
             ->query
             ->get(sprintf('ds%s', $event->getDatasheet()->getId()), []);
+        $filtersParameters = new ParameterBag($datasheetParameters['filter'] ?? []);
 
-        foreach ($datasheetParameters['filter'] ?? [] as $filterParameters) {
+        foreach ($filtersParameters as $filterParameters) {
             $filterParameters = new ParameterBag($filterParameters);
 
             /** @var DatasheetFilterInterface $filter */
             foreach ($this->datasheetFilterRegistry->get() as $filter) {
+                $columnName = $filterParameters->get('column');
 
-                if ($filter->isDefined($filterParameters)) {
-                    $event->getDatasheet()->addFilter($filter->get($filterParameters));
+                if ($columnName) {
+                    $filterParameters->remove('column');
                 }
+
+                if ($filterParameters->get('type') != $filter->getName()) {
+                    continue;
+                }
+
+                if (!$filter->isDefined($filterParameters)) {
+                    continue;
+                }
+                $event->getDatasheet()->addFilter($filter->getDataFilter($filterParameters, $columnName));
             }
         }
     }

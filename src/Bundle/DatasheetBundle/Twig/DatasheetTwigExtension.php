@@ -10,6 +10,7 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Datasheet;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Filter\DatasheetFilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Registry\DatasheetFilterRegistry;
 use Iterator;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Throwable;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -21,6 +22,7 @@ class DatasheetTwigExtension extends AbstractExtension
         protected DatasheetBuilder $datasheetBuilder,
         protected Environment $twig,
         protected DatasheetFilterRegistry $datasheetFilterRegistry,
+        protected RequestStack $requestStack,
     ) {
     }
 
@@ -29,7 +31,8 @@ class DatasheetTwigExtension extends AbstractExtension
         return [
             new TwigFunction('datasheet', [$this, 'getDatasheet'], ['is_safe' => ['html']]),
             new TwigFunction('datasheet_cell', [$this, 'getDatasheetCell'], ['is_safe' => ['html']]),
-            new TwigFunction('datasheet_column_filters', [$this, 'getDatasheetColumnFilters']),
+            new TwigFunction('available_datasheet_filters', [$this, 'getAvailableDatasheetFilters']),
+//            new TwigFunction('available_datasheet_column_filters', [$this, 'getDatasheetColumnFilters']),
             new TwigFunction('view_datasheet_filter', [$this, 'viewDatasheetFilter']),
         ];
     }
@@ -57,11 +60,21 @@ class DatasheetTwigExtension extends AbstractExtension
         return $column->getView($dataItem) ?? '';
     }
 
-    public function getDatasheetColumnFilters(DatasheetColumn $column): Iterator
+    public function getDatasheetFilters(DatasheetColumn $column): Iterator
     {
         /** @var DatasheetFilterInterface $filter */
         foreach ($this->datasheetFilterRegistry->get() as $filter) {
             if ($filter->supportsColumn($column)) {
+                yield $filter;
+            }
+        }
+    }
+
+    public function getDatasheetFilterFormFields(DatasheetExposed $datasheet): Iterator
+    {
+        /** @var DatasheetFilterInterface $filter */
+        foreach ($this->datasheetFilterRegistry->get() as $filter) {
+            if ($filter->supportsDatasheet($datasheet)) {
                 yield $filter;
             }
         }

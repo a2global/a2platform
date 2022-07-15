@@ -2,7 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Filter;
 
-class EqualsFilter implements FilterInterface
+class FieldEqualsFilter implements FilterInterface
 {
     public function __construct(
         protected $fieldName,

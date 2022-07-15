@@ -8,15 +8,11 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnI
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class PaginationDatasheetFilter extends AbstractDatasheetFilter implements DatasheetFilterInterface
+class SortDatasheetFilter extends AbstractDatasheetFilter implements DatasheetFilterInterface
 {
-    const NAME = 'pagination';
-
-    const PARAMETER_PAGE = 'page';
-    const PARAMETER_LIMIT = 'limit';
-
-    const DEFAULT_PAGE = 1;
-    const DEFAULT_PER_PAGE = 20;
+    const NAME = 'sort';
+    const PARAMETER_SORT_BY = 'by';
+    const PARAMETER_SORT_DIRECTION = 'direction';
 
     public function supports(DatasheetExposed $datasheet, ?DatasheetColumnInterface $column = null): bool
     {
@@ -25,25 +21,19 @@ class PaginationDatasheetFilter extends AbstractDatasheetFilter implements Datas
 
     public function isDefined(ParameterBag $parameters): bool
     {
-        return true;
+        return $parameters->get(self::PARAMETER_SORT_BY);
     }
 
     public function getDataFilter(ParameterBag $parameters, ?string $columnName = null)
     {
-        $page = $parameters->get(self::PARAMETER_PAGE, self::DEFAULT_PAGE);
-        $page = max($page, 1) - 1;
-
-        $limit = $parameters->get(self::PARAMETER_LIMIT, self::DEFAULT_PER_PAGE);
-        $limit = max($limit, 1);
-
-        return new PaginationFilter($page, $limit);
+        // TODO: Implement get() method.
     }
 
     public function getForm(ParameterBag $parameters)
     {
         return [
-            self::PARAMETER_PAGE => $parameters->get(self::PARAMETER_PAGE, self::DEFAULT_PAGE),
-            self::PARAMETER_LIMIT => $parameters->get(self::PARAMETER_LIMIT, self::DEFAULT_PER_PAGE),
+            self::PARAMETER_SORT_BY => $parameters->get(self::PARAMETER_SORT_BY),
+            self::PARAMETER_SORT_DIRECTION => $parameters->get(self::PARAMETER_SORT_DIRECTION),
         ];
     }
 }

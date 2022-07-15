@@ -17,7 +17,8 @@ class ArrayDataReader extends AbstractDataReader implements DataReaderInterface
     public function getData(): DataCollection
     {
         $collection = null;
-        $firstItem = array_shift($this->source);
+        $firstItem = array_slice($this->source, 0, 1);
+        $firstItem = reset($firstItem);
         $collection = new DataCollection(array_keys($firstItem));
         $this->applyFilters();
         $this->itemsTotal = count($this->source);

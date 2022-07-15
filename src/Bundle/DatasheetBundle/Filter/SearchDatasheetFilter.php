@@ -4,19 +4,15 @@ namespace A2Global\A2Platform\Bundle\DatasheetBundle\Filter;
 
 use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\PaginationFilter;
+use A2Global\A2Platform\Bundle\DataBundle\Filter\SearchFilter;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class PaginationDatasheetFilter extends AbstractDatasheetFilter implements DatasheetFilterInterface
+class SearchDatasheetFilter extends AbstractDatasheetFilter implements DatasheetFilterInterface
 {
-    const NAME = 'pagination';
-
-    const PARAMETER_PAGE = 'page';
-    const PARAMETER_LIMIT = 'limit';
-
-    const DEFAULT_PAGE = 1;
-    const DEFAULT_PER_PAGE = 20;
+    const NAME = 'search';
+    const PARAMETER_QUERY = 'query';
 
     public function supports(DatasheetExposed $datasheet, ?DatasheetColumnInterface $column = null): bool
     {
@@ -25,25 +21,18 @@ class PaginationDatasheetFilter extends AbstractDatasheetFilter implements Datas
 
     public function isDefined(ParameterBag $parameters): bool
     {
-        return true;
+        return $parameters->get(self::PARAMETER_QUERY);
     }
 
     public function getDataFilter(ParameterBag $parameters, ?string $columnName = null)
     {
-        $page = $parameters->get(self::PARAMETER_PAGE, self::DEFAULT_PAGE);
-        $page = max($page, 1) - 1;
-
-        $limit = $parameters->get(self::PARAMETER_LIMIT, self::DEFAULT_PER_PAGE);
-        $limit = max($limit, 1);
-
-        return new PaginationFilter($page, $limit);
+        return new SearchFilter($parameters->get(self::PARAMETER_QUERY));
     }
 
     public function getForm(ParameterBag $parameters)
     {
         return [
-            self::PARAMETER_PAGE => $parameters->get(self::PARAMETER_PAGE, self::DEFAULT_PAGE),
-            self::PARAMETER_LIMIT => $parameters->get(self::PARAMETER_LIMIT, self::DEFAULT_PER_PAGE),
+            self::PARAMETER_QUERY => $parameters->get(self::PARAMETER_QUERY),
         ];
     }
 }

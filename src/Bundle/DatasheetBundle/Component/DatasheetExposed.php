@@ -4,6 +4,7 @@ namespace A2Global\A2Platform\Bundle\DatasheetBundle\Component;
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
 use Exception;
 
@@ -25,11 +26,11 @@ class DatasheetExposed implements DatasheetInterface
 
     protected ?array $filters = [];
 
-    protected ?int $itemsTotal = 1;
+    protected ?array $columnFilters = [];
 
-    protected ?int $page = 1;
+    protected ?array $filtersForm = [];
 
-    protected ?int $perPage = 1;
+    protected ?array $columnFiltersForm = [];
 
     public function getId(): ?string
     {
@@ -101,54 +102,47 @@ class DatasheetExposed implements DatasheetInterface
         return $this;
     }
 
+    public function addFilter(FilterInterface $filter, ?string $columnName = null): self
+    {
+        if ($columnName) {
+            $this->columnFilters[$columnName][] = $filter;
+        } else {
+            $this->filters[] = $filter;
+        }
+
+        return $this;
+    }
+
     public function getFilters(): ?array
     {
         return $this->filters;
     }
 
-    public function addFilter(FilterInterface $filter): self
+    public function getColumnFilters($column): ?array
     {
-        $this->filters[] = $filter;
+        return $this->columnFilters;
+    }
+
+    public function addFilterForm(?array $filterForm, ?DatasheetColumnInterface $column = null): self
+    {
+        if ($column) {
+            $this->columnFiltersForm[$column->getName()] =
+                array_merge($this->columnFiltersForm[$column->getName()] ?? [], $filterForm);
+        } else {
+            $this->filtersForm =
+                array_merge($this->filtersForm ?? [], $filterForm);
+        }
 
         return $this;
     }
 
-    public function getItemsTotal(): ?int
+    public function getFiltersForm(?DatasheetColumn $column = null): ?array
     {
-        return $this->itemsTotal;
-    }
+        if ($column) {
+            return $this->columnFiltersForm[$column->getName()] ?? [];
+        }
 
-    public function setItemsTotal(?int $itemsTotal): self
-    {
-        $this->itemsTotal = $itemsTotal;
-        return $this;
-    }
-
-    public function getPage(): ?int
-    {
-        return $this->page;
-    }
-
-    public function setPage(?int $page): self
-    {
-        $this->page = $page;
-        return $this;
-    }
-
-    public function getPerPage(): ?int
-    {
-        return $this->perPage;
-    }
-
-    public function setPerPage(?int $perPage): self
-    {
-        $this->perPage = $perPage;
-        return $this;
-    }
-
-    public function getPagesTotal(): int
-    {
-        return floor($this->itemsTotal / $this->perPage);
+        return $this->filtersForm;
     }
 
     protected function buildSortedColumns()
