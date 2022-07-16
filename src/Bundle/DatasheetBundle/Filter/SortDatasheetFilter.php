@@ -29,7 +29,7 @@ class SortDatasheetFilter implements DatasheetFilterInterface
 
     public function isDefined(ParameterBag $parameters): bool
     {
-        return true;
+        return !empty($parameters->get(self::PARAMETER_SORT_BY));
     }
 
     public function getDataFilter(ParameterBag $parameters, ?string $columnName = null)
@@ -44,7 +44,7 @@ class SortDatasheetFilter implements DatasheetFilterInterface
     public function getForm(ParameterBag $parameters)
     {
         return [
-            self::PARAMETER_SORT_BY => $parameters->get(self::PARAMETER_SORT_BY),
+            self::PARAMETER_SORT_BY => $parameters->get(self::PARAMETER_SORT_BY, self::DEFAULT_SORT_BY),
             self::PARAMETER_SORT_DIRECTION => $parameters->get(self::PARAMETER_SORT_DIRECTION),
         ];
     }

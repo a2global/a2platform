@@ -2,6 +2,8 @@
 
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
 
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnDataBuildEvent;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Filter\DatasheetFilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Registry\DatasheetFilterRegistry;
@@ -30,7 +32,10 @@ class ResolveFiltersSubscriber implements EventSubscriberInterface
             ->getCurrentRequest()
             ->query
             ->get(sprintf('ds%s', $event->getDatasheet()->getId()), []);
-        $filtersParameters = new ParameterBag($datasheetParameters['filter'] ?? []);
+        $defaultParameters = $this->getDefaultFilterParameters($event->getDatasheet());
+        $queryParameters = $datasheetParameters['filter'] ?? [];
+        $mergedParameters = array_merge($defaultParameters, $queryParameters);
+        $filtersParameters = new ParameterBag($mergedParameters);
 
         foreach ($filtersParameters as $filterParameters) {
             $filterParameters = new ParameterBag($filterParameters);
@@ -52,5 +57,23 @@ class ResolveFiltersSubscriber implements EventSubscriberInterface
                 $event->getDatasheet()->addFilter($filter->getDataFilter($filterParameters, $columnName));
             }
         }
+    }
+
+    protected function getDefaultFilterParameters(DatasheetExposed $datasheet)
+    {
+        $params = [];
+
+        /** @var DatasheetFilterInterface $filter */
+        foreach ($this->datasheetFilterRegistry->get() as $filter) {
+            if (!$filter->supports($datasheet)) {
+                continue;
+            }
+
+            foreach ($filter->getForm(new ParameterBag([])) as $name => $value) {
+                $params[$filter->getName()][$name] = $value;
+            }
+        }
+
+        return $params;
     }
 }
