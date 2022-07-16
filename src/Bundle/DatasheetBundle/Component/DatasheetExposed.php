@@ -6,7 +6,7 @@ use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
-use Exception;
+use Iterator;
 
 class DatasheetExposed implements DatasheetInterface
 {
@@ -26,11 +26,9 @@ class DatasheetExposed implements DatasheetInterface
 
     protected ?array $filters = [];
 
-    protected ?array $columnFilters = [];
+    protected ?array $filterForms = [];
 
-    protected ?array $filtersForm = [];
-
-    protected ?array $columnFiltersForm = [];
+    protected ?array $columnFilterForms = [];
 
     public function getId(): ?string
     {
@@ -102,13 +100,9 @@ class DatasheetExposed implements DatasheetInterface
         return $this;
     }
 
-    public function addFilter(FilterInterface $filter, ?string $columnName = null): self
+    public function addFilter(FilterInterface $filter): self
     {
-        if ($columnName) {
-            $this->columnFilters[$columnName][] = $filter;
-        } else {
-            $this->filters[] = $filter;
-        }
+        $this->filters[] = $filter;
 
         return $this;
     }
@@ -118,34 +112,25 @@ class DatasheetExposed implements DatasheetInterface
         return $this->filters;
     }
 
-    public function getColumnFilters($column): ?array
-    {
-        return $this->columnFilters;
-    }
-
     // todo: change to FormInterface-way instead of arrays
-    public function addFilterForm(string $filterName, ?array $fields, ?DatasheetColumnInterface $column = null): self
+    public function addFilterForm(?array $filterForm, ?DatasheetColumnInterface $column = null): self
     {
-        $fields = [$filterName => $fields];
-
         if ($column) {
-            $this->columnFiltersForm[$column->getName()] =
-                array_merge($this->columnFiltersForm[$column->getName()] ?? [], $fields);
+            $this->columnFilterForms[$column->getName()][] = $filterForm;
         } else {
-            $this->filtersForm =
-                array_merge($this->filtersForm ?? [], $fields);
+            $this->filterForms[] = $filterForm;
         }
 
         return $this;
     }
 
-    public function getFiltersForm(?DatasheetColumn $column = null): ?array
+    public function getFilterForms(?DatasheetColumn $column = null): ?array
     {
         if ($column) {
-            return $this->columnFiltersForm[$column->getName()] ?? [];
+            return $this->columnFilterForms[$column->getName()] ?? [];
         }
 
-        return $this->filtersForm;
+        return $this->filterForms;
     }
 
     protected function buildSortedColumns()

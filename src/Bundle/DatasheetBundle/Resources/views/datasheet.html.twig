@@ -5,8 +5,8 @@
                 <h3 class="card-title">{{ datasheet.title }}</h3>
                 <div class="card-tools">
 
-                    {# {{ datasheet.itemsTotal }}        -#}
-                    {# {{ datasheet.page }}        -#}
+                    {# {{ datasheet.itemsTotal }}             -#}
+                    {# {{ datasheet.page }}             -#}
                     {# {{ datasheet.perPage }} #}
 
                     <ul class="pagination">
@@ -39,9 +39,9 @@
                             {{ dump(datasheet) }}
                             <hr>
                             Filters:<br><br>
-                            {% for filterName, filterForm in datasheet.filtersForm %}
-                                {{ filterName }}<br>
-                                {% for formField in filterForm %}
+                            {% for filterForm in datasheet.filterForms %}
+                                {{ filterForm.name }}<br>
+                                {% for formField in filterForm.fields %}
                                     <input type="text" name="{{ formField.name }}" value="{{ formField.value }}">
                                     ({{ formField.name }})
                                     <br>
@@ -72,18 +72,20 @@
                         <tr>
                             {% for column in datasheet.columns %}
                                 <td>
-                                    {% set filtersForm = datasheet.filtersForm(column) %}
-                                    {% if filtersForm|length %}
+                                    {% set filterForms = datasheet.filterForms(column) %}
+                                    {% if filterForms|length %}
                                         <select data-datasheet-column-filter-selector="{{ column.name }}"
                                                 class="form-control">
-                                            {% for filterName, filterForm in filtersForm %}
-                                                <option value="{{ filterName }}">{{ filterName }}</option>
+                                            {% for filterForm in filterForms %}
+                                                <option value="{{ filterForm.name }}"
+                                                        {{ filterForm.isApplied ? 'selected' : '' }}
+                                                >{{ filterForm.name }}</option>
                                             {% endfor %}
                                         </select>
                                         <div data-datasheet-column-filters="{{ column.name }}">
-                                            {% for filterName, filterForm in filtersForm %}
-                                                <div data-datasheet-column-filter="{{ filterName }}">
-                                                    {% for formField in filterForm %}
+                                            {% for filterForm in filterForms %}
+                                                <div data-datasheet-column-filter="{{ filterForm.name }}">
+                                                    {% for formField in filterForm.fields %}
                                                         <input type="text" name="{{ formField.name }}"
                                                                value="{{ formField.value }}" class="form-control">
                                                     {% endfor %}

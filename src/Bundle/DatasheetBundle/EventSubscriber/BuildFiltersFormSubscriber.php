@@ -72,7 +72,12 @@ class BuildFiltersFormSubscriber implements EventSubscriberInterface
                         'value' => $column->getName(),
                     ];
                 }
-                $event->getDatasheet()->addFilterForm($filter->getName(), $fields, $column);
+                $filterForm = [
+                    'name' => $filter->getName(),
+                    'isApplied' => $filter->isDefined($filterParameters),
+                    'fields' => $fields,
+                ];
+                $event->getDatasheet()->addFilterForm($filterForm, $column);
             }
         }
     }
