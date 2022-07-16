@@ -15,7 +15,10 @@ class BooleanColumn extends DatasheetColumn implements DatasheetColumnInterface
 
     public function getView(DataItem $dataItem): ?string
     {
-        (bool)$value = $dataItem->getValue($this->getName());
+        $value = $dataItem->getValue($this->getName());
+        if (is_null($value)) {
+            return 'null';
+        }
 
         return $value
             ? '<span href="#" class="badge badge-success" style="background-color: #007bb6">yes</span>'

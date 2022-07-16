@@ -8,11 +8,16 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnI
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class SortDatasheetFilter extends AbstractDatasheetFilter implements DatasheetFilterInterface
+class SortDatasheetFilter implements DatasheetFilterInterface
 {
     const NAME = 'sort';
     const PARAMETER_SORT_BY = 'by';
     const PARAMETER_SORT_DIRECTION = 'direction';
+
+    public function getName()
+    {
+        return static::NAME;
+    }
 
     public function supports(DatasheetExposed $datasheet, ?DatasheetColumnInterface $column = null): bool
     {

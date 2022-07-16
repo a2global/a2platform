@@ -2,16 +2,23 @@
 
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\Filter;
 
+use A2Global\A2Platform\Bundle\DataBundle\Filter\ContainsFilter;
+use A2Global\A2Platform\Bundle\DataBundle\Filter\FieldContainsFilter;
+use A2Global\A2Platform\Bundle\DataBundle\Filter\FieldEqualsFilter;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\PaginationFilter;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\SearchFilter;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\NumberColumn;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\StringColumn;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\TextColumn;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class SearchDatasheetFilter implements DatasheetFilterInterface
+class FieldEqualsDatasheetFilter implements DatasheetFilterInterface
 {
-    const NAME = 'search';
+    const NAME = 'equals';
     const PARAMETER_QUERY = 'query';
 
     public function getName()
@@ -21,7 +28,14 @@ class SearchDatasheetFilter implements DatasheetFilterInterface
 
     public function supports(DatasheetExposed $datasheet, ?DatasheetColumnInterface $column = null): bool
     {
-        return is_null($column);
+        if (is_null($column)) {
+            return false;
+        }
+
+        return in_array(get_class($column), [
+            NumberColumn::class,
+            StringColumn::class,
+        ]);
     }
 
     public function isDefined(ParameterBag $parameters): bool
@@ -31,7 +45,7 @@ class SearchDatasheetFilter implements DatasheetFilterInterface
 
     public function getDataFilter(ParameterBag $parameters, ?string $columnName = null)
     {
-        return new SearchFilter($parameters->get(self::PARAMETER_QUERY));
+        return new FieldEqualsFilter($columnName, $parameters->get(self::PARAMETER_QUERY));
     }
 
     public function getForm(ParameterBag $parameters)

@@ -2,7 +2,6 @@
 
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
 
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnDataBuildEvent;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Filter\DatasheetFilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Registry\DatasheetFilterRegistry;
@@ -35,15 +34,14 @@ class ResolveFiltersSubscriber implements EventSubscriberInterface
 
         foreach ($filtersParameters as $filterParameters) {
             $filterParameters = new ParameterBag($filterParameters);
+            $columnName = $filterParameters->get('column');
+
+            if ($columnName) {
+                $filterParameters->remove('column');
+            }
 
             /** @var DatasheetFilterInterface $filter */
             foreach ($this->datasheetFilterRegistry->get() as $filter) {
-                $columnName = $filterParameters->get('column');
-
-                if ($columnName) {
-                    $filterParameters->remove('column');
-                }
-
                 if ($filterParameters->get('type') != $filter->getName()) {
                     continue;
                 }

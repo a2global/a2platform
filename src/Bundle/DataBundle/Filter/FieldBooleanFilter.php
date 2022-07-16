@@ -2,11 +2,11 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Filter;
 
-class FieldContainsFilter implements FilterInterface
+class FieldBooleanFilter implements FilterInterface
 {
     public function __construct(
         protected $fieldName,
-        protected $query,
+        protected bool $query
     ) {
     }
 

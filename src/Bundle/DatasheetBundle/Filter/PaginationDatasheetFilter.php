@@ -8,7 +8,7 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnI
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class PaginationDatasheetFilter extends AbstractDatasheetFilter implements DatasheetFilterInterface
+class PaginationDatasheetFilter implements DatasheetFilterInterface
 {
     const NAME = 'pagination';
 
@@ -17,6 +17,11 @@ class PaginationDatasheetFilter extends AbstractDatasheetFilter implements Datas
 
     const DEFAULT_PAGE = 1;
     const DEFAULT_PER_PAGE = 20;
+
+    public function getName()
+    {
+        return static::NAME;
+    }
 
     public function supports(DatasheetExposed $datasheet, ?DatasheetColumnInterface $column = null): bool
     {

@@ -15,16 +15,26 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class FieldContainsDatasheetFilter extends AbstractDatasheetFilter implements DatasheetFilterInterface
+class FieldContainsDatasheetFilter implements DatasheetFilterInterface
 {
     const NAME = 'contains';
     const PARAMETER_QUERY = 'query';
 
+    public function getName()
+    {
+        return static::NAME;
+    }
+
     public function supports(DatasheetExposed $datasheet, ?DatasheetColumnInterface $column = null): bool
     {
-        return !is_null($column) && in_array(get_class($column), [
-                StringColumn::class,
-            ]);
+        if (is_null($column)) {
+            return false;
+        }
+
+        return in_array(get_class($column), [
+            NumberColumn::class,
+            StringColumn::class,
+        ]);
     }
 
     public function isDefined(ParameterBag $parameters): bool

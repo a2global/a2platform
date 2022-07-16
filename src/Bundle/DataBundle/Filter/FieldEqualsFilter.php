@@ -6,7 +6,7 @@ class FieldEqualsFilter implements FilterInterface
 {
     public function __construct(
         protected $fieldName,
-        protected $value
+        protected $query
     ) {
     }
 
@@ -15,8 +15,8 @@ class FieldEqualsFilter implements FilterInterface
         return $this->fieldName;
     }
 
-    public function getValue()
+    public function getQuery()
     {
-        return $this->value;
+        return $this->query;
     }
 }

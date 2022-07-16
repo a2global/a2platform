@@ -123,14 +123,17 @@ class DatasheetExposed implements DatasheetInterface
         return $this->columnFilters;
     }
 
-    public function addFilterForm(?array $filterForm, ?DatasheetColumnInterface $column = null): self
+    // todo: change to FormInterface-way instead of arrays
+    public function addFilterForm(string $filterName, ?array $fields, ?DatasheetColumnInterface $column = null): self
     {
+        $fields = [$filterName => $fields];
+
         if ($column) {
             $this->columnFiltersForm[$column->getName()] =
-                array_merge($this->columnFiltersForm[$column->getName()] ?? [], $filterForm);
+                array_merge($this->columnFiltersForm[$column->getName()] ?? [], $fields);
         } else {
             $this->filtersForm =
-                array_merge($this->filtersForm ?? [], $filterForm);
+                array_merge($this->filtersForm ?? [], $fields);
         }
 
         return $this;
