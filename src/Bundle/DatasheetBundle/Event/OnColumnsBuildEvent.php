@@ -23,6 +23,7 @@ class OnColumnsBuildEvent
     public function setColumns(array $columns): self
     {
         $this->columns = $columns;
+
         return $this;
     }
 

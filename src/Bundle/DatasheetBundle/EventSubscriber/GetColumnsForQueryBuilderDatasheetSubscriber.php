@@ -50,7 +50,7 @@ class GetColumnsForQueryBuilderDatasheetSubscriber implements EventSubscriberInt
             }
             $fieldName = $tmp[1];
             $field = $this->getFieldByName($fieldName, $entityFields);
-            $columns[] = $this->findSupportedColumn($field);
+            $columns[$fieldName] = $this->findSupportedColumn($field);
         }
         $event->setColumns($columns);
     }

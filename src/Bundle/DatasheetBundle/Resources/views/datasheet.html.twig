@@ -5,8 +5,8 @@
                 <h3 class="card-title">{{ datasheet.title }}</h3>
                 <div class="card-tools">
 
-                    {# {{ datasheet.itemsTotal }}             -#}
-                    {# {{ datasheet.page }}             -#}
+                    {# {{ datasheet.itemsTotal }}              -#}
+                    {# {{ datasheet.page }}              -#}
                     {# {{ datasheet.perPage }} #}
 
                     <ul class="pagination">
@@ -60,7 +60,7 @@
                         <tr>
                             {% for column in datasheet.columns %}
                                 <th>
-                                    <div class="ellipsis"
+                                    <div data-datasheet-column-title="{{ column.name }}" class="ellipsis"
                                          style="width:{{ column.width }}px;text-align: {{ column.align }};">
                                         {{ column.title }}
                                     </div>
@@ -116,3 +116,9 @@
         </div>
     </form>
 </div>
+
+<style>
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>

@@ -4,8 +4,10 @@ namespace A2Global\A2Platform\Bundle\DatasheetBundle\Filter;
 
 use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\PaginationFilter;
+use A2Global\A2Platform\Bundle\DataBundle\Filter\SortFilter;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class SortDatasheetFilter implements DatasheetFilterInterface
@@ -13,6 +15,7 @@ class SortDatasheetFilter implements DatasheetFilterInterface
     const NAME = 'sort';
     const PARAMETER_SORT_BY = 'by';
     const PARAMETER_SORT_DIRECTION = 'direction';
+    const DEFAULT_SORT_BY = 'id';
 
     public function getName()
     {
@@ -21,17 +24,21 @@ class SortDatasheetFilter implements DatasheetFilterInterface
 
     public function supports(DatasheetExposed $datasheet, ?DatasheetColumnInterface $column = null): bool
     {
-        return is_null($column);
+        return $datasheet->getConfig()['dataSource'] instanceof QueryBuilder && is_null($column);
     }
 
     public function isDefined(ParameterBag $parameters): bool
     {
-        return !empty($parameters->get(self::PARAMETER_SORT_BY));
+        return true;
     }
 
     public function getDataFilter(ParameterBag $parameters, ?string $columnName = null)
     {
-        // TODO: Implement get() method.
+        $direction = $parameters->get(self::PARAMETER_SORT_DIRECTION) === SortFilter::DESCENDING
+            ? SortFilter::DESCENDING
+            : SortFilter::ASCENDING; // all other cases = ASC direction
+
+        return new SortFilter($parameters->get(self::PARAMETER_SORT_BY, self::DEFAULT_SORT_BY), $direction);
     }
 
     public function getForm(ParameterBag $parameters)
