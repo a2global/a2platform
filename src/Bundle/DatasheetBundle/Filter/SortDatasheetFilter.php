@@ -26,7 +26,7 @@ class SortDatasheetFilter implements DatasheetFilterInterface
 
     public function isDefined(ParameterBag $parameters): bool
     {
-        return $parameters->get(self::PARAMETER_SORT_BY);
+        return !empty($parameters->get(self::PARAMETER_SORT_BY));
     }
 
     public function getDataFilter(ParameterBag $parameters, ?string $columnName = null)

@@ -22,9 +22,10 @@ class ArrayFieldEqualsFilterApplier implements FilterApplierInterface
 
     public function apply(DataReaderInterface $dataReader, FilterInterface $filter)
     {
-        /** @var EqualsFilter $filter */
+        /** @var FieldEqualsFilter $filter */
         $filteredItems = [];
-        $lowercaseValue = mb_strtolower($filter->getValue());
+        $lowercaseValue = mb_strtolower($filter->getQuery());
+        
         foreach ($dataReader->getSource() as $item) {
             if (mb_strtolower($item[$filter->getFieldName()]) != $lowercaseValue) {
                 continue;
