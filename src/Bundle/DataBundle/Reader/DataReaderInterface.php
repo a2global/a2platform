@@ -15,6 +15,4 @@ interface DataReaderInterface
     public function getData(): DataCollection;
 
     public function addFilter($filter): self;
-
-    public function getItemsTotal(): int;
 }

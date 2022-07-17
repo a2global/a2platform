@@ -8,6 +8,7 @@ use A2Global\A2Platform\Bundle\DataBundle\Filter\SortFilter;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use Doctrine\ORM\QueryBuilder;
+use Iterator;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class SortDatasheetFilter implements DatasheetFilterInterface
@@ -41,11 +42,16 @@ class SortDatasheetFilter implements DatasheetFilterInterface
         return new SortFilter($parameters->get(self::PARAMETER_SORT_BY, self::DEFAULT_SORT_BY), $direction);
     }
 
-    public function getForm(ParameterBag $parameters)
+    public function getForm(ParameterBag $parameters): Iterator
     {
-        return [
-            self::PARAMETER_SORT_BY => $parameters->get(self::PARAMETER_SORT_BY, self::DEFAULT_SORT_BY),
-            self::PARAMETER_SORT_DIRECTION => $parameters->get(self::PARAMETER_SORT_DIRECTION),
+        yield [
+            'name' => self::PARAMETER_SORT_BY,
+            'value' => $parameters->get(self::PARAMETER_SORT_BY, self::DEFAULT_SORT_BY),
+        ];
+
+        yield [
+            'name' => self::PARAMETER_SORT_DIRECTION,
+            'value' => $parameters->get(self::PARAMETER_SORT_DIRECTION),
         ];
     }
 }

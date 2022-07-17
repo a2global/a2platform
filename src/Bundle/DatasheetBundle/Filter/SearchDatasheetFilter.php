@@ -7,9 +7,10 @@ use A2Global\A2Platform\Bundle\DataBundle\Filter\PaginationFilter;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\SearchFilter;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
+use Iterator;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class SearchDatasheetFilter implements DatasheetFilterInterface
+class SearchDatasheetFilter// implements DatasheetFilterInterface
 {
     const NAME = 'search';
     const PARAMETER_QUERY = 'query';
@@ -34,10 +35,12 @@ class SearchDatasheetFilter implements DatasheetFilterInterface
         return new SearchFilter($parameters->get(self::PARAMETER_QUERY));
     }
 
-    public function getForm(ParameterBag $parameters)
+    public function getForm(ParameterBag $parameters): Iterator
     {
-        return [
-            self::PARAMETER_QUERY => $parameters->get(self::PARAMETER_QUERY),
+        yield [
+            'name' => self::PARAMETER_QUERY,
+            'value' => $parameters->get(self::PARAMETER_QUERY),
+            'type' => 'text',
         ];
     }
 }

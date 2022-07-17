@@ -55,21 +55,26 @@ class BuildFiltersFormSubscriber implements EventSubscriberInterface
                 $fields = [];
                 $filterKey = ($column ? $column->getName() . '_' : '') . $filter->getName();
 
-                foreach ($filter->getForm($filterParameters) as $name => $value) {
-                    $fields[] = [
-                        'name' => sprintf('ds%s[filter][%s][%s]', $event->getDatasheet()->getId(), $filterKey, $name),
-                        'value' => $value,
-                    ];
+                foreach ($filter->getForm($filterParameters) as $form) {
+                    $form['name'] = sprintf(
+                        'ds%s[filter][%s][%s]',
+                        $event->getDatasheet()->getId(),
+                        $filterKey,
+                        $form['name']
+                    );
+                    $fields[] = $form;
                 }
                 $fields[] = [
                     'name' => sprintf('ds%s[filter][%s][type]', $event->getDatasheet()->getId(), $filterKey),
                     'value' => $filter->getName(),
+                    'type' => 'hidden',
                 ];
 
                 if ($column) {
                     $fields[] = [
                         'name' => sprintf('ds%s[filter][%s][column]', $event->getDatasheet()->getId(), $filterKey),
                         'value' => $column->getName(),
+                        'type' => 'hidden',
                     ];
                 }
                 $filterForm = [

@@ -13,6 +13,7 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\StringColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\TextColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
+use Iterator;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FieldContainsDatasheetFilter implements DatasheetFilterInterface
@@ -47,10 +48,12 @@ class FieldContainsDatasheetFilter implements DatasheetFilterInterface
         return new FieldContainsFilter($columnName, $parameters->get(self::PARAMETER_QUERY));
     }
 
-    public function getForm(ParameterBag $parameters)
+    public function getForm(ParameterBag $parameters): Iterator
     {
-        return [
-            self::PARAMETER_QUERY => $parameters->get(self::PARAMETER_QUERY),
+        yield [
+            'name' => self::PARAMETER_QUERY,
+            'value' => $parameters->get(self::PARAMETER_QUERY),
+            'type' => 'text',
         ];
     }
 }

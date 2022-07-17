@@ -7,6 +7,7 @@ use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\BooleanColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
+use Iterator;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FieldBooleanDatasheetFilter implements DatasheetFilterInterface
@@ -40,10 +41,12 @@ class FieldBooleanDatasheetFilter implements DatasheetFilterInterface
         return new FieldBooleanFilter($columnName, (bool)$parameters->get(self::PARAMETER_QUERY));
     }
 
-    public function getForm(ParameterBag $parameters)
+    public function getForm(ParameterBag $parameters): Iterator
     {
-        return [
-            self::PARAMETER_QUERY => $parameters->get(self::PARAMETER_QUERY),
+        yield [
+            'name' => self::PARAMETER_QUERY,
+            'value' => $parameters->get(self::PARAMETER_QUERY),
+            'type' => 'text',
         ];
     }
 }

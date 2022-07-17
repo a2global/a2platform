@@ -6,6 +6,7 @@ use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\PaginationFilter;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
+use Iterator;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class PaginationDatasheetFilter implements DatasheetFilterInterface
@@ -16,7 +17,7 @@ class PaginationDatasheetFilter implements DatasheetFilterInterface
     const PARAMETER_LIMIT = 'limit';
 
     const DEFAULT_PAGE = 1;
-    const DEFAULT_PER_PAGE = 20;
+    const DEFAULT_LIMIT = 20;
 
     public function getName()
     {
@@ -38,17 +39,22 @@ class PaginationDatasheetFilter implements DatasheetFilterInterface
         $page = $parameters->get(self::PARAMETER_PAGE, self::DEFAULT_PAGE);
         $page = max($page, 1) - 1;
 
-        $limit = $parameters->get(self::PARAMETER_LIMIT, self::DEFAULT_PER_PAGE);
+        $limit = $parameters->get(self::PARAMETER_LIMIT, self::DEFAULT_LIMIT);
         $limit = max($limit, 1);
 
         return new PaginationFilter($page, $limit);
     }
 
-    public function getForm(ParameterBag $parameters)
+    public function getForm(ParameterBag $parameters): Iterator
     {
-        return [
-            self::PARAMETER_PAGE => $parameters->get(self::PARAMETER_PAGE, self::DEFAULT_PAGE),
-            self::PARAMETER_LIMIT => $parameters->get(self::PARAMETER_LIMIT, self::DEFAULT_PER_PAGE),
+        yield [
+            'name' => self::PARAMETER_PAGE,
+            'value' => $parameters->get(self::PARAMETER_PAGE, self::DEFAULT_PAGE),
+        ];
+
+        yield [
+            'name' => self::PARAMETER_LIMIT,
+            'value' => $parameters->get(self::PARAMETER_LIMIT, self::DEFAULT_LIMIT),
         ];
     }
 }

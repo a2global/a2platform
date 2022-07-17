@@ -2,11 +2,16 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Component;
 
+/**
+ * Class DataCollection
+ * @package A2Global\A2Platform\Bundle\DataBundle\Component
+ * todo: figure out if this can be replaced by DoctrineCollection/PersistentCollection etc
+ */
 class DataCollection
 {
     protected ?array $items = [];
 
-    protected ?int $total = null;
+    protected ?int $itemsTotal = null;
 
     public function __construct(
         protected array $fields
@@ -28,14 +33,14 @@ class DataCollection
         return $this->items;
     }
 
-    public function getTotal(): ?int
+    public function getItemsTotal(): ?int
     {
-        return $this->total;
+        return $this->itemsTotal;
     }
 
-    public function setTotal(?int $total): self
+    public function setItemsTotal(?int $itemsTotal): self
     {
-        $this->total = $total;
+        $this->itemsTotal = $itemsTotal;
         return $this;
     }
 }

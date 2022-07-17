@@ -20,7 +20,7 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
         $queryBuilder = $this->source;
         $collection = new DataCollection($this->getFields($queryBuilder));
         $this->applyFilters();
-        $this->buildTotals();
+        $this->setItemsTotal($collection);
         $this->applyFilters(true);
         $sql = $queryBuilder->getQuery()->getSql();
         $params = $queryBuilder->getQuery()->getParameters();
@@ -32,7 +32,7 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
         return $collection;
     }
 
-    protected function buildTotals()
+    protected function setItemsTotal(DataCollection $collection)
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = clone($this->source);
@@ -42,7 +42,7 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
             ->setFirstResult(null)
             ->setMaxResults(null);
 
-        $this->itemsTotal = $queryBuilder->getQuery()->getSingleScalarResult();
+        $collection->setItemsTotal($queryBuilder->getQuery()->getSingleScalarResult());
     }
 
     protected function getFields(QueryBuilder $queryBuilder): array

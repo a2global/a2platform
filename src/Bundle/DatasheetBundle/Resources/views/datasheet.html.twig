@@ -4,53 +4,7 @@
             <div class="card-header">
                 <h3 class="card-title">{{ datasheet.title }}</h3>
                 <div class="card-tools">
-
-                    {# {{ datasheet.itemsTotal }}              -#}
-                    {# {{ datasheet.page }}              -#}
-                    {# {{ datasheet.perPage }} #}
-
-                    <ul class="pagination">
-                        {# <li class="paginate_button page-item previous disabled" id="example2_previous"> #}
-                        {# <a href="#" #}
-                        {# aria-controls="example2" #}
-                        {# data-dt-idx="0" #}
-                        {# tabindex="0" #}
-                        {# class="page-link">Previous</a> #}
-                        {# </li> #}
-
-                        {# {% for page in 0..datasheet. Total %} #}
-                        {# <li class="paginate_button page-item {{ datasheet.page == page ? 'active' : '' }}"> #}
-                        {# <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" #}
-                        {# class="page-link">{{ page + 1 }}</a> #}
-                        {# </li> #}
-                        {# {% endfor %} #}
-                        {# <a href="#" aria-controls="example2" #}
-                        {# data-dt-idx="7" tabindex="0" #}
-                        {# class="page-link">Next</a> #}
-                        </li>
-                    </ul>
-                    <input type="submit">
-                    {% if app.environment == 'dev' %}
-                        <details>
-                            <summary>
-                                Debug
-                            </summary>
-                            <hr>
-                            {{ dump(datasheet) }}
-                            <hr>
-                            Filters:<br><br>
-                            {% for filterForm in datasheet.filterForms %}
-                                {{ filterForm.name }}<br>
-                                {% for formField in filterForm.fields %}
-                                    <input type="text" name="{{ formField.name }}" value="{{ formField.value }}">
-                                    ({{ formField.name }})
-                                    <br>
-                                {% endfor %}
-                                <br>
-                            {% endfor %}
-                            <hr>
-                        </details>
-                    {% endif %}
+                    <ul class="pagination" data-datasheet-items-total="{{ datasheet.itemsTotal }}"></ul>
                 </div>
             </div>
             <div class="card-body">
@@ -86,10 +40,11 @@
                                             {% for filterForm in filterForms %}
                                                 <div data-datasheet-column-filter="{{ filterForm.name }}">
                                                     {% for formField in filterForm.fields %}
-                                                        <input type="text" name="{{ formField.name }}"
-                                                               value="{{ formField.value }}" class="form-control">
+                                                        <input type="{{ formField.type ?? 'hidden' }}"
+                                                               name="{{ formField.name }}"
+                                                               value="{{ formField.value }}"
+                                                               class="form-control">
                                                     {% endfor %}
-                                                    <br>
                                                 </div>
                                             {% endfor %}
                                         </div>
@@ -112,6 +67,20 @@
                         </tbody>
                     </table>
                 </div>
+                {% if app.environment == 'dev' %}
+                    <details>
+                        <summary>
+                            Debug
+                        </summary>
+                        {{ dump(datasheet) }}
+                    </details>
+                {% endif %}
+                {% for filterForm in datasheet.filterForms %}
+                    {% for formField in filterForm.fields %}
+                        <input type="hidden" name="{{ formField.name }}" value="{{ formField.value }}">
+                    {% endfor %}
+                {% endfor %}
+                <input type="submit" hidden>
             </div>
         </div>
     </form>

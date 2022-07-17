@@ -19,6 +19,7 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\TextColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use DateTime;
+use Iterator;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FieldInDateIntervalDatasheetFilter implements DatasheetFilterInterface
@@ -58,11 +59,18 @@ class FieldInDateIntervalDatasheetFilter implements DatasheetFilterInterface
         );
     }
 
-    public function getForm(ParameterBag $parameters)
+    public function getForm(ParameterBag $parameters): Iterator
     {
-        return [
-            self::PARAMETER_DATE_FROM => $parameters->get(self::PARAMETER_DATE_FROM),
-            self::PARAMETER_DATE_TO => $parameters->get(self::PARAMETER_DATE_TO),
+        yield [
+            'name' => self::PARAMETER_DATE_FROM,
+            'value' => $parameters->get(self::PARAMETER_DATE_FROM),
+            'type' => 'text',
+        ];
+
+        yield [
+            'name' => self::PARAMETER_DATE_TO,
+            'value' => $parameters->get(self::PARAMETER_DATE_TO),
+            'type' => 'text',
         ];
     }
 }

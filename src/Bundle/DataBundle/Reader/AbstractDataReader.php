@@ -15,8 +15,6 @@ abstract class AbstractDataReader
 
     protected $source;
 
-    protected int $itemsTotal;
-
     protected FilterApplierRegistry $filterApplierRegistry;
 
     public function getSource(): mixed
@@ -41,11 +39,6 @@ abstract class AbstractDataReader
     public function getFilters(): array
     {
         return $this->filters;
-    }
-
-    public function getItemsTotal(): int
-    {
-        return $this->itemsTotal;
     }
 
     /** @Required */

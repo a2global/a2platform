@@ -78,17 +78,6 @@ class DatasheetExposed implements DatasheetInterface
         return $this->sortedColumns;
     }
 
-    public function getSortedColumns(): array
-    {
-        return $this->sortedColumns;
-    }
-
-    public function setSortedColumns(array $sortedColumns): self
-    {
-        $this->sortedColumns = $sortedColumns;
-        return $this;
-    }
-
     public function getConfig(): array
     {
         return $this->config;
@@ -131,6 +120,11 @@ class DatasheetExposed implements DatasheetInterface
         }
 
         return $this->filterForms;
+    }
+
+    public function getItemsTotal()
+    {
+        return $this->data->getItemsTotal();
     }
 
     protected function buildSortedColumns()

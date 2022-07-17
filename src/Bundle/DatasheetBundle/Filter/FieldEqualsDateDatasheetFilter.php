@@ -17,6 +17,7 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\TextColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use DateTime;
+use Iterator;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FieldEqualsDateDatasheetFilter implements DatasheetFilterInterface
@@ -50,10 +51,12 @@ class FieldEqualsDateDatasheetFilter implements DatasheetFilterInterface
         return new FieldEqualsDateFilter($columnName, new DateTime($parameters->get(self::PARAMETER_DATE)));
     }
 
-    public function getForm(ParameterBag $parameters)
+    public function getForm(ParameterBag $parameters): Iterator
     {
-        return [
-            self::PARAMETER_DATE => $parameters->get(self::PARAMETER_DATE),
+        yield [
+            'name' => self::PARAMETER_DATE,
+            'value' => $parameters->get(self::PARAMETER_DATE),
+            'type' => 'text',
         ];
     }
 }

@@ -21,7 +21,7 @@ class ArrayDataReader extends AbstractDataReader implements DataReaderInterface
         $firstItem = reset($firstItem);
         $collection = new DataCollection(array_keys($firstItem));
         $this->applyFilters();
-        $this->itemsTotal = count($this->source);
+        $collection->setItemsTotal(count($this->source));
         $this->applyFilters(true);
 
         foreach ($this->source as $row) {
