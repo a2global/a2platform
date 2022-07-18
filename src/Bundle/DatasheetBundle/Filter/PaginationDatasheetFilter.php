@@ -50,11 +50,13 @@ class PaginationDatasheetFilter implements DatasheetFilterInterface
         yield [
             'name' => self::PARAMETER_PAGE,
             'value' => $parameters->get(self::PARAMETER_PAGE, self::DEFAULT_PAGE),
+            'type' => 'text',
         ];
 
         yield [
             'name' => self::PARAMETER_LIMIT,
             'value' => $parameters->get(self::PARAMETER_LIMIT, self::DEFAULT_LIMIT),
+            'type' => 'text',
         ];
     }
 }

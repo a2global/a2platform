@@ -8,6 +8,20 @@
                 </div>
             </div>
             <div class="card-body">
+                {% if app.environment == 'dev' %}
+                    <details>
+                        <summary>
+                            Debug
+                        </summary>
+                        {{ dump(datasheet) }}
+                    </details>
+                {% endif %}
+                {% for filterForm in datasheet.filterForms %}
+                    {% for formField in filterForm.fields %}
+                        <input type="hidden" name="{{ formField.name }}" value="{{ formField.value }}">
+                    {% endfor %}
+                {% endfor %}
+                <input type="submit" hidden>
                 <div class="table-responsive" data-datasheet-id="{{ datasheet.id }}">
                     <table class="table table-striped table-bordered table-sm">
                         <thead>
@@ -58,7 +72,14 @@
                                     <td>
                                         <div class="ellipsis"
                                              style="width:{{ column.width }}px;text-align: {{ column.align }};">
-                                            {{ datasheet_cell(dataItem, column) }}
+                                            {% set cellContent = datasheet_cell(dataItem, column) %}
+                                            {% if column.hasActionUrl %}
+                                                <a href="{{ column.buildActionUrl(dataItem) }}" rel="nofollow">
+                                                    <b>{{ cellContent }}</b>
+                                                </a>
+                                            {% else %}
+                                                {{ cellContent }}
+                                            {% endif %}
                                         </div>
                                     </td>
                                 {% endfor %}
@@ -67,20 +88,6 @@
                         </tbody>
                     </table>
                 </div>
-                {% if app.environment == 'dev' %}
-                    <details>
-                        <summary>
-                            Debug
-                        </summary>
-                        {{ dump(datasheet) }}
-                    </details>
-                {% endif %}
-                {% for filterForm in datasheet.filterForms %}
-                    {% for formField in filterForm.fields %}
-                        <input type="hidden" name="{{ formField.name }}" value="{{ formField.value }}">
-                    {% endfor %}
-                {% endfor %}
-                <input type="submit" hidden>
             </div>
         </div>
     </form>

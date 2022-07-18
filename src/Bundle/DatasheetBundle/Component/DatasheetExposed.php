@@ -3,10 +3,10 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\Component;
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
+use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
-use Iterator;
 
 class DatasheetExposed implements DatasheetInterface
 {
@@ -125,6 +125,16 @@ class DatasheetExposed implements DatasheetInterface
     public function getItemsTotal()
     {
         return $this->data->getItemsTotal();
+    }
+
+    public function hasActionUrl()
+    {
+        return !empty($this->config['actionUrl']);
+    }
+
+    public function getActionUrl(DataItem $dataItem)
+    {
+        return sprintf($this->config['actionUrl'], $dataItem->getValue('id'));
     }
 
     protected function buildSortedColumns()

@@ -31,9 +31,10 @@ abstract class AbstractAdminController extends AbstractController
         ]);
     }
 
-    #[Route('view', name: 'view')]
-    public function viewAction()
+    #[Route('view/{id}', name: 'view')]
+    public function viewAction($id)
     {
+        dd($id);
     }
 
     protected function denyDirectAccess()
@@ -50,12 +51,13 @@ abstract class AbstractAdminController extends AbstractController
                 ->getRepository($resourceRequest->getSubjectClass())
                 ->createQueryBuilder('a')
         );
-        $datasheet->setTitle(
-            'List of the ' . $resourceRequest->getSubjectName()
-        );
-        $datasheet->getColumn('id')
+        $datasheet
+            ->setTitle('List of the ' . $resourceRequest->getSubjectName());
+
+        $datasheet
+            ->getColumn('id')
             ->setType(NumberColumn::class)
-            ->setWidth(40);
+            ->setWidth(200);
 
         if (is_subclass_of($resourceRequest->getSubjectClass(), TaggableEntityInterface::class)) {
             $tagsColumn = (new TagsColumn('tags'))

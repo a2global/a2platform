@@ -35,6 +35,13 @@ class Datasheet implements DatasheetInterface
         return $this;
     }
 
+    public function setActionUrl(string $urlWithIdPlaceholder): self
+    {
+        $this->config['actionUrl'] = $urlWithIdPlaceholder;
+
+        return $this;
+    }
+
     public function addColumn(DatasheetColumn $column): DatasheetColumn
     {
         $this->config['columns']['add'][] = $column;

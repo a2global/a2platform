@@ -69,8 +69,9 @@ class ResolveFiltersSubscriber implements EventSubscriberInterface
                 continue;
             }
 
-            foreach ($filter->getForm(new ParameterBag([])) as $name => $value) {
-                $params[$filter->getName()][$name] = $value;
+            foreach ($filter->getForm(new ParameterBag([])) as $form) {
+                $params[$filter->getName()][$form['name']] = $form['value'];
+                $params[$filter->getName()]['type'] = $filter->getName();
             }
         }
 

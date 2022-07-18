@@ -27,6 +27,8 @@ class DatasheetColumn implements DatasheetColumnInterface
 
     protected ?bool $filterable = null;
 
+    protected ?string $actionUrl = null;
+
     public function __construct(
         protected $name
     ) {
@@ -111,6 +113,28 @@ class DatasheetColumn implements DatasheetColumnInterface
     public function getView(DataItem $dataItem): ?string
     {
         throw new DatasheetBuildException('This method should not be called directly, only typed columns should return view');
+    }
+
+    public function setActionUrl(?string $actionUrl): self
+    {
+        $this->actionUrl = $actionUrl;
+
+        return $this;
+    }
+
+    public function hasActionUrl(): bool
+    {
+        return !empty($this->actionUrl);
+    }
+
+    public function getActionUrl(): ?string
+    {
+        return $this->actionUrl;
+    }
+
+    public function buildActionUrl(DataItem $dataItem): ?string
+    {
+        return sprintf($this->actionUrl, $dataItem->getValue($this->name));
     }
 
     public static function supportsDataType($type): bool
