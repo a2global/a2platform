@@ -35,6 +35,7 @@ class FieldContainsDatasheetFilter implements DatasheetFilterInterface
         return in_array(get_class($column), [
             NumberColumn::class,
             StringColumn::class,
+            TextColumn::class,
         ]);
     }
 

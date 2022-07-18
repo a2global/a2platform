@@ -30,14 +30,14 @@ class ResourceRequestBuilder
         $subjectClass = constant($requestController . '::' . 'RESOURCE_SUBJECT_CLASS');
         $subjectName = StringUtility::getShortClassName($subjectClass);
         $subjectClassParts = explode('\\', $requestController);
-        $bundleName = mb_substr($subjectClassParts[3], 0, -6);
+//        $bundleName = mb_substr($subjectClassParts[3], 0, -6);
 
         if (!class_exists($subjectClass)) {
             throw new Exception('Failed to initialize subject configuration');
         }
 
         return new ResourceRequest(
-            $action, $subjectName, $subjectClass, $bundleName, $isAdmin, $this->getResponseHandler($request, $isAdmin)
+            $action, $subjectName, $subjectClass, $isAdmin, $this->getResponseHandler($request, $isAdmin)
         );
     }
 

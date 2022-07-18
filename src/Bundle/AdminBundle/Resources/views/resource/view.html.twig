@@ -1,0 +1,16 @@
+{% extends '@Admin/layout.html.twig' %}
+
+{% block page_content %}
+    <div class="box">
+        <div class="box-body">
+            <table class="table table-stripped">
+            {% for item in objectData %}
+                <tr>
+                    <td>{{ item.name }}:</td>
+                    <td>{{ item.value | raw }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

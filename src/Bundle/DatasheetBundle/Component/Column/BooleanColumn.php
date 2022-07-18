@@ -16,6 +16,7 @@ class BooleanColumn extends DatasheetColumn implements DatasheetColumnInterface
     public function getView(DataItem $dataItem): ?string
     {
         $value = $dataItem->getValue($this->getName());
+
         if (is_null($value)) {
             return 'null';
         }

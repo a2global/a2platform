@@ -32,7 +32,6 @@ class DatasheetTwigExtension extends AbstractExtension
             new TwigFunction('datasheet', [$this, 'getDatasheet'], ['is_safe' => ['html']]),
             new TwigFunction('datasheet_cell', [$this, 'getDatasheetCell'], ['is_safe' => ['html']]),
             new TwigFunction('available_datasheet_filters', [$this, 'getAvailableDatasheetFilters']),
-//            new TwigFunction('available_datasheet_column_filters', [$this, 'getDatasheetColumnFilters']),
             new TwigFunction('view_datasheet_filter', [$this, 'viewDatasheetFilter']),
         ];
     }
@@ -78,12 +77,5 @@ class DatasheetTwigExtension extends AbstractExtension
                 yield $filter;
             }
         }
-    }
-
-    public function viewDatasheetFilter(
-        DatasheetExposed $datasheet,
-        DatasheetColumn $column,
-        DatasheetFilterInterface $filter
-    ) {
     }
 }

@@ -134,7 +134,7 @@ class DatasheetColumn implements DatasheetColumnInterface
 
     public function buildActionUrl(DataItem $dataItem): ?string
     {
-        return sprintf($this->actionUrl, $dataItem->getValue($this->name));
+        return sprintf($this->actionUrl, $dataItem->getValue('id'));
     }
 
     public static function supportsDataType($type): bool

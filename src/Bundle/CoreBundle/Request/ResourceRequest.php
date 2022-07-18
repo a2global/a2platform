@@ -14,7 +14,6 @@ class ResourceRequest
         protected string $action,
         protected string $subjectName,
         protected string $subjectClass,
-        protected string $subjectBundleName,
         protected bool $isAdmin,
         protected ResponseHandlerInterface $responseHandler,
     ) {
@@ -38,11 +37,6 @@ class ResourceRequest
     public function getSubjectClass(): string
     {
         return $this->subjectClass;
-    }
-
-    public function getSubjectBundleName(): string
-    {
-        return $this->subjectBundleName;
     }
 
     public function isAdmin(): bool
