@@ -4,6 +4,7 @@ namespace A2Global\A2Platform\Bundle\AdminBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Builder\ResourceRequestBuilder;
 use A2Global\A2Platform\Bundle\CoreBundle\Request\ResourceRequest;
+use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\TaggableEntityInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Builder\DatasheetBuilder;
@@ -13,7 +14,9 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Datasheet;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Throwable;
 
 abstract class AbstractAdminController extends AbstractController
 {
@@ -32,9 +35,24 @@ abstract class AbstractAdminController extends AbstractController
     }
 
     #[Route('view/{id}', name: 'view')]
-    public function viewAction($id)
+    public function viewAction(Request $request, $id)
     {
-        dd($id);
+        $this->denyDirectAccess();
+        $resourceRequest = $this->get(ResourceRequestBuilder::class)
+            ->build($request, ResourceRequest::ACTION_VIEW, true);
+
+        $object = $this->getDoctrine()
+            ->getRepository($resourceRequest->getSubjectClass())
+            ->find($id);
+
+        if (!$object) {
+            throw new NotFoundHttpException();
+        }
+
+        return $resourceRequest->getResponseHandler()->createResponse($resourceRequest, [
+            'object' => $object,
+            'objectName' => StringUtility::toSnakeCase($resourceRequest->getSubjectName()),
+        ]);
     }
 
     protected function denyDirectAccess()
@@ -66,6 +84,36 @@ abstract class AbstractAdminController extends AbstractController
         }
 
         return $datasheet;
+    }
+
+    protected function buildObjectData($object)
+    {
+        $fields = QueryBuilderUtility::getEntityFields(get_class($object));
+        $data = [];
+
+        foreach ($fields as $field) {
+            $getter = 'get' . $field['name'];
+            $data[$field['name']] = [
+                'name' => StringUtility::normalize($field['name']),
+                'value' => '',
+            ];
+
+            if (!method_exists($object, $getter)) {
+                continue;
+            }
+
+            try {
+                $value = $object->$getter();
+            } catch (Throwable $exception) {
+                continue;
+            }
+
+            if (is_scalar($value)) {
+                $data[$field['name']]['value'] = (string)$value;
+            }
+        }
+
+        return $data;
     }
 
     public static function getSubscribedServices(): array

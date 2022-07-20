@@ -29,7 +29,7 @@ class AdminController extends AbstractController
         $booksDatasheet = new Datasheet($books);
 
         return $this->render('@Admin/homepage.html.twig', [
-            'booksDatasheet' => $booksDatasheet,
+//            'booksDatasheet' => $booksDatasheet,
         ]);
     }
 
