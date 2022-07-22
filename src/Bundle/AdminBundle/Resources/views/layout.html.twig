@@ -1,5 +1,7 @@
 {% extends '@AdminLTE/layout/default-layout.html.twig' %}
 
+{% set appTitle = parameter('app.title', 'A2Platform') %}
+
 {% block stylesheets %}
     {{ parent() }}
     {# <link rel="stylesheet" type="text/css" href="{{ asset('bundles/a2crm/css/datasheet.css') }}"> #}
@@ -55,18 +57,18 @@
 {# <script src="{{ asset('bundles/a2crm/js/datasheet.js') }}"></script> #}
 {# {% endblock %} #}
 
+
 {% block title %}
-    Admin | Plaknton
+    {{ appTitle }}
 {% endblock %}
 
 {% block logo_mini %}
-    <b>P</b>
+    <b>{{ appTitle|slice(0,1) }}</b>
 {% endblock %}
 
 {% block logo_large %}
-    <b>Plankton</b>.social
+    <b>{{ appTitle }}</b>
 {% endblock %}
-
 
 {% block page_title %}
 {% endblock %}
@@ -87,7 +89,7 @@
 {#        </div>#}
         <!-- Default to the left -->
 {#        <strong><a href="#">A2Platform</a></strong> Your digital platform#}
-        <strong><a href="#">Plankton</a></strong>.social
+        {{ appTitle }}
     </footer>
 {% endblock %}
 
