@@ -8,7 +8,7 @@
 
 admin_lte:
     options:
-        skin: skin-red
+        skin: skin-blue
         fixed_layout: true
         boxed_layout: false
         collapsed_sidebar: false
