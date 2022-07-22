@@ -5,6 +5,7 @@ namespace A2Global\A2Platform\Bundle\CoreBundle\Utility;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\BooleanType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\DateTimeType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\DateType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\DecimalType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\FloatType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\IntegerType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\ObjectType;
