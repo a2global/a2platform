@@ -3,6 +3,7 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column;
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\DecimalType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\FloatType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\IntegerType;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
@@ -27,6 +28,7 @@ class NumberColumn extends DatasheetColumn implements DatasheetColumnInterface
         return in_array($type, [
             IntegerType::class,
             FloatType::class,
+            DecimalType::class,
         ]);
     }
 }
