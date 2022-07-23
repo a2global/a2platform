@@ -105,8 +105,13 @@ class QueryBuilderUtility
         $reflectionClass = new ReflectionClass($aliasParentClassName);
         $property = $reflectionClass->getProperty($joinPath[1]);
         $annotation = $annotationReader->getPropertyAnnotation($property, ManyToOne::class);
+        $targetEntity = $annotation->targetEntity;
 
-        return $annotation->targetEntity;
+        if (strpos($targetEntity, '\\') === false) {
+            $targetEntity = StringUtility::getNameSpace($aliasParentClassName) . '\\' . $targetEntity;
+        }
+
+        return $targetEntity;
     }
 
     public static function getFieldPathByName(QueryBuilder $queryBuilder, $fieldName)

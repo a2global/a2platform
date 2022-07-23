@@ -170,6 +170,19 @@ class StringUtility
         return reset($tmp);
     }
 
+    public static function getNameSpace($fullyQualifiedClassNameOrObject)
+    {
+        if (is_object($fullyQualifiedClassNameOrObject)) {
+            $fullyQualifiedClassNameOrObject = get_class($fullyQualifiedClassNameOrObject);
+        }
+
+        return substr(
+            $fullyQualifiedClassNameOrObject,
+            0,
+            strrpos($fullyQualifiedClassNameOrObject, '\\')
+        );
+    }
+
     static public function getFormTypeByClass($entityClass): string{
         $formTypeClass = preg_replace('/\\\\Entity\\\\/', '\\Form\\', $entityClass) . 'Type';
 
