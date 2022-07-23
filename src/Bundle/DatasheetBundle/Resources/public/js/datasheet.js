@@ -54,13 +54,48 @@ $(function () {
         var paginationPageControl = $(this).find('[name="ds' + datasheetId + '[filter][pagination][page]"]');
         var paginationLimitControl = $(this).find('[name="ds' + datasheetId + '[filter][pagination][limit]"]');
         var itemsTotal = paginationContainer.attr('data-datasheet-items-total');
-        var page = paginationPageControl.val();
+        var page = parseInt(paginationPageControl.val());
         var limit = paginationLimitControl.val();
         var pagesTotal = Math.ceil(itemsTotal / limit);
+        var maxSideLength = 4;
+        var pages = [];
+
+        for (i = page - maxSideLength; i < page; i++) { // left side
+            if (i > 0) {
+                pages.push(i);
+            }
+        }
+
+        for (i = page; i <= (page + maxSideLength); i++) { // right side
+            if (i <= pagesTotal) {
+                pages.push(i);
+            }
+        }
+
+        if (pages.length < maxSideLength * 2 + 1) {
+            var notEnoughLength = (maxSideLength * 2 + 1) - pages.length;
+
+            if (pages[0] === 1) { // not enough on right side
+                var last = pages[pages.length - 1];
+                for (i = last + 1; i <= (last + notEnoughLength); i++) {
+                    if (i <= pagesTotal) {
+                        pages.push(i);
+                    }
+                }
+            } else {
+                var first = pages[0];
+                for (i = first - 1; i >= (first - notEnoughLength); i--) {
+                    if (i > 0) {
+                        pages.unshift(i);
+                    }
+                }
+            }
+        }
+
         paginationContainer.append(getPaginationElement('First', 1));
 
-        for (var i = 1; i <= pagesTotal; i++) {
-            paginationContainer.append(getPaginationElement(i, i, i == page));
+        for (var i = 0; i < pages.length; i++) {
+            paginationContainer.append(getPaginationElement(pages[i], pages[i], pages[i] == page));
         }
         paginationContainer.append(getPaginationElement('Last', pagesTotal));
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
+namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\DataReader;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnDataBuildEvent;
+use A2Global\A2Platform\Bundle\DataBundle\Event\DataReader\OnQueryBuilderFieldsBuildEvent;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -12,17 +12,13 @@ class ExposeQueryBuilderSelectSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            OnDataBuildEvent::class => ['exposeQueryBuilderSelect', 600],
+            OnQueryBuilderFieldsBuildEvent::class => ['exposeSelectPart', 300],
         ];
     }
 
-    public function exposeQueryBuilderSelect(OnDataBuildEvent $event)
+    public function exposeSelectPart(OnQueryBuilderFieldsBuildEvent $event)
     {
-        $queryBuilder = $event->getDatasheet()->getConfig()['dataSource'];
-
-        if (!$queryBuilder instanceof QueryBuilder) {
-            return;
-        }
+        $queryBuilder = $event->getQueryBuilderDataReader()->getSource();
         $selects = $queryBuilder->getDQLPart('select');
 
         if (count($selects) !== 1) {

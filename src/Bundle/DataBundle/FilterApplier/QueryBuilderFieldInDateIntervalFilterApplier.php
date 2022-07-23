@@ -29,7 +29,7 @@ class QueryBuilderFieldInDateIntervalFilterApplier implements FilterApplierInter
         /** @var FieldInDateIntervalFilter $filter */
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $dataReader->getSource();
-        $fieldPath = sprintf('%s.%s', QueryBuilderUtility::getPrimaryAlias($queryBuilder), $filter->getFieldName());
+        $fieldPath = QueryBuilderUtility::getFieldPathByName($queryBuilder, $filter->getFieldName());
         $parameters = [
             'from' => sprintf('%sInDateIntervalFrom', $filter->getFieldName()),
             'to' => sprintf('%sInDateIntervalTo', $filter->getFieldName()),

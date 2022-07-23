@@ -26,7 +26,7 @@ class QueryBuilderFieldBooleanFilterApplier implements FilterApplierInterface
         /** @var FieldBooleanFilter $filter */
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $dataReader->getSource();
-        $fieldPath = sprintf('%s.%s', QueryBuilderUtility::getPrimaryAlias($queryBuilder), $filter->getFieldName());
+        $fieldPath = QueryBuilderUtility::getFieldPathByName($queryBuilder, $filter->getFieldName());
 
         /**
          * True it 1

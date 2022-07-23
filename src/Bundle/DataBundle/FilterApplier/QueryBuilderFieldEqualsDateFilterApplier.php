@@ -27,7 +27,7 @@ class QueryBuilderFieldEqualsDateFilterApplier implements FilterApplierInterface
         /** @var FieldEqualsDateFilter $filter */
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $dataReader->getSource();
-        $fieldPath = sprintf('%s.%s', QueryBuilderUtility::getPrimaryAlias($queryBuilder), $filter->getFieldName());
+        $fieldPath = QueryBuilderUtility::getFieldPathByName($queryBuilder, $filter->getFieldName());
         $queryBuilder
             ->andWhere(sprintf('DATE(%s) = :%sEqualsDate', $fieldPath, $filter->getFieldName()))
             ->setParameter(sprintf('%sEqualsDate', $filter->getFieldName()), $filter->getDate()->format('y-m-d'));

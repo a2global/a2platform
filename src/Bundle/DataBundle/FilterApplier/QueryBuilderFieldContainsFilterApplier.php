@@ -25,7 +25,7 @@ class QueryBuilderFieldContainsFilterApplier implements FilterApplierInterface
         /** @var FieldContainsFilter $filter */
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $dataReader->getSource();
-        $fieldPath = sprintf('%s.%s', QueryBuilderUtility::getPrimaryAlias($queryBuilder), $filter->getFieldName());
+        $fieldPath = QueryBuilderUtility::getFieldPathByName($queryBuilder, $filter->getFieldName());
         $queryBuilder
             ->andWhere(sprintf('%s LIKE :%sContains', $fieldPath, $filter->getFieldName()))
             ->setParameter(sprintf('%sContains', $filter->getFieldName()), sprintf('%%%s%%', $filter->getQuery()));

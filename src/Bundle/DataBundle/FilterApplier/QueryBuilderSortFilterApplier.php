@@ -30,7 +30,7 @@ class QueryBuilderSortFilterApplier implements FilterApplierInterface
         $queryBuilder
             ->resetDQLPart('orderBy')
             ->addOrderBy(
-                sprintf('%s.%s', QueryBuilderUtility::getPrimaryAlias($queryBuilder), $filter->getBy()),
+                QueryBuilderUtility::getFieldPathByName($queryBuilder, $filter->getBy()),
                 $filter->getType() === SortFilter::DESCENDING ? 'DESC' : 'ASC'
             );
     }

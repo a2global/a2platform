@@ -20,9 +20,9 @@ class ShowAddUpdateHideColumnSubscriber implements EventSubscriberInterface
         $columns = $event->getColumns();
 
         if ($event->getDatasheet()->getConfig()['columns']['show'] ?? false) {
-            foreach ($columns as $fieldName => $column) {
-                if (!in_array($fieldName, $event->getDatasheet()->getConfig()['columns']['show'])) {
-                    unset($columns[$fieldName]);
+            foreach ($columns as $name => $column) {
+                if (!in_array($name, $event->getDatasheet()->getConfig()['columns']['show'])) {
+                    unset($columns[$name]);
                 }
             }
         }

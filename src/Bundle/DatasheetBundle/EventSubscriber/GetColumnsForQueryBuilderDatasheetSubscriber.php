@@ -3,6 +3,7 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnColumnsBuildEvent;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Provider\ColumnProvider;
@@ -13,6 +14,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class GetColumnsForQueryBuilderDatasheetSubscriber implements EventSubscriberInterface
 {
+    protected $entityFieldsCache = [];
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -25,57 +28,58 @@ class GetColumnsForQueryBuilderDatasheetSubscriber implements EventSubscriberInt
     ) {
     }
 
+    /**
+     * Target is to get all fields from QueryBuilder
+     * and return typified DatasheetColumns
+     *
+     * @param OnColumnsBuildEvent $event
+     * @throws DatasheetBuildException
+     */
     public function getColumnsForQueryBuilderDatasheet(OnColumnsBuildEvent $event)
     {
+        $datasheetColumns = [];
         $queryBuilder = $event->getDatasheet()->getConfig()['dataSource'];
 
         if (!$queryBuilder instanceof QueryBuilder) {
             return;
         }
-        $columns = [];
-        $entityFields = QueryBuilderUtility::getEntityFields(
-            QueryBuilderUtility::getPrimaryClass($event->getDatasheet()->getConfig()['dataSource'])
-        );
         $selects = $queryBuilder->getDQLPart('select');
-        $primaryAlias = QueryBuilderUtility::getPrimaryAlias($queryBuilder);
 
-        /** @var Select $select */
         foreach ($selects as $select) {
-            $parts = $select->getParts();
-            $part = reset($parts);
-            $tmp = explode('.', $part);
-
-            if (count($tmp) !== 2 || $tmp[0] !== $primaryAlias) {
-                throw new DatasheetBuildException('Unsupported QueryBuilder select: ' . $part);
-            }
-            $fieldName = $tmp[1];
-            $field = $this->getFieldByName($fieldName, $entityFields);
-            $columns[$fieldName] = $this->findSupportedColumn($field);
+            $column = $this->getColumnForQBSelect($queryBuilder, $select);
+            $datasheetColumns[$column->getName()] = $column;
         }
-        $event->setColumns($columns);
+        $event->setColumns($datasheetColumns);
     }
 
-    protected function getFieldByName($fieldName, $fields)
+    protected function getColumnForQBSelect(QueryBuilder $queryBuilder, $select): DatasheetColumnInterface
     {
-        foreach ($fields as $field) {
-            if($field['name'] === $fieldName){
-                return $field;
-            }
-        }
+        $parts = $select->getParts();
+        $fieldPath = reset($parts);
+        $fieldPathParts = explode('.', $fieldPath);
+        $entityAlias = $fieldPathParts[0];
+        $fieldName = $fieldPathParts[1];
+        $className = QueryBuilderUtility::getClassNameByAlias($queryBuilder, $entityAlias);
+        $fieldInfo = QueryBuilderUtility::getEntityFields($className, $fieldName);
+//        $columnName = $fieldName;
+        //$entityAlias === QueryBuilderUtility::getPrimaryAlias($queryBuilder) ? $fieldName : $fieldPath;
+        $column = $this->findSupportedColumn($fieldName, $fieldInfo);
+
+        return $column;
     }
 
-    protected function findSupportedColumn($field)
+    protected function findSupportedColumn($columnName, $fieldInfo)
     {
-        if (!$field['typeResolved']) {
-            throw new Exception('Unresolved data type: ' . $field['type']);
+        if (!$fieldInfo['typeResolved']) {
+            throw new Exception('Unresolved data type: ' . $fieldInfo['type']);
         }
 
         foreach ($this->columnProvider->get() as $column) {
-            if ($column::supportsDataType($field['typeResolved'])) {
-                return new $column($field['name']);
+            if ($column::supportsDataType($fieldInfo['typeResolved'])) {
+                return new $column($columnName);
             }
         }
 
-        throw new Exception('Unsupported data type: ' . $field['typeResolved']);
+        throw new Exception('Unsupported data type: ' . $fieldInfo['typeResolved']);
     }
 }

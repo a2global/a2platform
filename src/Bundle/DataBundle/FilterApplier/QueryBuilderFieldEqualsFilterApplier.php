@@ -25,7 +25,7 @@ class QueryBuilderFieldEqualsFilterApplier implements FilterApplierInterface
         /** @var FieldEqualsFilter $filter */
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $dataReader->getSource();
-        $fieldPath = sprintf('%s.%s', QueryBuilderUtility::getPrimaryAlias($queryBuilder), $filter->getFieldName());
+        $fieldPath = QueryBuilderUtility::getFieldPathByName($queryBuilder, $filter->getFieldName());
         $queryBuilder
             ->andWhere(sprintf('%s = :%sEquals', $fieldPath, $filter->getFieldName()))
             ->setParameter(sprintf('%sEquals', $filter->getFieldName()), $filter->getQuery());
