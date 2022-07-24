@@ -4,8 +4,6 @@ namespace A2Global\A2Platform\Bundle\DatasheetBundle\Component;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
-use A2Global\A2Platform\Bundle\DataBundle\DataType\DataTypeInterface;
-use A2Global\A2Platform\Bundle\DataBundle\DataType\IntegerType;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
+namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber\OnColumnBuild;
 
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnColumnsBuildEvent;

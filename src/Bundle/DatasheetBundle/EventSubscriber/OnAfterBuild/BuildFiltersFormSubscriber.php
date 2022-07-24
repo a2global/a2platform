@@ -1,10 +1,8 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
+namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber\OnAfterBuild;
 
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnAfterBuildEvent;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnDataBuildEvent;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Filter\DatasheetFilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Registry\DatasheetFilterRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
+namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber\OnDataBuild;
 
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnDataBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

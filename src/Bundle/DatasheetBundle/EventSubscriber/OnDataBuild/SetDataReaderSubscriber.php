@@ -1,13 +1,10 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
+namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber\OnDataBuild;
 
 use A2Global\A2Platform\Bundle\DataBundle\Reader\DataReaderInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\DataReaderRegistry;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnDataBuildEvent;
-use KevinPapst\AdminLTEBundle\Event\KnpMenuEvent;
-use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SetDataReaderSubscriber implements EventSubscriberInterface

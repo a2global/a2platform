@@ -3,7 +3,6 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\Filter;
 
 use A2Global\A2Platform\Bundle\DataBundle\Filter\FieldBooleanFilter;
-use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\BooleanColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;

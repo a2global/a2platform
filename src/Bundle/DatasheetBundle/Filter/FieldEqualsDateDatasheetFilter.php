@@ -2,19 +2,9 @@
 
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\Filter;
 
-use A2Global\A2Platform\Bundle\DataBundle\Filter\ContainsFilter;
-use A2Global\A2Platform\Bundle\DataBundle\Filter\FieldContainsFilter;
-use A2Global\A2Platform\Bundle\DataBundle\Filter\FieldDateFilter;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\FieldEqualsDateFilter;
-use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
-use A2Global\A2Platform\Bundle\DataBundle\Filter\PaginationFilter;
-use A2Global\A2Platform\Bundle\DataBundle\Filter\SearchFilter;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DateTimeColumn;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\NumberColumn;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\StringColumn;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\TextColumn;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetExposed;
 use DateTime;
 use Iterator;

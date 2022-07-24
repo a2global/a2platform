@@ -3,7 +3,6 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column;
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
-use A2Global\A2Platform\Bundle\DataBundle\DataType\StringType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\TextType;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetColumn;
 

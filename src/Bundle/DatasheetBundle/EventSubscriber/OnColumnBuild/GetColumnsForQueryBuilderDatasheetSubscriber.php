@@ -1,13 +1,12 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber;
+namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber\OnColumnBuild;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnColumnsBuildEvent;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Provider\ColumnProvider;
-use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\QueryBuilder;
 use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -61,11 +60,8 @@ class GetColumnsForQueryBuilderDatasheetSubscriber implements EventSubscriberInt
         $fieldName = $fieldPathParts[1];
         $className = QueryBuilderUtility::getClassNameByAlias($queryBuilder, $entityAlias);
         $fieldInfo = QueryBuilderUtility::getEntityFields($className, $fieldName);
-//        $columnName = $fieldName;
-        //$entityAlias === QueryBuilderUtility::getPrimaryAlias($queryBuilder) ? $fieldName : $fieldPath;
-        $column = $this->findSupportedColumn($fieldName, $fieldInfo);
 
-        return $column;
+        return $this->findSupportedColumn($fieldName, $fieldInfo);
     }
 
     protected function findSupportedColumn($columnName, $fieldInfo)
