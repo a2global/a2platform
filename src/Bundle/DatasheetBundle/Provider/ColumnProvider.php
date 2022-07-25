@@ -9,7 +9,6 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DateTimeColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\NumberColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\ObjectColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\StringColumn;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\TagsColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\TextColumn;
 
 class ColumnProvider
@@ -21,7 +20,6 @@ class ColumnProvider
         NumberColumn::class,
         StringColumn::class,
         TextColumn::class,
-        TagsColumn::class,
         ObjectColumn::class,
     ];
 

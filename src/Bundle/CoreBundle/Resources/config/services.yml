@@ -14,10 +14,18 @@ services:
             - '../src/Utility/'
             - '../src/Request/ResourceRequestConfiguration.php'
 
-#    A2Global\CRM\ShopBundle\Command\:
-#        resource: '../../Command/'
-#        tags: ['console.command']
-#
+    _instanceof:
+        A2Global\A2Platform\Bundle\CoreBundle\Handler\Response\ResponseHandlerInterface:
+            tags: [ 'a2platform.core.handler.response' ]
+
+    A2Global\A2Platform\Bundle\CoreBundle\Builder\ResourceRequestBuilder:
+        bind:
+            $formTypes: !tagged form.type
+
+    A2Global\A2Platform\Bundle\CoreBundle\Registry\ResponseHandlerRegistry:
+        bind:
+            $services: !tagged a2platform.core.handler.response
+
 #    A2Global\CRM\ShopBundle\Provider\PaymentGatewayProvider:
 #        bind:
 #            $paymentGateways: !tagged app.gateway.payment

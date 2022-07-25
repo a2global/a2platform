@@ -9,7 +9,6 @@ use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\TaggableEntityInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Builder\DatasheetBuilder;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\NumberColumn;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\TagsColumn;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Datasheet;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +39,28 @@ abstract class AbstractAdminController extends AbstractController
         $this->denyDirectAccess();
         $resourceRequest = $this->get(ResourceRequestBuilder::class)
             ->build($request, ResourceRequest::ACTION_VIEW, true);
+
+        $object = $this->getDoctrine()
+            ->getRepository($resourceRequest->getSubjectClass())
+            ->find($id);
+
+        if (!$object) {
+            throw new NotFoundHttpException();
+        }
+
+        return $resourceRequest->getResponseHandler()->createResponse($resourceRequest, [
+            'object' => $object,
+            'editUrl' => $this->generateUrl($resourceRequest->getRouteNameEdit(), ['id' => $object->getId()]),
+            'objectName' => StringUtility::toSnakeCase($resourceRequest->getSubjectName()),
+        ]);
+    }
+
+    #[Route('edit/{id}', name: 'edit')]
+    public function editAction(Request $request, $id)
+    {
+        $this->denyDirectAccess();
+        $resourceRequest = $this->get(ResourceRequestBuilder::class)
+            ->build($request, ResourceRequest::ACTION_EDIT, true);
 
         $object = $this->getDoctrine()
             ->getRepository($resourceRequest->getSubjectClass())

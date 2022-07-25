@@ -1,0 +1,20 @@
+{% extends '@Admin/layout.html.twig' %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="box">
+                <div class="box-header">
+                    <a href="{{ objectViewUrl }}" class="btn btn-primary">&larr; Back</a>
+                </div>
+                <div class="box-body">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <hr>
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

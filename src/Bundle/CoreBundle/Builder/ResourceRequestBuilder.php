@@ -2,23 +2,27 @@
 
 namespace A2Global\A2Platform\Bundle\CoreBundle\Builder;
 
+use A2Global\A2Platform\Bundle\CoreBundle\Handler\Response\ResponseHandlerInterface;
+use A2Global\A2Platform\Bundle\CoreBundle\Registry\ResponseHandlerRegistry;
 use A2Global\A2Platform\Bundle\CoreBundle\Request\ResourceRequest;
-use A2Global\A2Platform\Bundle\CoreBundle\Response\Handler\AdminHtmlResponseHandler;
-use A2Global\A2Platform\Bundle\CoreBundle\Response\Handler\FrontendHtmlResponseHandler;
-use A2Global\A2Platform\Bundle\CoreBundle\Response\Handler\JsonResponseHandler;
-use A2Global\A2Platform\Bundle\CoreBundle\Response\Handler\ResponseHandlerInterface;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use ReflectionClass;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class ResourceRequestBuilder
 {
     public function __construct(
-        protected FrontendHtmlResponseHandler $frontendHtmlResponseHandler,
-        protected AdminHtmlResponseHandler $adminHtmlResponseHandler,
-        protected JsonResponseHandler $jsonResponseHandler,
+        protected ResponseHandlerRegistry $responseHandlerRegistry,
         protected EntityManagerInterface $entityManager,
+        protected $formTypes,
+        protected RouterInterface $router,
     ) {
     }
 
@@ -27,32 +31,65 @@ class ResourceRequestBuilder
         $requestControllerWithMethod = $request->attributes->get('_controller');
         $tmp = explode('::', $requestControllerWithMethod);
         $requestController = $tmp[0];
-        $subjectClass = constant($requestController . '::' . 'RESOURCE_SUBJECT_CLASS');
-        $subjectName = StringUtility::getShortClassName($subjectClass);
-        $subjectClassParts = explode('\\', $requestController);
-//        $bundleName = mb_substr($subjectClassParts[3], 0, -6);
+        $objectClass = constant($requestController . '::' . 'RESOURCE_SUBJECT_CLASS');
+        $objectName = StringUtility::getShortClassName($objectClass);
 
-        if (!class_exists($subjectClass)) {
+        if (!class_exists($objectClass)) {
             throw new Exception('Failed to initialize subject configuration');
         }
 
+        $annotationReader = new AnnotationReader();
+        $resourceControllerReflectionClass = new ReflectionClass($requestController);
+        /** @var Route $annotation */
+        $annotation = $annotationReader
+            ->getClassAnnotation($resourceControllerReflectionClass, Route::class);
+        $routeNamePrefix = $annotation->getName();
+
         return new ResourceRequest(
-            $action, $subjectName, $subjectClass, $isAdmin, $this->getResponseHandler($request, $isAdmin)
+            $request,
+            $action,
+            $objectName,
+            $objectClass,
+            $isAdmin,
+            $this->findResponseHandler($request, $isAdmin),
+            $this->findObjectForm($objectClass),
+            $routeNamePrefix . ResourceRequest::ACTION_INDEX,
+            $routeNamePrefix . ResourceRequest::ACTION_VIEW,
+            $routeNamePrefix . ResourceRequest::ACTION_EDIT,
+            $routeNamePrefix . ResourceRequest::ACTION_DELETE,
         );
     }
 
-    protected function getResponseHandler(Request $request, bool $isAdmin = false): ResponseHandlerInterface
+    // todo: optimize
+    protected function findObjectForm($objectClass): FormTypeInterface
     {
-        $acceptHeader = $request->headers->get('accept');
+        /** @var FormTypeInterface $formType */
+        foreach ($this->formTypes as $formType) {
+            $optionsResolver = new OptionsResolver();
+            $formType->configureOptions($optionsResolver);
 
-        if (stristr($acceptHeader, 'application/json')) {
-            return $this->jsonResponseHandler;
+            if (!$optionsResolver->hasDefault('data_class')) {
+                continue;
+            }
+            $options = $optionsResolver->resolve();
+
+            if ($options['data_class'] !== $objectClass) {
+                continue;
+            }
+
+            return $formType;
+        }
+    }
+
+    protected function findResponseHandler(Request $request, bool $isAdmin = false): ResponseHandlerInterface
+    {
+        /** @var ResponseHandlerInterface $responseHandler */
+        foreach ($this->responseHandlerRegistry->get() as $responseHandler) {
+            if ($responseHandler->supports($request, $isAdmin)) {
+                return $responseHandler;
+            }
         }
 
-        if ($isAdmin) {
-            return $this->adminHtmlResponseHandler;
-        }
-
-        return $this->frontendHtmlResponseHandler;
+        throw new Exception('No suitable response handler found for the request');
     }
 }
