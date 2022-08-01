@@ -10,7 +10,7 @@ class TextColumn extends DatasheetColumn implements DatasheetColumnInterface
 {
     public function getView(DataItem $dataItem): ?string
     {
-        $value = (string)$dataItem->getValue($this->getName());
+        $value = htmlspecialchars((string)$dataItem->getValue($this->getName()));
 
         return $value;
     }

@@ -19,7 +19,7 @@ class StringColumn extends DatasheetColumn implements DatasheetColumnInterface
         $value = $dataItem->getValue($this->getName());
 
         if (is_scalar($value)) {
-            return (string)$value;
+            return htmlspecialchars((string)$value);
         }
 
         if (is_null($value)) {
