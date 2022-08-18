@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    A2Global\A2Platform\Bundle\ApiBundle\:
+        resource: '../../'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Tests/'
+
+    A2Global\A2Platform\Bundle\ApiBundle\Routing\ApiRouteLoader:
+        public: true

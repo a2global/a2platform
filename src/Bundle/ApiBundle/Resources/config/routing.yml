@@ -1,0 +1,7 @@
+a2platform_api_controller:
+    resource: '../../Controller/'
+    type: annotation
+
+a2platform_api_routing:
+    resource: A2Global\A2Platform\Bundle\ApiBundle\Routing\ApiRouteLoader
+    type: service
