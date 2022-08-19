@@ -3,6 +3,7 @@
 namespace A2Global\A2Platform\Bundle\CoreBundle\Utility;
 
 use Symfony\Bundle\MakerBundle\Str;
+use Symfony\Component\Inflector\Inflector;
 
 class StringUtility
 {
@@ -47,8 +48,13 @@ class StringUtility
 
     public static function pluralize($string): string
     {
-        return $string;
-        return Inflector::pluralize($string);
+        $result = Inflector::pluralize($string);
+
+        if (is_array($result)) {
+            return reset($result);
+        }
+
+        return $result;
     }
 
     public static function singularize($string): string
@@ -183,7 +189,8 @@ class StringUtility
         );
     }
 
-    static public function getFormTypeByClass($entityClass): string{
+    static public function getFormTypeByClass($entityClass): string
+    {
         $formTypeClass = preg_replace('/\\\\Entity\\\\/', '\\Form\\', $entityClass) . 'Type';
 
         return $formTypeClass;

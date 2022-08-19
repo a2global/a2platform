@@ -10,5 +10,10 @@ services:
             - '../src/Entity/'
             - '../src/Tests/'
 
-    A2Global\A2Platform\Bundle\ApiBundle\Routing\ApiRouteLoader:
-        public: true
+    _instanceof:
+        A2Global\A2Platform\Bundle\ApiBundle\Provider\Route\ApiRouteProviderInterface:
+            tags: [ 'a2platform.api.provider.route' ]
+
+    A2Global\A2Platform\Bundle\ApiBundle\Registry\ApiRouteProviderRegistry:
+        arguments:
+            - !tagged_iterator a2platform.api.provider.route
