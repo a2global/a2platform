@@ -9,7 +9,7 @@
     <link href="/bundles/core/libs/bootstrap4/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            padding-top: 80px;
+            padding-top: 45px;
         }
     </style>
 </head>
@@ -25,15 +25,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('authentication_login') }}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('authentication_registration') }}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('admin_default') }}">Admin</a>
-                </li>
+                {% block menu %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('authentication_login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('authentication_registration') }}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('admin_default') }}">Admin</a>
+                    </li>
+                {% endblock %}
             </ul>
             {# <form class="form-inline mt-2 mt-md-0"> #}
             {# <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> #}
@@ -43,13 +45,15 @@
     </nav>
 </header>
 
-<!-- Begin page content -->
-<main role="main" class="flex-shrink-0">
-    <div class="container">
-        {% block body %}
-        {% endblock %}
-    </div>
-</main>
+{% block body_full_width %}
+    <!-- Begin page content -->
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </main>
+{% endblock %}
 
 <footer class="footer mt-auto py-3 bg-light">
     <div class="container">
