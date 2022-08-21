@@ -2,26 +2,25 @@
 
 namespace A2Global\A2Platform\Bundle\ApiBundle\Routing;
 
-use A2Global\A2Platform\Bundle\ApiBundle\Provider\Route\ApiRouteProviderInterface;
-use A2Global\A2Platform\Bundle\ApiBundle\Registry\ApiRouteProviderRegistry;
+use A2Global\A2Platform\Bundle\ApiBundle\Controller\RestApiController;
+use A2Global\A2Platform\Bundle\ApiBundle\Handler\ApiRequestHandlerInterface;
+use A2Global\A2Platform\Bundle\ApiBundle\Registry\ApiRequestHandlerRegistry;
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
-use Symfony\Component\Inflector\Inflector;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 class ApiRouteLoader implements RouteLoaderInterface
 {
     public function __construct(
-        protected EntityHelper $entityHelper,
-        protected ApiRouteProviderRegistry $apiRouteProviderRegistry,
+        protected EntityHelper              $entityHelper,
+        protected ApiRequestHandlerRegistry $apiRouteProviderRegistry,
     ) {
     }
 
     public function __invoke(): RouteCollection
     {
-//        $inflector = new Inflector();
         $routes = new RouteCollection();
         $entities = $this->entityHelper->getEntityList();
         $entities = array_filter($entities, function ($entityClassName) {
@@ -32,11 +31,17 @@ class ApiRouteLoader implements RouteLoaderInterface
         foreach ($entities as $entity) {
             $entityName = StringUtility::normalize(StringUtility::getShortClassName($entity));
 
-            /** @var ApiRouteProviderInterface $apiRouteProvider */
+            /** @var ApiRequestHandlerInterface $apiRouteProvider */
             foreach ($this->apiRouteProviderRegistry->get() as $apiRouteProvider) {
+                $route = $apiRouteProvider->getRoute($entityName);
+                $routeName = $apiRouteProvider->getRouteName($entityName);
+                $route->addDefaults([
+                    '_controller' => [RestApiController::class, 'handleAction'],
+//                    '_controller' => RestApiController::class . '::' . 'handleAction',
+                ]);
                 $routes->add(
-                    $apiRouteProvider->getRouteName($entityName),
-                    $apiRouteProvider->getRoute($entityName),
+                    $routeName,
+                    $route,
                 );
             }
         }

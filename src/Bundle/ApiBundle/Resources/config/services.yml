@@ -11,9 +11,9 @@ services:
             - '../src/Tests/'
 
     _instanceof:
-        A2Global\A2Platform\Bundle\ApiBundle\Provider\Route\ApiRouteProviderInterface:
-            tags: [ 'a2platform.api.provider.route' ]
+        A2Global\A2Platform\Bundle\ApiBundle\Handler\ApiRequestHandlerInterface:
+            tags: [ 'a2platform.api.handler.request' ]
 
-    A2Global\A2Platform\Bundle\ApiBundle\Registry\ApiRouteProviderRegistry:
+    A2Global\A2Platform\Bundle\ApiBundle\Registry\ApiRequestHandlerRegistry:
         arguments:
-            - !tagged_iterator a2platform.api.provider.route
+            - !tagged_iterator a2platform.api.handler.request
