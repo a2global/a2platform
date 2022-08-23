@@ -14,5 +14,9 @@ class AuthExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
         $this->getConfiguration($configs, $container);
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+        $container->setParameter('a2platform', [$this->getAlias() => $config]);
     }
 }

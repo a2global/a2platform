@@ -13,3 +13,7 @@ services:
     A2Global\A2Platform\Bundle\AdminBundle\EventSubscriber\KnpMenuBuilderSubscriber:
         arguments:
             $adminResourceControllers: !tagged_iterator a2platform.controller.admin.resource
+
+    A2Global\A2Platform\Bundle\AdminBundle\Form\SettingsForm:
+        bind:
+            $configurations: !tagged symfony.configuration
