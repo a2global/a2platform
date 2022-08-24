@@ -28,7 +28,7 @@ class AdminController extends AbstractController
     {
         $form = $this->createForm(SettingsForm::class);
 
-        return $this->render('@Admin/form.html.twig', [
+        return $this->render('@Admin/form_vertical.html.twig', [
             'form' => $form->createView(),
         ]);
     }
