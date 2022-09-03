@@ -1,3 +1,7 @@
-controller:
+a2platform_core_controllers:
     resource: '../../Controller/'
     type: annotation
+
+a2platform_core_routing:
+    resource: A2Global\A2Platform\Bundle\CoreBundle\Routing\CoreRouteLoader
+    type: service

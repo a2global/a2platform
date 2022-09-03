@@ -15,6 +15,20 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 #[Route('/authentication/', name: 'authentication_')]
 class AuthController extends AbstractController
 {
+    #[Route('', name: 'default')]
+    public function defaultAction()
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('authentication_login');
+        }
+
+        if($this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('admin_default');
+        }
+
+        return $this->render('@Core/frontend/login.html.twig');
+    }
+
     #[Route('registration', name: 'registration')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -50,16 +64,16 @@ class AuthController extends AbstractController
     #[Route('login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
+//        if ($this->getUser()) {
+//            return $this->redirectToRoute('target_path');
+//        }
+//
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('@Auth/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('@Core/frontend/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     #[Route('logout', name: 'logout')]

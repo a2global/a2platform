@@ -3,7 +3,12 @@
 {% block page_content %}
     <div class="box">
         <div class="box-body">
-            {{ form(form) }}
+            {{ form_start(form) }}
+            {% for child in form.children %}
+                {{ form_row(child) }}
+            {% endfor %}
+            <input type="submit" class="btn btn-primary">
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}

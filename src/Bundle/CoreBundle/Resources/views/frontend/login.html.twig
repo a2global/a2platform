@@ -1,0 +1,57 @@
+{% extends '@Core/frontend/base.html.twig' %}
+
+{% block page_content %}
+    <form method="post">
+        <div id="authentication-container">
+            {% if app.user %}
+                {{ 'core.authentication.logged_as_user.title'|trans|format(app.user.name)|raw }}
+                <br><br>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin_default') }}" class="authentication-button">
+                        {{ 'core.authentication.logged_as_admin.administration_panel'|trans }}
+                    </a>
+                {% else %}
+                    {{ 'core.authentication.logged_as_user.message'|trans|raw }}
+                    <br>
+                    <br>
+                    <br>
+                    <a href="{{ path('authentication_logout') }}" class="authentication-button">
+                        {{ 'core.authentication.logged_as_user.logout'|trans }}
+                    </a>
+
+                {% endif %}
+            {% else %}
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                {% if core_auth_enabled ?? true %}
+                    <div class="authentication-title">
+                        {{ 'core.authentication.login_form.caption'|trans|raw }}
+                    </div>
+                    <div class="authentication-input">
+                        <div>
+                            <input placeholder="{{ 'core.authentication.login_form.name_placeholder'|trans }}"
+                                   class="authentication-form-name"
+                                   type="text" value="{{ last_username }}" name="name" required autofocus>
+                        </div>
+                        <div>
+                            <input placeholder="{{ 'core.authentication.login_form.password_placeholder'|trans }}"
+                                   type="password" name="password" autocomplete="current-password" required>
+                        </div>
+                    </div>
+                    <input type="submit" class="authentication-button"
+                           value="{{ 'core.authentication.login_form.login'|trans }}">
+                {% endif %}
+{#                {% if core_auth_google_enabled ?? false %}#}
+{#                    <a href="#" class="authentication-button authentication-thirdparty-google">#}
+                        {#                <a href="{{ path('authentication_oauth', {'type' : 'google'}) }}" class="auth-google"> #}
+                        {#                    {{ 'core.authentication.login_with_google'|trans }} #}
+{#                        Login with Google#}
+{#                    </a>#}
+{#                {% endif %}#}
+            {% endif %}
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    </form>
+{% endblock %}

@@ -1,0 +1,13 @@
+core:
+  authentication:
+    logged_as_admin:
+      administration_panel: 'Administration panel'
+    logged_as_user:
+      title: 'Hello, <b>%s</b>!'
+      message: 'You don`t have access to admin panel.<br>Also, no active web-site here.<br><br>So, here is some cocktail for you: &#127865;'
+      logout: 'Logout'
+    login_form:
+      caption: 'Use your email and password<br>to enter administration panel'
+      name_placeholder: 'john'
+      password_placeholder: 'password'
+      login: 'Login'

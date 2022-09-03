@@ -1,74 +1,130 @@
 <!doctype html>
-<html lang="en" class="h-100">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="A2Platform">
     <title>{% block page_title %}A2Platform{% endblock %}</title>
-    <link href="/bundles/core/libs/bootstrap4/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            padding-top: 45px;
+
+        html {
+            height: 100%;
         }
+
+        body {
+            font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+            font-size: 12pt;
+            letter-spacing: 0.02em;
+            color: #222222;
+            -webkit-font-smoothing: antialiased;
+            background: #fefeff url(/bundles/core/images/etc/colorful-background.jpg) no-repeat center;
+            background-size: cover;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: center; /*centers items on the line (the x-axis by default)*/
+            align-items: center; /*centers items on the cross-axis (y by default)*/
+        }
+
+        .page-container {
+            margin-bottom: 100px;
+            overflow: hidden;
+            text-align: center;
+            border-radius: 30px;
+            padding: 0;
+            min-width: 300px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.7);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+        }
+
+        .page-title {
+            height: 100px;
+            line-height: 100px;
+            font-size: 30pt;
+            font-weight: 300;
+            color: #222222;
+
+            /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&0.5+1,0+50,0+50,0.5+99 */
+            background: -moz-linear-gradient(left, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 1%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.5) 99%, rgba(255, 255, 255, 0.5) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 1%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.5) 99%, rgba(255, 255, 255, 0.5) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 1%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.5) 99%, rgba(255, 255, 255, 0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80ffffff', endColorstr='#80ffffff', GradientType=1); /* IE6-9 */
+        }
+
+        .page-content {
+            padding: 40px 70px;
+        }
+
+        .page-title b {
+            font-weight: 600;
+        }
+
+        .authentication-title {
+            margin: 0 0 30px 0;
+            opacity: 0.8;
+            line-height: 140%;
+        }
+
+        .authentication-input {
+            width: 350px;
+            margin: 15px auto 10px auto;
+            border-radius: 9px;
+            overflow: hidden;
+            opacity: 0.95;
+        }
+
+        .authentication-input input {
+            appearance: none;
+            border: 0;
+            margin: 0;
+            padding: 11px 20px;
+            display: block;
+            width: 350px;
+            color: #555555;
+            font-size: 12pt;
+        }
+
+        .authentication-input input::placeholder {
+            color: #888888;
+        }
+
+        .authentication-input div:first-child {
+            border-bottom: 1px #cccccc solid;
+        }
+
+        .authentication-button {
+            margin: 0 auto 0 auto;
+            padding: 11px 20px;
+            display: block;
+            width: 350px;
+            color: #ffffff;
+            font-size: 12pt;
+            border-radius: 9px;
+            opacity: 0.9;
+            text-decoration: none;
+            border: 0;
+            background: #1c1c1f;
+        }
+
     </style>
-    {% block styles %}
-    {% endblock %}
+
 </head>
-<body class="d-flex flex-column h-100">
+<body>
 
-<header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark py-1 shadow">
-        <a class="navbar-brand" href="/"><b>A2</b>Platform</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                {% block menu %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('authentication_login') }}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('authentication_registration') }}">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_default') }}">Admin</a>
-                    </li>
-                {% endblock %}
-            </ul>
-            {# <form class="form-inline mt-2 mt-md-0"> #}
-            {# <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> #}
-            {# <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> #}
-            {# </form> #}
-        </div>
-    </nav>
-</header>
-
-{% block body_full_width %}
-    <!-- Begin page content -->
-    <main role="main" class="flex-shrink-0">
-        <div class="container">
-            {% block body %}
-            {% endblock %}
-        </div>
-    </main>
-{% endblock %}
-
-<footer class="footer mt-auto py-3 bg-light">
-    <div class="container">
-        <span class="text-muted">© A2Global</span>
+<div class="page-container">
+    <div class="page-title">
+        <b>A2</b>Platform
     </div>
-</footer>
-
-
-<script src="/bundles/core/libs/jquery3.6/jquery.min.js"></script>
-<script src="/bundles/core/libs/bootstrap4/js/bootstrap.bundle.min.js"></script>
-
-{% block javascripts %}
-{% endblock %}
+    <div class="page-content">
+        {% block page_content %}
+        {% endblock %}
+    </div>
+</div>
 
 </body>
 </html>

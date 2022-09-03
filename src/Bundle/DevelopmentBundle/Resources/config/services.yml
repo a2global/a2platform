@@ -9,3 +9,8 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Tests/'
+
+    A2Global\A2Platform\Bundle\DevelopmentBundle\EventListener\BehatCoverageEventListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.terminate, method: onKernelResponse }

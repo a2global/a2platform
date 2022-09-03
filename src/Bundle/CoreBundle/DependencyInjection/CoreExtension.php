@@ -20,6 +20,7 @@ class CoreExtension extends Extension implements PrependExtensionInterface
 
         $container->registerForAutoconfiguration(ConfigurationInterface::class)
             ->addTag('symfony.configuration');
+        $container->setParameter('a2platform', []);
     }
 
     public function prepend(ContainerBuilder $container)
