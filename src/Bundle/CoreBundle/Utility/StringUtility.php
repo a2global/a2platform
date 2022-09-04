@@ -112,11 +112,17 @@ class StringUtility
         return Str::asSnakeCase($string);
     }
 
-    static public function getBundleNameFromClass(string $string): ?string
+    static public function getBundleNameFromClass(string $string, $rtrim = null): ?string
     {
-        preg_match('/A2Global\\\CRM\\\(.+)Bundle\\\\/i', $string, $result);
+        $tmp = explode('\\', $string);
+        $bundleName = $tmp[count($tmp) - 3] ?? $string;
 
-        return $result[1] ?? null;
+        if ($rtrim) {
+            $tmp = explode($rtrim, $bundleName);
+            $bundleName = reset($tmp);
+        }
+
+        return $bundleName;
     }
 
     /**
