@@ -42,7 +42,7 @@
                                     {% set filterForms = datasheet.filterForms(column) %}
                                     {% if filterForms|length %}
                                         <select data-datasheet-column-filter-selector="{{ column.name }}"
-                                                class="form-control">
+                                                class="form-control" name="data-datasheet-column-filter-selector-{{ column.name }}">
                                             {% for filterForm in filterForms %}
                                                 <option value="{{ filterForm.name }}"
                                                         {{ filterForm.isApplied ? 'selected' : '' }}
