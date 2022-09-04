@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Controller\Admin;
 
+use A2Global\A2Platform\Bundle\DatasheetBundle\Datasheet;
 use A2Global\A2Platform\Bundle\DevelopmentBundle\Helper\BehatHelper;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,6 +32,18 @@ class DevelopmentController extends AbstractController
         $this->get(BehatHelper::class)->generateCoverageReport();
 
         return new RedirectResponse('/etc/behat-coverage-report/index.html');
+    }
+
+    /**
+     * @Route("datasheet/invalid-data", name="datasheet_invalid_data")
+     */
+    public function invalidDatasheetDataAction()
+    {
+        $datasheet = new Datasheet(null);
+
+        return $this->render('@Admin/datasheet.html.twig', [
+            'datasheet' => $datasheet,
+        ]);
     }
 
     public static function getSubscribedServices(): array

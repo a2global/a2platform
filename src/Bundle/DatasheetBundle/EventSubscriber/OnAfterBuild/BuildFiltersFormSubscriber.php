@@ -34,7 +34,7 @@ class BuildFiltersFormSubscriber implements EventSubscriberInterface
 
         /**
          * Context contains null + all datasheet columns
-         * to interate available filters through every column
+         * to iterate available filters through every column
          * and for datasheet (when column is null)
          */
         $context = $event->getDatasheet()->getColumns();
