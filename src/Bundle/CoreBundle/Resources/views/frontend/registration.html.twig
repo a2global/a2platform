@@ -1,0 +1,33 @@
+{% extends '@Core/frontend/base.html.twig' %}
+
+{% block page_content %}
+
+    <div class="authentication-title">
+        {{ 'core.authentication.registration_form.caption'|trans }}
+    </div>
+
+    {{ form_start(registrationForm) }}
+
+    <div class="authentication-input">
+        {{ form_widget(registrationForm.name, {
+            attr: {
+                placeholder: 'core.authentication.registration_form.name_placeholder'|trans,
+            }
+        }) }}
+    </div>
+
+    <div class="authentication-input">
+        {{ form_widget(registrationForm.plainPassword, {
+            attr: {
+                placeholder: 'core.authentication.registration_form.password_placeholder'|trans,
+            }
+        }) }}
+    </div>
+
+    {#        {{ form_row(registrationForm.agreeTerms) }} #}
+
+    <input type="submit" class="authentication-button"
+           value="{{ 'core.authentication.registration_form.register'|trans }}">
+
+    {{ form_end(registrationForm) }}
+{% endblock %}

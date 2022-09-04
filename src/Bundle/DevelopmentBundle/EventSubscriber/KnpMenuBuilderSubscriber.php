@@ -22,5 +22,9 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
         $menu->addChild('Datasheet', [
             'route' => 'admin_development_datasheet',
         ])->setLabelAttribute('icon', 'fas fa-th-large');
+
+        $menu->addChild('Behat coverage', [
+            'route' => 'admin_development_behat_coverage',
+        ])->setLabelAttribute('icon', 'fas fa-th-large');
     }
 }

@@ -11,3 +11,8 @@ core:
       name_placeholder: 'john'
       password_placeholder: 'password'
       login: 'Login'
+    registration_form:
+      caption: 'Please register:'
+      name_placeholder: 'username'
+      password_placeholder: 'password'
+      register: 'Register'

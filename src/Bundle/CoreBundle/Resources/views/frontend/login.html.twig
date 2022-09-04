@@ -1,7 +1,7 @@
 {% extends '@Core/frontend/base.html.twig' %}
 
 {% block page_content %}
-    <form method="post">
+    <form method="post" class="authentication-form">
         <div id="authentication-container">
             {% if app.user %}
                 {{ 'core.authentication.logged_as_user.title'|trans|format(app.user.name)|raw }}

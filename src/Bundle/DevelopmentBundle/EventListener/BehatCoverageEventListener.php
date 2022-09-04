@@ -2,19 +2,22 @@
 
 namespace A2Global\A2Platform\Bundle\DevelopmentBundle\EventListener;
 
+use A2Global\A2Platform\Bundle\DevelopmentBundle\Helper\BehatHelper;
 use Exception;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
-use SebastianBergmann\CodeCoverage\Filter;
-use SebastianBergmann\CodeCoverage\Report\Html\Facade as HTMLReport;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 class BehatCoverageEventListener
 {
     protected $coverage;
 
     public function __construct(
-        protected ParameterBagInterface $parameters
+        protected ParameterBagInterface $parameters,
+        protected BehatHelper $behatHelper,
     ) {
     }
 
@@ -23,13 +26,8 @@ class BehatCoverageEventListener
         if ($this->parameters->get('kernel.environment') != 'behat') {
             return;
         }
-        $filter = new Filter();
-        $filter->includeDirectory($this->parameters->get('kernel.project_dir') . '/vendor/a2global/a2platform/src');
-
-        $this->coverage = new CodeCoverage(
-            (new Selector)->forLineCoverage($filter),
-            $filter
-        );
+        $filter = $this->behatHelper->getCodeCoverageFilter();
+        $this->coverage = new CodeCoverage((new Selector)->forLineCoverage($filter), $filter);
         $this->coverage->start(uniqid());
     }
 

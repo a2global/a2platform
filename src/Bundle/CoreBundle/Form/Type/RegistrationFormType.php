@@ -1,6 +1,6 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\AuthBundle\Form;
+namespace A2Global\A2Platform\Bundle\CoreBundle\Form\Type;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;

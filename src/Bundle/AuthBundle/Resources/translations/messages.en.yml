@@ -1,7 +1,0 @@
-a2platform:
-  settings:
-    auth:
-      native.enable: 'Enable native users registration (email&password)'
-      oauth.google.enable: 'Enable authorization via Google'
-      oauth.google.client_id: 'Google client id'
-      oauth.google.client_secret: 'Google client secret'

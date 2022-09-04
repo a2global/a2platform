@@ -1,6 +1,6 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\AuthBundle\Security;
+namespace A2Global\A2Platform\Bundle\CoreBundle\Security;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

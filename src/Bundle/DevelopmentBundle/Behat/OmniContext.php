@@ -1,6 +1,6 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\CoreBundle\Behat;
+namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Behat;
 
 use Behat\MinkExtension\Context\MinkContext;
 
@@ -14,30 +14,51 @@ class OmniContext extends MinkContext
     /**
      * @BeforeSuite
      */
-    public static function beforeSuite()
+    public static function beforeSuite($a)
     {
-        echo 'Removing old screenshots';
-        foreach (glob(self::SCREENSHOTS_DIRECTORY . '*.png') as $screenshot) {
-            unlink($screenshot);
-        }
-    }
+        echo 'Cleaning up coverage files...';
 
-    /**
-     * @AfterStep
-     * Take screenshot when step fails. Works only with Selenium2Driver.
-     * Screenshot is saved at [Date]/[Feature]/[Scenario]/[Step].jpg
-     */
-    public function after($scope)
-    {
-        if ($scope->getTestResult()->getResultCode() === 99) {
-            $driver = $this->getSession()->getDriver();
-            if ($driver instanceof Behat\Mink\Driver\Selenium2Driver) {
-                $fileName = date('d-m-y') . '-' . uniqid() . '.png';
-                $this->saveScreenshot($fileName, self::SCREENSHOTS_DIRECTORY);
-                print 'Screenshot at: ' . self::SCREENSHOTS_DIRECTORY . '/' . $fileName;
+        if (file_exists('./var/Behat/coverage')) {
+            foreach (glob('./var/Behat/coverage/*.cov') as $file) {
+                unlink($file);
             }
         }
     }
+
+//    /**
+//     * @BeforeFeature
+//     */
+//    public static function beforeFeature()
+//    {
+//    }
+
+//    /**
+//     * @BeforeSuite
+//     */
+//    public static function beforeSuite()
+//    {
+//        echo 'Removing old screenshots';
+//        foreach (glob(self::SCREENSHOTS_DIRECTORY . '*.png') as $screenshot) {
+//            unlink($screenshot);
+//        }
+//    }
+//
+//    /**
+//     * @AfterStep
+//     * Take screenshot when step fails. Works only with Selenium2Driver.
+//     * Screenshot is saved at [Date]/[Feature]/[Scenario]/[Step].jpg
+//     */
+//    public function after($scope)
+//    {
+//        if ($scope->getTestResult()->getResultCode() === 99) {
+//            $driver = $this->getSession()->getDriver();
+//            if ($driver instanceof Behat\Mink\Driver\Selenium2Driver) {
+//                $fileName = date('d-m-y') . '-' . uniqid() . '.png';
+//                $this->saveScreenshot($fileName, self::SCREENSHOTS_DIRECTORY);
+//                print 'Screenshot at: ' . self::SCREENSHOTS_DIRECTORY . '/' . $fileName;
+//            }
+//        }
+//    }
 
 //    /**
 //     * @Given /^(?:|I )am "([^"]*)"$/
@@ -72,7 +93,6 @@ class OmniContext extends MinkContext
         $link = $this->fixStepArgument($link);
         $this->getSession()->getPage()->clickLink($link);
     }
-
 
     /**
      * @Then /^I should see "([^"]*)" in the code$/
@@ -564,11 +584,27 @@ JS;
      */
     public function assertCurrentUrlIs($url)
     {
+        $urlParsed = parse_url($this->getSession()->getCurrentUrl());
+
         if ($this->getSession()->getCurrentUrl() !== $url) {
             throw new \InvalidArgumentException(sprintf('Failing asserting current url "%s" is "%s"', $this->getSession()->getCurrentUrl(), $url));
         }
     }
-    
+
+    /**
+     * @Then /^Current URL path is "([^"]*)"$/
+     */
+    public function assertCurrentUrlPathIs($path)
+    {
+        $urlParsed = parse_url($this->getSession()->getCurrentUrl());
+        $actual = trim($urlParsed['path'], '/');
+        $expected = trim($path, '/');
+
+        if ($actual !== $expected) {
+            throw new \InvalidArgumentException(sprintf('Failing asserting current url "%s" is "%s"', $actual, $expected));
+        }
+    }
+
     /**
      * @Given /^I wait a lot$/
      */

@@ -2,7 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Entity;
 
-use App\Repository\CommentRepository;
+use A2Global\A2Platform\Bundle\DataBundle\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 

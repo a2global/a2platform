@@ -1,8 +1,8 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\AuthBundle\Controller;
+namespace A2Global\A2Platform\Bundle\CoreBundle\Controller;
 
-use A2Global\A2Platform\Bundle\AuthBundle\Form\RegistrationFormType;
+use A2Global\A2Platform\Bundle\CoreBundle\Form\Type\RegistrationFormType;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route('/authentication/', name: 'authentication_')]
-class AuthController extends AbstractController
+class AuthenticationController extends AbstractController
 {
     #[Route('', name: 'default')]
     public function defaultAction()
@@ -22,7 +22,7 @@ class AuthController extends AbstractController
             return $this->redirectToRoute('authentication_login');
         }
 
-        if($this->isGranted('ROLE_ADMIN')){
+        if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_default');
         }
 
@@ -30,8 +30,11 @@ class AuthController extends AbstractController
     }
 
     #[Route('registration', name: 'registration')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
-    {
+    public function registrationAction(
+        Request                     $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface      $entityManager
+    ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -56,7 +59,7 @@ class AuthController extends AbstractController
             return $this->redirectToRoute('authentication_login');
         }
 
-        return $this->render('@Auth/registration.html.twig', [
+        return $this->render('@Core/frontend/registration.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
