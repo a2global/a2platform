@@ -34,6 +34,11 @@
     "extra": {
         "symfony": {
             "allow-contrib": "true"
+        },
+        "patches": {
+            "phpunit/php-code-coverage": {
+                "Coverage HTML Report: check for test exist in coverage": "vendor/a2global/a2platform/patches/phpunit/php-code-coverage/coverage_html_report.patch"
+            }
         }
     }
 }

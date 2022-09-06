@@ -28,7 +28,7 @@ class BehatCoverageEventListener
         }
         $filter = $this->behatHelper->getCodeCoverageFilter();
         $this->coverage = new CodeCoverage((new Selector)->forLineCoverage($filter), $filter);
-        $this->coverage->start(uniqid());
+        $this->coverage->start(date('U'));
     }
 
     public function onKernelResponse()

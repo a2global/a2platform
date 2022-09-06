@@ -4,8 +4,9 @@ namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Helper;
 
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Filter;
-use SebastianBergmann\CodeCoverage\Report\Html\Facade as HTMLReport;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use SebastianBergmann\CodeCoverage\Report\Html\Facade as HTMLReport;
+
 
 class BehatHelper
 {

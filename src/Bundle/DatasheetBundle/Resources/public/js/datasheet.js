@@ -117,6 +117,7 @@ $(function () {
         }
         aElement
             .addClass('page-link')
+            .attr('data-datasheet-pagination-link', text)
             .text(text)
             .appendTo(liElement);
 

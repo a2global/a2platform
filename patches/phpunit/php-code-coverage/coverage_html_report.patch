@@ -1,0 +1,18 @@
+Index: vendor/phpunit/php-code-coverage/src/Report/Html/Renderer/File.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/phpunit/php-code-coverage/src/Report/Html/Renderer/File.php b/vendor/phpunit/php-code-coverage/src/Report/Html/Renderer/File.php
+--- a/vendor/phpunit/php-code-coverage/src/Report/Html/Renderer/File.php	(revision f4edb0516b67617fbfddf3bcfe7d226e9d89c88a)
++++ b/vendor/phpunit/php-code-coverage/src/Report/Html/Renderer/File.php	(date 1662358753240)
+@@ -442,6 +442,9 @@
+                     $popoverContent = '<ul>';
+ 
+                     foreach ($coverageData[$i] as $test) {
++                        if (!isset($testData[$test])) {
++                            continue;
++                        }
+                         if ($lineCss === 'covered-by-large-tests' && $testData[$test]['size'] === 'medium') {
+                             $lineCss = 'covered-by-medium-tests';
+                         } elseif ($testData[$test]['size'] === 'small') {
