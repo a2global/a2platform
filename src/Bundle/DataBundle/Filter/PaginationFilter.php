@@ -15,21 +15,8 @@ class PaginationFilter implements FilterInterface
         return $this->page;
     }
 
-    public function setPage(int $page): self
-    {
-        $this->page = $page;
-
-        return $this;
-    }
-
     public function getLimit(): int
     {
         return $this->limit;
-    }
-
-    public function setLimit(int $limit): self
-    {
-        $this->limit = $limit;
-        return $this;
     }
 }
