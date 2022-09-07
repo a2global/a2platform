@@ -8,3 +8,10 @@ behat
     code coverage:
         works: pecl install pcov
         does not work: https://github.com/sebastianbergmann/php-code-coverage
+
+pathes:
+    phpunit/php-code-coverage
+    (vendor/a2global/a2platform/patches/phpunit/php-code-coverage/coverage_html_report.patch)
+
+composer
+    https://stackoverflow.com/questions/59214928/composer-repository-type-depends-on-environment

@@ -6,10 +6,10 @@ use A2Global\A2Platform\Bundle\DataBundle\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass=CommentRepository::class)
- * @ORM\Table(name="a2data_comments")
- */
+///**
+// * @ORM\Entity(repositoryClass=CommentRepository::class)
+// * @ORM\Table(name="a2data_comments")
+// */
 class Comment
 {
     use TimestampableEntity;

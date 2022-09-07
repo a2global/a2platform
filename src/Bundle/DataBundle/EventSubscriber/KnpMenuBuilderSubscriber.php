@@ -39,15 +39,15 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
         $appEntities = array_filter($entities, function ($className) {
             return str_starts_with($className, 'App\Entity');
         });
+        sort($appEntities);
 
         foreach ($appEntities as $entity) {
             $this->addEntityCrudItem($menu, 'entities.app', $entity);
         }
-
         $bundleEntities = array_filter($entities, function ($className) {
             return !str_starts_with($className, 'App\Entity');
         });
-
+        sort($bundleEntities);
         $currentBundleName = null;
 
         foreach ($bundleEntities as $entity) {
