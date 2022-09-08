@@ -32,7 +32,8 @@ class TypifyColumnsSubscriber implements EventSubscriberInterface
             $type = $column->getType() ?? StringColumn::class;
             $typedColumn = new $type($column->getName());
 
-            foreach (['position', 'title', 'width', 'align', 'actionUrl'] as $parameters) {
+            /// todo make this list dynamic
+            foreach (['position', 'title', 'width', 'align', 'actionRouteName', 'actionRouteParams'] as $parameters) {
                 if (!is_null($column->{'get' . $parameters}())) {
                     $typedColumn->{'set' . $parameters}($column->{'get' . $parameters}());
                 }

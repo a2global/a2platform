@@ -7,7 +7,7 @@ use A2Global\A2Platform\Bundle\DataBundle\Event\DataReader\OnQueryBuilderFieldsB
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ExposeQueryBuilderSelectSubscriber implements EventSubscriberInterface
+class ExposeQueryBuilderSelectSubscriber// implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
@@ -36,7 +36,11 @@ class ExposeQueryBuilderSelectSubscriber implements EventSubscriberInterface
         $fields = QueryBuilderUtility::getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder));
 
         foreach ($fields as $field) {
-            $queryBuilder->addSelect(sprintf('%s.%s', $primaryAlias, $field['name']));
+            if ($field['type'] == 'entity') {
+                $queryBuilder->addSelect(sprintf('%s.%s.*', $primaryAlias, $field['name']));
+            } else {
+                $queryBuilder->addSelect(sprintf('%s.%s', $primaryAlias, $field['name']));
+            }
         }
     }
 }

@@ -72,8 +72,9 @@
                                         <div class="ellipsis"
                                              style="width:{{ column.width }}px;text-align: {{ column.align }};">
                                             {% set cellContent = datasheet_cell(dataItem, column) %}
-                                            {% if column.hasActionUrl %}
-                                                <a href="{{ column.buildActionUrl(dataItem) }}" rel="nofollow">
+                                            {% set cellActionUrl = datasheet_cell_action_url(dataItem, column) %}
+                                            {% if cellActionUrl %}
+                                                <a href="{{ cellActionUrl }}" rel="nofollow">
                                                     <b>{{ cellContent }}</b>
                                                 </a>
                                             {% else %}

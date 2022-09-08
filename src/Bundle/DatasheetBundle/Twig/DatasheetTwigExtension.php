@@ -11,6 +11,7 @@ use A2Global\A2Platform\Bundle\DatasheetBundle\Filter\DatasheetFilterInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Registry\DatasheetFilterRegistry;
 use Iterator;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Throwable;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -19,10 +20,11 @@ use Twig\TwigFunction;
 class DatasheetTwigExtension extends AbstractExtension
 {
     public function __construct(
-        protected DatasheetBuilder $datasheetBuilder,
-        protected Environment $twig,
+        protected DatasheetBuilder        $datasheetBuilder,
+        protected Environment             $twig,
         protected DatasheetFilterRegistry $datasheetFilterRegistry,
-        protected RequestStack $requestStack,
+        protected RequestStack            $requestStack,
+        protected RouterInterface         $router,
     ) {
     }
 
@@ -31,6 +33,7 @@ class DatasheetTwigExtension extends AbstractExtension
         return [
             new TwigFunction('datasheet', [$this, 'getDatasheet'], ['is_safe' => ['html']]),
             new TwigFunction('datasheet_cell', [$this, 'getDatasheetCell'], ['is_safe' => ['html']]),
+            new TwigFunction('datasheet_cell_action_url', [$this, 'getDatasheetCellActionUrl']),
             new TwigFunction('available_datasheet_filters', [$this, 'getAvailableDatasheetFilters']),
             new TwigFunction('view_datasheet_filter', [$this, 'viewDatasheetFilter']),
         ];
@@ -57,6 +60,20 @@ class DatasheetTwigExtension extends AbstractExtension
     public function getDatasheetCell(DataItem $dataItem, DatasheetColumn $column): string
     {
         return $column->getView($dataItem) ?? '';
+    }
+
+    public function getDatasheetCellActionUrl(DataItem $dataItem, DatasheetColumn $column): string
+    {
+        if (!$column->getActionRouteName()) {
+            return false;
+        }
+        $params = $column->getActionRouteParams();
+
+        if ($id = $dataItem->getValue('id')) {
+            $params['id'] = $id;
+        }
+
+        return $this->router->generate($column->getActionRouteName(), $params);
     }
 
     public function getDatasheetFilters(DatasheetColumn $column): Iterator

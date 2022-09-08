@@ -3,7 +3,6 @@
 namespace A2Global\A2Platform\Bundle\DatasheetBundle\EventSubscriber\OnColumnBuild;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\DatasheetColumnInterface;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Event\OnColumnsBuildEvent;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
 use A2Global\A2Platform\Bundle\DatasheetBundle\Provider\ColumnProvider;
@@ -36,46 +35,40 @@ class GetColumnsForQueryBuilderDatasheetSubscriber implements EventSubscriberInt
      */
     public function getColumnsForQueryBuilderDatasheet(OnColumnsBuildEvent $event)
     {
-        $datasheetColumns = [];
         $queryBuilder = $event->getDatasheet()->getConfig()['dataSource'];
 
         if (!$queryBuilder instanceof QueryBuilder) {
             return;
         }
-        $selects = $queryBuilder->getDQLPart('select');
 
-        foreach ($selects as $select) {
-            $column = $this->getColumnForQBSelect($queryBuilder, $select);
-            $datasheetColumns[$column->getName()] = $column;
+        if (count($queryBuilder->getDQLPart('select')) !== 1) {
+            throw new DatasheetBuildException('Not supports custom dql for now');
+        }
+        $fields = QueryBuilderUtility::getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder));
+        $datasheetColumns = [];
+
+        foreach ($fields as $field) {
+            $datasheetColumns[$field['name']] = $this->findSupportedColumn(
+                $field['name'],
+                $field['type'],
+                $field['typeResolved'],
+            );
         }
         $event->setColumns($datasheetColumns);
     }
 
-    protected function getColumnForQBSelect(QueryBuilder $queryBuilder, $select): DatasheetColumnInterface
+    protected function findSupportedColumn($name, $type, $typeResolved)
     {
-        $parts = $select->getParts();
-        $fieldPath = reset($parts);
-        $fieldPathParts = explode('.', $fieldPath);
-        $entityAlias = $fieldPathParts[0];
-        $fieldName = $fieldPathParts[1];
-        $className = QueryBuilderUtility::getClassNameByAlias($queryBuilder, $entityAlias);
-        $fieldInfo = QueryBuilderUtility::getEntityFields($className, $fieldName);
-
-        return $this->findSupportedColumn($fieldName, $fieldInfo);
-    }
-
-    protected function findSupportedColumn($columnName, $fieldInfo)
-    {
-        if (!$fieldInfo['typeResolved']) {
-            throw new Exception('Unresolved data type: ' . $fieldInfo['type']);
+        if (!$typeResolved) {
+            throw new Exception('Unresolved data type: ' . $type);
         }
 
         foreach ($this->columnProvider->get() as $column) {
-            if ($column::supportsDataType($fieldInfo['typeResolved'])) {
-                return new $column($columnName);
+            if ($column::supportsDataType($typeResolved)) {
+                return new $column($name);
             }
         }
 
-        throw new Exception('Unsupported data type: ' . $fieldInfo['typeResolved']);
+        throw new Exception('Unsupported data type: ' . $typeResolved);
     }
 }

@@ -35,7 +35,7 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
         $sql = $queryBuilder->getQuery()->getSql();
         $params = $queryBuilder->getQuery()->getParameters();
 
-        foreach ($queryBuilder->getQuery()->getArrayResult() as $item) {
+        foreach ($queryBuilder->getQuery()->getResult() as $item) {
             $collection->addItem(new DataItem($item));
         }
 

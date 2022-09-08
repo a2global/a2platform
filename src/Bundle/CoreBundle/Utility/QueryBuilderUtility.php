@@ -6,6 +6,7 @@ use A2Global\A2Platform\Bundle\DataBundle\DataType\BooleanType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\DateTimeType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\DateType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\DecimalType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\EntityType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\FloatType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\IntegerType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\ObjectType;
@@ -13,13 +14,13 @@ use A2Global\A2Platform\Bundle\DataBundle\DataType\StringType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\TextType;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Exception;
 use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
 
 class QueryBuilderUtility
 {
@@ -34,6 +35,7 @@ class QueryBuilderUtility
         'text' => TextType::class,
         'array' => ObjectType::class,
         'json' => ObjectType::class,
+        'entity' => EntityType::class,
     ];
 
     public static function getPrimaryClass(QueryBuilder $queryBuilder)
@@ -57,6 +59,7 @@ class QueryBuilderUtility
         throw new Exception('Failed to find join by alias: ' . $alias);
     }
 
+    // todo make cache for this
     public static function getEntityFields($class, $fieldName = null): array
     {
         $annotationReader = new AnnotationReader();
@@ -65,15 +68,16 @@ class QueryBuilderUtility
         $fields = [];
 
         foreach ($properties as $property) {
-            $annotation = $annotationReader->getPropertyAnnotation($property, Column::class);
+            $fieldType = self::getFieldTypeFromAnnotation($property, $annotationReader);
 
-            if (!$annotation) {
+            if ($fieldType === false) {
                 continue;
             }
+
             $field = [
-                'name' => $annotation->name ?? $property->getName(),
-                'type' => $annotation->type,
-                'typeResolved' => self::DATATYPE_MAPPING[$annotation->type] ?? null,
+                'name' => $property->getName(),
+                'type' => $fieldType,
+                'typeResolved' => self::DATATYPE_MAPPING[$fieldType] ?? null,
             ];
 
             if ($fieldName == $field['name']) {
@@ -84,6 +88,33 @@ class QueryBuilderUtility
         }
 
         return $fields;
+    }
+
+    /**
+     * Returns:
+     *      type if type is defined
+     *      null if not defined
+     *      false if not an orm field
+     */
+    protected static function getFieldTypeFromAnnotation($property, AnnotationReader $annotationReader)
+    {
+        $annotations = $annotationReader->getPropertyAnnotations($property);
+
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Column) {
+                return $annotation->type ?? null;
+            }
+
+            if (in_array(get_class($annotation), [
+                ManyToOne::class,
+                OneToOne::class,
+                ManyToMany::class,
+            ])) {
+                return 'entity';
+            }
+        }
+
+        return false;
     }
 
     // todo: cache!!!
@@ -120,7 +151,7 @@ class QueryBuilderUtility
             $fieldPath = $select->getParts()[0];
             $pathParts = explode('.', $fieldPath);
 
-            if($fieldName === $pathParts[1]){
+            if ($fieldName === $pathParts[1]) {
                 return $fieldPath;
             }
         }

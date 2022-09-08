@@ -12,6 +12,7 @@ class DatasheetColumn implements DatasheetColumnInterface
     public const ALIGN_LEFT = 'left';
     public const ALIGN_CENTER = 'center';
     public const ALIGN_RIGHT = 'right';
+    public const TEXT_LIMIT = 20;
 
     protected ?int $width = null;
 
@@ -25,7 +26,9 @@ class DatasheetColumn implements DatasheetColumnInterface
 
     protected ?bool $filterable = null;
 
-    protected ?string $actionUrl = null;
+    protected ?string $actionRouteName = null;
+
+    protected ?array $actionRouteParams = null;
 
     public function __construct(
         protected $name
@@ -113,30 +116,39 @@ class DatasheetColumn implements DatasheetColumnInterface
         throw new DatasheetBuildException('This method should not be called directly, only typed columns should return view');
     }
 
-    public function setActionUrl(?string $actionUrl): self
+    public function getActionRouteName(): ?string
     {
-        $this->actionUrl = $actionUrl;
+        return $this->actionRouteName;
+    }
 
+    public function setActionRouteName(?string $actionRouteName): self
+    {
+        $this->actionRouteName = $actionRouteName;
         return $this;
     }
 
-    public function hasActionUrl(): bool
+    public function getActionRouteParams(): ?array
     {
-        return !empty($this->actionUrl);
+        return $this->actionRouteParams;
     }
 
-    public function getActionUrl(): ?string
+    public function setActionRouteParams(?array $actionRouteParams): self
     {
-        return $this->actionUrl;
-    }
-
-    public function buildActionUrl(DataItem $dataItem): ?string
-    {
-        return sprintf($this->actionUrl, $dataItem->getValue('id'));
+        $this->actionRouteParams = $actionRouteParams;
+        return $this;
     }
 
     public static function supportsDataType($type): bool
     {
         return false;
+    }
+
+    public static function substring(string $string): string
+    {
+        if(mb_strlen($string) > self::TEXT_LIMIT){
+            return trim(mb_substr($string, 0, self::TEXT_LIMIT)) . '…';
+        }
+
+        return $string;
     }
 }

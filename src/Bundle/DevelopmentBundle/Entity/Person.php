@@ -24,27 +24,37 @@ class Person
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $firstname;
+    private $fullname;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=Address::class)
      */
     private $address;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Company::class)
+     */
+    private $company;
+
+    /**
+     * @ORM\Column(type="integer", nullable="true")
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(type="float", nullable="true")
+     */
+    private $version;
+
+    /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $phoneNumber;
+    private $phonenumber;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -62,28 +72,18 @@ class Person
     private $lastActiveAt;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $roles = [];
-
-    /**
      * @ORM\Column(type="decimal", precision=12, scale=8, nullable=true)
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="decimal", precision=12, scale=8, nullable=true)
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $longitude;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Company::class)
-     */
-    private $Company;
+    private $roles = [];
 
     public function __toString(): string
     {
-        return sprintf('#%s %s %s', $this->getId(), $this->getFirstname(), $this->getLastname());
+        return sprintf('#%s %s %s', $this->getId(), $this->getFirstname());
     }
 
     public function getId(): ?int
@@ -91,72 +91,72 @@ class Person
         return $this->id;
     }
 
-    public function getFirstname(): ?string
+    public function getFullname(): ?string
     {
-        return $this->firstname;
+        return $this->fullname;
     }
 
-    public function setFirstname(string $firstname): self
+    public function setFullname(string $fullname): self
     {
-        $this->firstname = $firstname;
+        $this->fullname = $fullname;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getAge(): ?int
     {
-        return $this->lastname;
+        return $this->age;
     }
 
-    public function setLastname(string $lastname): self
+    public function setAge(?int $age): self
     {
-        $this->lastname = $lastname;
+        $this->age = $age;
 
         return $this;
     }
 
-    public function getAddress(): ?string
+    public function getVersion(): ?float
     {
-        return $this->address;
+        return $this->version;
     }
 
-    public function setAddress(string $address): self
+    public function setVersion(?float $version): self
     {
-        $this->address = $address;
+        $this->version = $version;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getEmail(): ?string
     {
-        return $this->description;
+        return $this->email;
     }
 
-    public function setDescription(string $description): self
+    public function setEmail(string $email): self
     {
-        $this->description = $description;
+        $this->email = $email;
 
         return $this;
     }
 
-    public function getPhoneNumber(): ?string
+    public function getPhonenumber(): ?string
     {
-        return $this->phoneNumber;
+        return $this->phonenumber;
     }
 
-    public function setPhoneNumber(string $phoneNumber): self
+    public function setPhonenumber(string $phonenumber): self
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->phonenumber = $phonenumber;
 
         return $this;
     }
 
-    public function isActive(): ?bool
+    public function isIsActive(): ?bool
     {
         return $this->isActive;
     }
 
-    public function setActive(bool $isActive): self
+    public function setIsActive(?bool $isActive): self
     {
         $this->isActive = $isActive;
 
@@ -187,18 +187,6 @@ class Person
         return $this;
     }
 
-    public function getRoles(): ?array
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(?array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
     public function getLatitude(): ?string
     {
         return $this->latitude;
@@ -211,26 +199,38 @@ class Person
         return $this;
     }
 
-    public function getLongitude(): ?string
+    public function getRoles(): array
     {
-        return $this->longitude;
+        return $this->roles;
     }
 
-    public function setLongitude(?string $longitude): self
+    public function setRoles(?array $roles): self
     {
-        $this->longitude = $longitude;
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
 
     public function getCompany(): ?Company
     {
-        return $this->Company;
+        return $this->company;
     }
 
-    public function setCompany(?Company $Company): self
+    public function setCompany(?Company $company): self
     {
-        $this->Company = $Company;
+        $this->company = $company;
 
         return $this;
     }

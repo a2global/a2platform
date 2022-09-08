@@ -1,8 +1,8 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Controller;
+namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Controller\Behat;
 
-use A2Global\A2Platform\Bundle\DevelopmentBundle\Helper\DatabaseHelper;
+use A2Global\A2Platform\Bundle\CoreBundle\Helper\DatabaseHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("development/behat/", name="development_behat_")
  */
-class BehatController extends AbstractController
+class DatabaseController extends AbstractController
 {
     /**
      * @Route("database/reset", name="database_reset")

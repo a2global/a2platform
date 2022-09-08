@@ -28,11 +28,6 @@ class Company
      */
     private $address;
 
-    public function __toString(): string
-    {
-        return sprintf('#%s %s', $this->getId(), $this->getName());
-    }
-
     public function getId(): ?int
     {
         return $this->id;

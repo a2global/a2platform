@@ -25,7 +25,7 @@ class DataItem
 
     protected function getObjectValue($field)
     {
-        foreach (['get', 'is', 'has'] as $prefix) {
+        foreach (['', 'get', 'is', 'has'] as $prefix) {
             $method = $prefix . StringUtility::toPascalCase($field);
 
             if (method_exists($this->data, $method)) {

@@ -12,7 +12,7 @@ class TextColumn extends DatasheetColumn implements DatasheetColumnInterface
     {
         $value = htmlspecialchars((string)$dataItem->getValue($this->getName()));
 
-        return $value;
+        return self::substring($value);
     }
 
     public static function supportsDataType($type): bool

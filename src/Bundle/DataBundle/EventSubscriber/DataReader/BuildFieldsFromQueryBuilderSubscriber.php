@@ -4,8 +4,7 @@ namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\DataReader;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Event\DataReader\OnQueryBuilderFieldsBuildEvent;
-use Doctrine\ORM\Query\Expr\Select;
-use Doctrine\ORM\QueryBuilder;
+use A2Global\A2Platform\Bundle\DatasheetBundle\Exception\DatasheetBuildException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class BuildFieldsFromQueryBuilderSubscriber implements EventSubscriberInterface
@@ -19,17 +18,15 @@ class BuildFieldsFromQueryBuilderSubscriber implements EventSubscriberInterface
 
     public function buildFields(OnQueryBuilderFieldsBuildEvent $event)
     {
-        $fields = [];
         $queryBuilder = $event->getQueryBuilderDataReader()->getSource();
+        $selects = $queryBuilder->getDQLPart('select');
 
-        /** @var Select $select */
-        foreach ($queryBuilder->getDQLPart('select') as $select) {
-            $fieldPath = $select->getParts()[0];
-            $pathParts = explode('.', $fieldPath);
-            $alias = $pathParts[0];
-            $fieldName = $pathParts[1];
-            $fields[] = $fieldName;
+        if (count($selects) !== 1) {
+            throw new DatasheetBuildException('Not supports custom dql for now');
         }
+        $fields = array_map(function ($field) {
+            return $field['name'];
+        }, QueryBuilderUtility::getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder)));
         $event->getQueryBuilderDataReader()->setFields($fields);
     }
 }
