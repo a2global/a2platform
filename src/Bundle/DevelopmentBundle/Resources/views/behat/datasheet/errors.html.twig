@@ -1,0 +1,7 @@
+{% extends '@Admin/layout.html.twig' %}
+
+{% block page_content %}
+    {% for datasheet in datasheets %}
+        {{ datasheet(datasheet) }}
+    {% endfor %}
+{% endblock %}

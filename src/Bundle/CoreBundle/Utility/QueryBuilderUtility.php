@@ -24,19 +24,7 @@ use ReflectionClass;
 
 class QueryBuilderUtility
 {
-    public const DATATYPE_MAPPING = [
-        'boolean' => BooleanType::class,
-        'integer' => IntegerType::class,
-        'float' => FloatType::class,
-        'decimal' => DecimalType::class,
-        'date' => DateType::class,
-        'datetime' => DateTimeType::class,
-        'string' => StringType::class,
-        'text' => TextType::class,
-        'array' => ObjectType::class,
-        'json' => ObjectType::class,
-        'entity' => EntityType::class,
-    ];
+    static array $cachedEntityFields = [];
 
     public static function getPrimaryClass(QueryBuilder $queryBuilder)
     {
@@ -60,7 +48,7 @@ class QueryBuilderUtility
     }
 
     // todo make cache for this
-    public static function getEntityFields($class, $fieldName = null): array
+    public static function getEntityFieldsOld($class, $fieldName = null): array
     {
         $annotationReader = new AnnotationReader();
         $reflectionClass = new ReflectionClass($class);
@@ -90,12 +78,28 @@ class QueryBuilderUtility
         return $fields;
     }
 
-    /**
-     * Returns:
-     *      type if type is defined
-     *      null if not defined
-     *      false if not an orm field
-     */
+    public static function getEntityFields($class): array
+    {
+        if (array_key_exists($class, self::$cachedEntityFields)) {
+            return self::$cachedEntityFields[$class];
+        }
+        $annotationReader = new AnnotationReader();
+        $reflectionClass = new ReflectionClass($class);
+        $properties = $reflectionClass->getProperties();
+        $fields = [];
+
+        foreach ($properties as $property) {
+            $fieldType = self::getFieldTypeFromAnnotation($property, $annotationReader);
+
+            if ($fieldType === false) {
+                continue;
+            }
+            $fields[$property->getName()] = $fieldType;
+        }
+
+        return self::$cachedEntityFields[$class] = $fields;
+    }
+
     protected static function getFieldTypeFromAnnotation($property, AnnotationReader $annotationReader)
     {
         $annotations = $annotationReader->getPropertyAnnotations($property);
@@ -110,7 +114,7 @@ class QueryBuilderUtility
                 OneToOne::class,
                 ManyToMany::class,
             ])) {
-                return 'entity';
+                return StringUtility::toSnakeCase(StringUtility::getShortClassName($annotation));
             }
         }
 

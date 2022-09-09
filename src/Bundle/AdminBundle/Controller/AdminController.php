@@ -43,7 +43,7 @@ class AdminController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-            DatasheetBuilder::class,
+//            DatasheetBuilder::class,
             SettingsManager::class,
         ]);
     }

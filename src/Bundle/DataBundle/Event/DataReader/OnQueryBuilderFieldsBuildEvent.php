@@ -2,17 +2,31 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Event\DataReader;
 
-use A2Global\A2Platform\Bundle\DataBundle\Reader\QueryBuilderDataReader;
+
+use Doctrine\ORM\QueryBuilder;
 
 class OnQueryBuilderFieldsBuildEvent
 {
+    protected $fields;
+
     public function __construct(
-        protected QueryBuilderDataReader $queryBuilderDataReader
+        protected QueryBuilder $queryBuilder
     ) {
     }
 
-    public function getQueryBuilderDataReader(): QueryBuilderDataReader
+    public function getQueryBuilder(): QueryBuilder
     {
-        return $this->queryBuilderDataReader;
+        return $this->queryBuilder;
+    }
+
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    public function setFields($fields): self
+    {
+        $this->fields = $fields;
+        return $this;
     }
 }
