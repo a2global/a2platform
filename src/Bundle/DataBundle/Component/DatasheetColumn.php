@@ -30,31 +30,31 @@ class DatasheetColumn
 
     public function getTitle(): ?string
     {
-        return $this->title ?? StringUtility::normalize($this->name);
+        return $this->title;
     }
 
     public function getAlign(): string
     {
         return $this->align;
     }
-//
-//    public function setAlign(string $align): self
-//    {
-//        $this->align = $align;
-//        return $this;
-//    }
-//
+
+    public function setAlign(string $align): self
+    {
+        $this->align = $align;
+        return $this;
+    }
+
     public function getWidth(): int
     {
         return $this->width;
     }
-//
-//    public function setWidth(int $width): self
-//    {
-//        $this->width = $width;
-//        return $this;
-//    }
-//
+
+    public function setWidth(int $width): self
+    {
+        $this->width = $width;
+        return $this;
+    }
+
 //    public function getFilters(): array
 //    {
 //        return $this->filters;

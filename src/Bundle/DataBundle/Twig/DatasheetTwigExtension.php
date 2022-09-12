@@ -27,6 +27,7 @@ class DatasheetTwigExtension extends AbstractExtension
         return [
             new TwigFunction('datasheet', [$this, 'buildDatasheet'], ['is_safe' => ['html']]),
             new TwigFunction('datasheet_cell', [$this, 'buildDatasheetCell'], ['is_safe' => ['html']]),
+            new TwigFunction('datasheet_column_header', [$this, 'buildDatasheetColumnHeader'], ['is_safe' => ['html']]),
 //            new TwigFunction('datasheet_cell_action_url', [$this, 'getDatasheetCellActionUrl']),
 //            new TwigFunction('available_datasheet_filters', [$this, 'getAvailableDatasheetFilters']),
 //            new TwigFunction('view_datasheet_filter', [$this, 'viewDatasheetFilter']),
@@ -47,6 +48,11 @@ class DatasheetTwigExtension extends AbstractExtension
                 '</div>',
             ]);
         }
+    }
+
+    public function buildDatasheetColumnHeader(DatasheetColumn $column): string
+    {
+        return $this->datasheetViewBuilder->buildDatasheetColumnHeader($column);
     }
 
     public function buildDatasheetCell(DatasheetColumn $column, DataItem $dataItem): string

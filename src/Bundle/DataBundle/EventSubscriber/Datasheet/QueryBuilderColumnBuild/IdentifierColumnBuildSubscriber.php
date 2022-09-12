@@ -22,12 +22,10 @@ class IdentifierColumnBuildSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->setColumn(
-            new DatasheetColumn(
-                new IntegerDataType(),
-                $event->getFieldName(),
-            )
-        );
+        $column = (new DatasheetColumn(new IntegerDataType(), $event->getFieldName()))
+            ->setWidth(30)
+            ->setAlign(DatasheetColumn::TEXT_ALIGN_RIGHT);
+        $event->setColumn($column);
     }
 
     /**

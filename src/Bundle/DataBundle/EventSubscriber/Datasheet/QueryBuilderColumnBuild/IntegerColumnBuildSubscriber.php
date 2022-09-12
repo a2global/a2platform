@@ -4,7 +4,6 @@ namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\Datasheet\QueryB
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataType\IntegerDataType;
-use A2Global\A2Platform\Bundle\DataBundle\Component\DataType\StringDataType;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnQueryBuilderDatasheetColumnBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -23,12 +22,10 @@ class IntegerColumnBuildSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->setColumn(
-            new DatasheetColumn(
-                new IntegerDataType(),
-                $event->getFieldName(),
-            )
-        );
+        $column = (new DatasheetColumn(new IntegerDataType(), $event->getFieldName()))
+            ->setWidth(60)
+            ->setAlign(DatasheetColumn::TEXT_ALIGN_RIGHT);
+        $event->setColumn($column);
     }
 
     /**

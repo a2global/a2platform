@@ -5,12 +5,7 @@
         <thead>
         <tr>
             {% for column in datasheet.columns %}
-                <th>
-                    <div data-datasheet-column-title="{{ column.name }}" class="ellipsis"
-                         style="width:{{ column.width }}px;text-align: {{ column.align }};">
-                        {{ column.title }}
-                    </div>
-                </th>
+                {{ datasheet_column_header(column) }}
             {% endfor %}
         </tr>
         </thead>
@@ -18,9 +13,7 @@
         {% for item in datasheet.data.items %}
             <tr>
                 {% for column in datasheet.columns %}
-                    <td>
-                        {{ datasheet_cell(column, item) }}
-                    </td>
+                    {{ datasheet_cell(column, item) }}
                 {% endfor %}
             </tr>
         {% endfor %}

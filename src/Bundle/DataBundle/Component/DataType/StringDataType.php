@@ -6,7 +6,7 @@ class StringDataType implements DataTypeInterface
 {
     public static function getReadablePreview($value): string
     {
-        return 'x';//(string)$value;
+        return (string)$value;
     }
 
 }
