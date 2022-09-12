@@ -5,19 +5,21 @@ namespace A2Global\A2Platform\Bundle\DevelopmentBundle\EventSubscriber;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DevelopmentBundle\DevelopmentBundle;
 use KevinPapst\AdminLTEBundle\Event\KnpMenuEvent;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AdminMenuBuilderSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KnpMenuEvent::class => ['onSetupMenu', 200],
-        ];
+    public function __construct(
+        protected ParameterBagInterface $parameters,
+    ) {
     }
 
     public function onSetupMenu(KnpMenuEvent $event)
     {
+        if (!in_array($this->parameters->get('kernel.environment'), ['dev', 'test', 'behat'])) {
+            return;
+        }
         $menu = $event->getMenu();
         $menu->addChild(DevelopmentBundle::NAME, [
             'label' => StringUtility::normalize(DevelopmentBundle::NAME),
@@ -57,5 +59,12 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
             'label' => 'Errors',
             'route' => 'development_behat_datasheet_errors',
         ]);
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            KnpMenuEvent::class => ['onSetupMenu', 200],
+        ];
     }
 }
