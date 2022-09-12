@@ -4,7 +4,9 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Twig;
 
 use A2Global\A2Platform\Bundle\DataBundle\Builder\DatasheetBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Builder\DatasheetViewBuilder;
+use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
 use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
+use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
 use Throwable;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -24,7 +26,7 @@ class DatasheetTwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('datasheet', [$this, 'buildDatasheet'], ['is_safe' => ['html']]),
-//            new TwigFunction('datasheet_cell', [$this, 'getDatasheetCell'], ['is_safe' => ['html']]),
+            new TwigFunction('datasheet_cell', [$this, 'buildDatasheetCell'], ['is_safe' => ['html']]),
 //            new TwigFunction('datasheet_cell_action_url', [$this, 'getDatasheetCellActionUrl']),
 //            new TwigFunction('available_datasheet_filters', [$this, 'getAvailableDatasheetFilters']),
 //            new TwigFunction('view_datasheet_filter', [$this, 'viewDatasheetFilter']),
@@ -46,12 +48,12 @@ class DatasheetTwigExtension extends AbstractExtension
             ]);
         }
     }
-//
-//    public function getDatasheetCell(DataItem $dataItem, DatasheetColumn $column): string
-//    {
-//        return $column->getView($dataItem) ?? '';
-//    }
-//
+
+    public function buildDatasheetCell(DatasheetColumn $column, DataItem $dataItem): string
+    {
+        return $this->datasheetViewBuilder->buildDatasheetCell($column, $dataItem);
+    }
+
 //    public function getDatasheetCellActionUrl(DataItem $dataItem, DatasheetColumn $column): string
 //    {
 //        if (!$column->getActionRouteName()) {

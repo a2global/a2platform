@@ -8,6 +8,8 @@ use A2Global\A2Platform\Bundle\DataBundle\Reader\DataReaderInterface;
 
 class OnDatasheetBuildEvent
 {
+    const NAME = 'data.datasheet.on_build';
+
     protected DataCollection $dataCollection;
 
     protected DataReaderInterface $dataReader;

@@ -8,6 +8,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ReadDataEventSubscriber implements EventSubscriberInterface
 {
+    public const SUPPORTED_DATASHEET_TYPE = 'all';
+
     public function __construct(
         protected DataReaderRegistry $dataReaderRegistry,
     ) {

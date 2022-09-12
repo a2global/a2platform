@@ -33,7 +33,9 @@ class QueryBuilderUtility
 
     public static function getPrimaryAlias(QueryBuilder $queryBuilder)
     {
-        return $queryBuilder->getRootAliases()[0];
+        $rootAliases = $queryBuilder->getRootAliases();
+
+        return reset($rootAliases);
     }
 
     public static function getJoinByAlias(QueryBuilder $queryBuilder, $alias): Join

@@ -66,15 +66,6 @@ class DatasheetController extends AbstractController
     }
 
     /**
-     * @Route("flow", name="flow")
-     */
-    public function datasheetFlowAction()
-    {
-        return $this->render('@Development/behat/datasheet/flow.html.twig', [
-        ]);
-    }
-
-    /**
      * @Route("errors", name="errors")
      */
     public function datasheetErrorsAction()

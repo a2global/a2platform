@@ -25,6 +25,15 @@ class OmniContext extends MinkContext
         }
     }
 
+    /**
+     * @AfterSuite
+     */
+    public static function afterSuite()
+    {
+        file_get_contents('http://development.a2platform.com/development/behat/coverage');
+        echo 'Code coverage report updated' . PHP_EOL;
+    }
+
 //    /**
 //     * @BeforeFeature
 //     */

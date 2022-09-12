@@ -9,12 +9,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("development/behat/", name="development_behat_")
+ * @Route("development/behat/database/", name="development_behat_database_")
  */
 class DatabaseController extends AbstractController
 {
     /**
-     * @Route("database/reset", name="database_reset")
+     * @Route("reset", name="reset")
      */
     public function databaseResetAction()
     {
@@ -27,7 +27,7 @@ class DatabaseController extends AbstractController
     }
 
     /**
-     * @Route("database/clear", name="database_clear")
+     * @Route("clear", name="clear")
      */
     public function databaseClearAction()
     {

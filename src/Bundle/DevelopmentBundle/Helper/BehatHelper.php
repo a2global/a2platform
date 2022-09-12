@@ -52,6 +52,6 @@ class BehatHelper
             mkdir($targetPath, 0777, true);
         }
 
-        (new HTMLReport)->process($totalCoverage, $targetPath);
+        (new HTMLReport(50,100))->process($totalCoverage, $targetPath);
     }
 }

@@ -23,6 +23,7 @@ class DataItem
         }
     }
 
+    /** @codeCoverageIgnore  */
     protected function getObjectValue($field)
     {
         foreach (['', 'get', 'is', 'has'] as $prefix) {

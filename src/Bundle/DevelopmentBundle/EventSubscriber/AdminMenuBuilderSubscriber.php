@@ -28,7 +28,7 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
         $developmentMenu = $menu->getChild(DevelopmentBundle::NAME);
         $developmentMenu->addChild(DevelopmentBundle::NAME . '.behat_coverage', [
             'label' => 'Behat coverage',
-            'route' => 'admin_development_behat_coverage',
+            'route' => 'development_behat_coverage',
         ]);
         $developmentMenu->addChild(DevelopmentBundle::NAME . '.datasheet', [
             'label' => 'Datasheet',
@@ -39,7 +39,7 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
         $developmentDatasheetMenu = $developmentMenu->getChild(DevelopmentBundle::NAME . '.datasheet');
         $developmentDatasheetMenu->addChild(DevelopmentBundle::NAME . '.datasheet.flow', [
             'label' => 'Build flow',
-            'route' => 'development_behat_datasheet_flow',
+            'route' => 'admin_development_datasheet_flow',
         ]);
         $developmentDatasheetMenu->addChild(DevelopmentBundle::NAME . '.datasheet.array', [
             'label' => 'Array datasheet',

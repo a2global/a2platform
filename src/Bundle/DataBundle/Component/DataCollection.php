@@ -17,12 +17,6 @@ class DataCollection
         return $this->fields;
     }
 
-    public function setFields(array $fields): self
-    {
-        $this->fields = $fields;
-        return $this;
-    }
-
     public function getItems(): array
     {
         return $this->items;
@@ -33,14 +27,14 @@ class DataCollection
         $this->items[] = $item;
     }
 
-    public function getItemsTotal(): ?int
-    {
-        return $this->itemsTotal;
-    }
-
-    public function setItemsTotal(?int $itemsTotal): self
-    {
-        $this->itemsTotal = $itemsTotal;
-        return $this;
-    }
+//    public function getItemsTotal(): ?int
+//    {
+//        return $this->itemsTotal;
+//    }
+//
+//    public function setItemsTotal(?int $itemsTotal): self
+//    {
+//        $this->itemsTotal = $itemsTotal;
+//        return $this;
+//    }
 }

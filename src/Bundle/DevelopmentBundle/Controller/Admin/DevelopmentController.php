@@ -2,11 +2,10 @@
 
 namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Controller\Admin;
 
-use A2Global\A2Platform\Bundle\DatasheetBundle\Datasheet;
-use A2Global\A2Platform\Bundle\DevelopmentBundle\Helper\BehatHelper;
+use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
+use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnDatasheetBuildEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -15,34 +14,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class DevelopmentController extends AbstractController
 {
     /**
-     * @Route("datasheet", name="datasheet")
+     * @Route("datasheet/flow", name="datasheet_flow")
      */
-    public function datasheetAction()
+    public function datasheetFlowAction()
     {
-        $listeners = $this->get(EventDispatcherInterface::class)->getListeners();
-        dd($listeners);
-    }
+        $sortedSubscribers = [];
+        $subscribers = $this->get(EventDispatcherInterface::class)
+            ->getListeners(OnDatasheetBuildEvent::class);
 
-    /**
-     * @Route("behat-coverage", name="behat_coverage")
-     * @codeCoverageIgnore
-     */
-    public function behatCoverageAction()
-    {
-        $this->get(BehatHelper::class)->generateCoverageReport();
+        foreach($subscribers as $subscriber){
+            $subscriber = reset($subscriber);
+            $subscribedEvents = [$subscriber, 'getSubscribedEvents']();
+            $subscribedEvent = $subscribedEvents[OnDatasheetBuildEvent::class];
+            $sortedSubscribers[get_class($subscriber)] = $subscribedEvent[1];
+        }
+        krsort($sortedSubscribers);
+        $groupedBuilders = [];
 
-        return new RedirectResponse('/etc/behat-coverage-report/index.html');
-    }
+        foreach($sortedSubscribers as $sortedSubscriber => $priority){
+            $groupedBuilders[$priority][constant($sortedSubscriber. '::SUPPORTED_DATASHEET_TYPE')] =
+                StringUtility::getShortClassName($sortedSubscriber);
+        }
 
-    /**
-     * @Route("datasheet/invalid-data", name="datasheet_invalid_data")
-     */
-    public function invalidDatasheetDataAction()
-    {
-        $datasheet = new Datasheet(null);
-
-        return $this->render('@Admin/datasheet.html.twig', [
-            'datasheet' => $datasheet,
+        return $this->render('@Development/behat/datasheet/flow.html.twig', [
+            'groupedBuilders' => $groupedBuilders,
         ]);
     }
 
@@ -50,7 +45,6 @@ class DevelopmentController extends AbstractController
     {
         return array_merge(parent::getSubscribedServices(), [
             EventDispatcherInterface::class,
-            BehatHelper::class,
         ]);
     }
 }

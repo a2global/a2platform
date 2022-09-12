@@ -1,5 +1,59 @@
 {% extends '@Admin/layout.html.twig' %}
 
 {% block page_content %}
+    <div class="row">
+        <div class="col-sm-8">
+            {% for priority, builders in groupedBuilders %}
+                <div class="row">
+                    <div class="col-sm-5">
+                        <hr>
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <h4 class="text-muted m-0 p-0">{{ priority }}</h4>
+                    </div>
+                    <div class="col-sm-5">
+                        <hr>
+                    </div>
+                </div>
 
+
+                {% for supportedDatasheet, builder in builders %}
+
+                    {% set content %}
+                        <div class="box bg-secondary text-secondary text-center p-3">
+                            <div class="box-body">
+                                {{ builder }}
+                            </div>
+                        </div>
+                    {% endset %}
+
+                    <div class="row">
+                        {% if supportedDatasheet == 'all' %}
+                            <div class="col-sm-12">{{ content }}</div>
+                        {% else %}
+                            {% for datasheetType in ['queryBuilder','array'] %}
+                                <div class="col-sm-6">&nbsp;
+                                    {% if datasheetType == supportedDatasheet %}
+                                        {{ content }}
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+
+                {#                <div class="row"> #}
+                {#                    {% if supportedDatasheet == 'all' %} #}
+                {#                        <div class="col-sm-12">{{ content }}</div> #}
+                {#                    {% elseif supportedDatasheet == 'queryBuilder' %} #}
+                {#                        <div class="col-sm-6">{{ content }}</div> #}
+                {#                    {% elseif supportedDatasheet == 'array' %} #}
+                {#                        <div class="col-sm-6 col-sm-offset-6">{{ content }}</div> #}
+                {#                    {% endif %} #}
+                {#                </div> #}
+
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
