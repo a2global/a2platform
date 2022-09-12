@@ -30,6 +30,7 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
 
     protected function addEntityCrudItems(ItemInterface $menu)
     {
+        return;
         $entities = $this->entityHelper->getEntityList();
 
         $menu->addChild('entities', [

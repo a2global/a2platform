@@ -4,10 +4,8 @@ namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\Datasheet;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnDatasheetBuildEvent;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnQueryBuilderDatasheetColumnBuildEvent;
-use A2Global\A2Platform\Bundle\DataBundle\Exception\DatasheetBuildException;
 use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -63,7 +61,7 @@ class BuildQueryBuilderDatasheetColumns implements EventSubscriberInterface
                 $part = reset($parts);
 
                 if ($part === QueryBuilderUtility::getPrimaryAlias($queryBuilder)) {
-                    return QueryBuilderUtility::getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder));
+                    return EntityHelper::getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder));
                 }
             }
         }

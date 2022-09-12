@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\DataReader;
 
+use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Event\DataReader\OnQueryBuilderFieldsBuildEvent;
 use A2Global\A2Platform\Bundle\DataBundle\Exception\DatasheetBuildException;
@@ -27,7 +28,7 @@ class BuildFieldsFromQueryBuilderSubscriber implements EventSubscriberInterface
         if (count($selects) !== 1) {
             throw new DatasheetBuildException('Not supports custom dql for now');
         }
-        $entityFields = QueryBuilderUtility::getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder));
+        $entityFields = EntityHelper::getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder));
         $event->setFields(array_keys($entityFields));
     }
 }

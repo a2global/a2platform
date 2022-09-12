@@ -6,10 +6,6 @@ use A2Global\A2Platform\Bundle\CoreBundle\Builder\ResourceRequestBuilder;
 use A2Global\A2Platform\Bundle\CoreBundle\Request\ResourceRequest;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
-use A2Global\A2Platform\Bundle\DataBundle\Entity\TaggableEntityInterface;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Builder\DatasheetBuilder;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\Column\NumberColumn;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Datasheet;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -140,7 +136,6 @@ abstract class AbstractAdminController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-            DatasheetBuilder::class,
             ResourceRequestBuilder::class,
         ]);
     }

@@ -2,9 +2,8 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Component;
 
-use A2Global\A2Platform\Bundle\DatasheetBundle\Component\DatasheetInterface;
 
-class Datasheet implements DatasheetInterface
+class Datasheet// implements DatasheetInterface
 {
     public function __construct(
         protected mixed   $datasource,

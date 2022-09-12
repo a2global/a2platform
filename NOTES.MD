@@ -14,3 +14,11 @@ pathes:
 composer
     https://stackoverflow.com/questions/59214928/composer-repository-type-depends-on-environment
     COMPOSER=composer.dev.json composer update a2global/a2platform
+
+
+"repositories": [
+    {
+        "type": "path",
+        "url": "../A2Platform"
+    }
+]

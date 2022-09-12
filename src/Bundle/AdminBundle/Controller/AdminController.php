@@ -4,7 +4,6 @@ namespace A2Global\A2Platform\Bundle\AdminBundle\Controller;
 
 use A2Global\A2Platform\Bundle\AdminBundle\Form\SettingsForm;
 use A2Global\A2Platform\Bundle\CoreBundle\Manager\SettingsManager;
-use A2Global\A2Platform\Bundle\DatasheetBundle\Builder\DatasheetBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,7 +42,6 @@ class AdminController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-//            DatasheetBuilder::class,
             SettingsManager::class,
         ]);
     }
