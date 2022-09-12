@@ -18,8 +18,8 @@ class DatasheetColumn
 
     public function __construct(
         protected DataTypeInterface $dataType,
-        protected string  $name,
-        protected ?string $title = null,
+        protected string            $name,
+        protected ?string           $title = null,
     ) {
     }
 
@@ -65,9 +65,13 @@ class DatasheetColumn
 //        $this->filters = $filters;
 //        return $this;
 //    }
-    public function getReadableView(DataItem $dataItem)
+    public function getReadableView(DataItem $dataItem): string
     {
         $value = $dataItem->getValue($this->getName());
+
+        if (!$value) {
+            return '';
+        }
 
         return $this->dataType::getReadablePreview($value);
     }
