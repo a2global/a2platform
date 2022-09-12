@@ -15,6 +15,7 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
     ) {
     }
 
+    /** @codeCoverageIgnore */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -42,7 +43,7 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
         sort($appEntities);
 
         foreach ($appEntities as $entity) {
-            $this->addEntityCrudItem($menu, 'entities.app', $entity);
+            $this->addEntityCrudItem($menu, 'data.entities.app', $entity);
         }
         $bundleEntities = array_filter($entities, function ($className) {
             return !str_starts_with($className, 'App\Entity');
@@ -54,7 +55,7 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
             $bundleName = StringUtility::getBundleNameFromClass($entity, 'Bundle');
 
             if ($currentBundleName != $bundleName) {
-                $bundleMenuName = 'entities.bundle.' . StringUtility::toCamelCase($bundleName);
+                $bundleMenuName = 'data.entities.bundle.' . StringUtility::toCamelCase($bundleName);
                 $menu->addChild($bundleMenuName, [
                     'label' => $bundleName,
                     'attributes' => [
