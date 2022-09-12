@@ -13,6 +13,8 @@ use ReflectionClass;
 
 class EntityHelper
 {
+    public static array $cachedEntityFields = [];
+
     protected array $entityListCached = [];
 
     public function __construct(

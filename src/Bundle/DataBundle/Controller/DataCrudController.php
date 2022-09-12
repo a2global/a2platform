@@ -2,10 +2,8 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
-use Doctrine\ORM\AbstractQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,30 +25,29 @@ class DataCrudController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("view/{entity}/{id}", name="view")
-     * @codeCoverageIgnore
-     */
-    public function viewAction(Request $request, $entity, $id)
-    {
-        $data = $this->getDoctrine()
-            ->getRepository($entity)
-            ->createQueryBuilder('e')
-            ->where('e.id = :id')
-            ->setParameter('id', $id)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
-
-        dd($data);
-    }
+//    /**
+//     * @Route("view/{entity}/{id}", name="view")
+//     * @codeCoverageIgnore
+//     */
+//    public function viewAction(Request $request, $entity, $id)
+//    {
+//        $data = $this->getDoctrine()
+//            ->getRepository($entity)
+//            ->createQueryBuilder('e')
+//            ->where('e.id = :id')
+//            ->setParameter('id', $id)
+//            ->setMaxResults(1)
+//            ->getQuery()
+//            ->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
+//
+//        dd($data);
+//    }
 
     protected function getIndexDatasheet($entityClassName): Datasheet
     {
         $datasheet = new Datasheet(
             $this->getDoctrine()->getRepository($entityClassName)->createQueryBuilder('a'),
             'List of the ' . StringUtility::normalize(StringUtility::getShortClassName($entityClassName)),
-            sprintf('admin_data_index.%s', StringUtility::toSnakeCase($entityClassName)),
         );
 
         return $datasheet;
