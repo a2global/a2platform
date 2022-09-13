@@ -4,7 +4,6 @@ namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\Datasheet;
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataType\ObjectDataType;
-use A2Global\A2Platform\Bundle\DataBundle\Component\DataType\StringDataType;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnDatasheetBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -19,7 +18,7 @@ class BuildArrayDatasheetColumns implements EventSubscriberInterface
         }
         $columns = [];
 
-        foreach ($event->getDataCollection()->getFields() as $field) {
+        foreach ($event->getDatasheet()->getData()->getFields() as $field) {
             $columns[] = new DatasheetColumn(new ObjectDataType(), $field);
         }
         $event->getDatasheet()->setColumns($columns);

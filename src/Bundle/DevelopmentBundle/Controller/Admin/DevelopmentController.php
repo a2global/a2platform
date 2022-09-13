@@ -28,12 +28,14 @@ class DevelopmentController extends AbstractController
             $subscribedEvent = $subscribedEvents[OnDatasheetBuildEvent::class];
             $sortedSubscribers[get_class($subscriber)] = $subscribedEvent[1];
         }
-        krsort($sortedSubscribers);
+        arsort($sortedSubscribers);
         $groupedBuilders = [];
 
         foreach($sortedSubscribers as $sortedSubscriber => $priority){
-            $groupedBuilders[$priority][constant($sortedSubscriber. '::SUPPORTED_DATASHEET_TYPE')] =
-                StringUtility::getShortClassName($sortedSubscriber);
+            $groupedBuilders[$priority][] = [
+                'supportedDatasheet' => constant($sortedSubscriber. '::SUPPORTED_DATASHEET_TYPE'),
+                'builder' => StringUtility::getShortClassName($sortedSubscriber),
+            ];
         }
 
         return $this->render('@Development/behat/datasheet/flow.html.twig', [

@@ -38,7 +38,7 @@ class DatasheetViewBuilder
     {
         $text = $column->getReadableView($dataItem);
 
-        if(mb_strlen($text) > self::TEXT_LIMIT){
+        if (mb_strlen($text) > self::TEXT_LIMIT) {
             $text = trim(mb_substr($text, 0, self::TEXT_LIMIT)) . '…';
         }
 

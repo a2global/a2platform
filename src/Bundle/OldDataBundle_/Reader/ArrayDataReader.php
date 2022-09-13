@@ -14,7 +14,7 @@ class ArrayDataReader extends AbstractDataReader implements DataReaderInterface
         return is_array($data);
     }
 
-    public function getData(): DataCollection
+    public function readData(): DataCollection
     {
         $collection = null;
         $firstItem = array_slice($this->source, 0, 1);

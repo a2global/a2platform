@@ -3,7 +3,7 @@
 {% block page_content %}
     <div class="row">
         <div class="col-sm-8">
-            {% for priority, builders in groupedBuilders %}
+            {% for priority, priorityGroup in groupedBuilders %}
                 <div class="row">
                     <div class="col-sm-5">
                         <hr>
@@ -15,25 +15,21 @@
                         <hr>
                     </div>
                 </div>
-
-
-                {% for supportedDatasheet, builder in builders %}
-
+                {% for builder in priorityGroup %}
                     {% set content %}
                         <div class="box bg-secondary text-secondary text-center p-3">
                             <div class="box-body">
-                                {{ builder }}
+                                {{ builder.builder }}
                             </div>
                         </div>
                     {% endset %}
-
                     <div class="row">
-                        {% if supportedDatasheet == 'all' %}
+                        {% if builder.supportedDatasheet == 'all' %}
                             <div class="col-sm-12">{{ content }}</div>
                         {% else %}
                             {% for datasheetType in ['queryBuilder','array'] %}
                                 <div class="col-sm-6">&nbsp;
-                                    {% if datasheetType == supportedDatasheet %}
+                                    {% if datasheetType == builder.supportedDatasheet %}
                                         {{ content }}
                                     {% endif %}
                                 </div>
@@ -41,18 +37,6 @@
                         {% endif %}
                     </div>
                 {% endfor %}
-
-
-                {#                <div class="row"> #}
-                {#                    {% if supportedDatasheet == 'all' %} #}
-                {#                        <div class="col-sm-12">{{ content }}</div> #}
-                {#                    {% elseif supportedDatasheet == 'queryBuilder' %} #}
-                {#                        <div class="col-sm-6">{{ content }}</div> #}
-                {#                    {% elseif supportedDatasheet == 'array' %} #}
-                {#                        <div class="col-sm-6 col-sm-offset-6">{{ content }}</div> #}
-                {#                    {% endif %} #}
-                {#                </div> #}
-
             {% endfor %}
         </div>
     </div>

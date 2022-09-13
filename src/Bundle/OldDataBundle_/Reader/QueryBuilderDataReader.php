@@ -23,7 +23,7 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
         return $source instanceof QueryBuilder;
     }
 
-    public function getData(): DataCollection
+    public function readData(): DataCollection
     {
         /** @var QueryBuilder $originalQueryBuilder */
         $queryBuilder = $this->source;

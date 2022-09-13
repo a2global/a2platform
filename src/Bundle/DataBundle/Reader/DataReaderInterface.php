@@ -3,16 +3,19 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Reader;
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
+use A2Global\A2Platform\Bundle\DataBundle\Filter\DataFilterInterface;
 
 interface DataReaderInterface
 {
     public function supports($data): bool;
 
-//    public function getSource(): mixed;
+    public function setSource(mixed $source): self;
 
-    public function setSource($data): self;
+    public function getSource(): mixed;
 
-    public function getData(): DataCollection;
+    public function addFilter(DataFilterInterface $filter);
 
-//    public function addFilter($filter): self;
+    public function getFilters(): array;
+
+    public function readData(): DataCollection;
 }

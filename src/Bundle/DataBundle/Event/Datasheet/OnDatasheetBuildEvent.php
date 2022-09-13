@@ -2,15 +2,12 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet;
 
-use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetExposed;
 use A2Global\A2Platform\Bundle\DataBundle\Reader\DataReaderInterface;
 
 class OnDatasheetBuildEvent
 {
     const NAME = 'data.datasheet.on_build';
-
-    protected DataCollection $dataCollection;
 
     protected DataReaderInterface $dataReader;
 
@@ -32,17 +29,6 @@ class OnDatasheetBuildEvent
     public function setDataReader(DataReaderInterface $dataReader): self
     {
         $this->dataReader = $dataReader;
-        return $this;
-    }
-
-    public function getDataCollection(): DataCollection
-    {
-        return $this->dataCollection;
-    }
-
-    public function setDataCollection(DataCollection $dataCollection): self
-    {
-        $this->dataCollection = $dataCollection;
         return $this;
     }
 }

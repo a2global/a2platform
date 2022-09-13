@@ -35,7 +35,7 @@ class SetDataReaderEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            OnDatasheetBuildEvent::class => ['setDataReader', 500],
+            OnDatasheetBuildEvent::class => ['setDataReader', 900],
         ];
     }
 }

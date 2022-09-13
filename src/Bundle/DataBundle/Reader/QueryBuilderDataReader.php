@@ -10,8 +10,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInterface
 {
-    protected $fields;
-
     public function __construct(
         protected EventDispatcherInterface $eventDispatcher
     ) {
@@ -22,7 +20,12 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
         return $source instanceof QueryBuilder;
     }
 
-    public function getData(): DataCollection
+    public function getSource(): mixed
+    {
+        return $this->source;
+    }
+
+    public function readData(): DataCollection
     {
         /** @var QueryBuilder $originalQueryBuilder */
         $queryBuilder = $this->source;

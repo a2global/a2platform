@@ -17,7 +17,7 @@ class SetDataEventSubscriber implements EventSubscriberInterface
 
     public function setDataReader(OnDatasheetBuildEvent $event)
     {
-        $event->getDatasheet()->setData($event->getDataCollection());
+        $event->getDatasheet()->setData($event->getDataReader()->readData());
     }
 
     /**

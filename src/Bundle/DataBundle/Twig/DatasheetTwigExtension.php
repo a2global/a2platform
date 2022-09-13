@@ -7,6 +7,8 @@ use A2Global\A2Platform\Bundle\DataBundle\Builder\DatasheetViewBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
 use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
+use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetExposed;
+use Symfony\Component\Form\FormView;
 use Throwable;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -28,6 +30,7 @@ class DatasheetTwigExtension extends AbstractExtension
             new TwigFunction('datasheet', [$this, 'buildDatasheet'], ['is_safe' => ['html']]),
             new TwigFunction('datasheet_cell', [$this, 'buildDatasheetCell'], ['is_safe' => ['html']]),
             new TwigFunction('datasheet_column_header', [$this, 'buildDatasheetColumnHeader'], ['is_safe' => ['html']]),
+            new TwigFunction('datasheet_filters_form', [$this, 'getDatasheetFiltersForm'], ['is_safe' => ['html']]),
 //            new TwigFunction('datasheet_cell_action_url', [$this, 'getDatasheetCellActionUrl']),
 //            new TwigFunction('available_datasheet_filters', [$this, 'getAvailableDatasheetFilters']),
 //            new TwigFunction('view_datasheet_filter', [$this, 'viewDatasheetFilter']),
@@ -58,6 +61,11 @@ class DatasheetTwigExtension extends AbstractExtension
     public function buildDatasheetCell(DatasheetColumn $column, DataItem $dataItem): string
     {
         return $this->datasheetViewBuilder->buildDatasheetCell($column, $dataItem);
+    }
+
+    public function getDatasheetFiltersForm(DatasheetExposed $datasheet): FormView
+    {
+        return $datasheet->getFilterFormBuilder()->getForm()->createView();
     }
 
 //    public function getDatasheetCellActionUrl(DataItem $dataItem, DatasheetColumn $column): string

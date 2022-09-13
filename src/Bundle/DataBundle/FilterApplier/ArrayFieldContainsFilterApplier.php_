@@ -1,0 +1,31 @@
+<?php
+
+namespace A2Global\A2Platform\Bundle\DataBundle\FilterApplier;
+
+use A2Global\A2Platform\Bundle\DataBundle\Filter\FieldContainsFilter;
+use A2Global\A2Platform\Bundle\DataBundle\Filter\FilterInterface;
+use A2Global\A2Platform\Bundle\DataBundle\Reader\ArrayDataReader;
+use A2Global\A2Platform\Bundle\DataBundle\Reader\DataReaderInterface;
+
+class ArrayFieldContainsFilterApplier implements FilterApplierInterface
+{
+    public function supports(DataReaderInterface $dataReader, FilterInterface $filter): bool
+    {
+        return $dataReader instanceof ArrayDataReader && $filter instanceof FieldContainsFilter;
+    }
+
+    public function apply(DataReaderInterface $dataReader, FilterInterface $filter)
+    {
+        /** @var FieldContainsFilter $filter */
+        $filteredItems = [];
+
+        foreach ($dataReader->getSource() as $item) {
+            if (stripos($item[$filter->getFieldName()], $filter->getQuery()) === false) {
+                continue;
+            }
+            $filteredItems[] = $item;
+        }
+
+        $dataReader->setSource($filteredItems);
+    }
+}

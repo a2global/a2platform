@@ -26,11 +26,7 @@ class BuildQueryBuilderDatasheetColumns implements EventSubscriberInterface
             return;
         }
         $columns = [];
-
-        $selectedFieldTypes = $this->getSelectedFieldTypes(
-            $event->getDatasheet()->getDatasource(),
-            $event->getDataCollection()->getFields()
-        );
+        $selectedFieldTypes = $this->getSelectedFieldTypes($event->getDatasheet()->getDatasource());
 
         foreach ($selectedFieldTypes as $fieldName => $fieldType)  {
             $event = new OnQueryBuilderDatasheetColumnBuildEvent($fieldName, $fieldType, $event->getDatasheet());

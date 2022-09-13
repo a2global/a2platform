@@ -1,0 +1,16 @@
+<?php
+
+namespace A2Global\A2Platform\Bundle\DataBundle\Filter;
+
+class StringEqualsDataFilter implements DataFilterInterface
+{
+    public function __construct(
+        protected string $value
+    ) {
+    }
+
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+}

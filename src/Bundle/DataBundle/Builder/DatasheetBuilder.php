@@ -18,7 +18,7 @@ class DatasheetBuilder
     {
         $datasheet = $this->expose($datasheet);
         $this->eventDispatcher->dispatch(new OnDatasheetBuildEvent($datasheet));
-        
+
         return $datasheet;
     }
 

@@ -1,3 +1,20 @@
+{{ dump(datasheet_filters_form(datasheet)) }}
+
+<hr>
+{% set form = datasheet_filters_form(datasheet) %}
+{{ form(form) }}
+
+{##}
+{#{{ form_start(form) }}#}
+{##}
+{#{% for child in form.children %}#}
+{#    {{ form_widget(child) }}#}
+{#{% endfor %}#}
+{##}
+{#{{ form_end(form) }}#}
+
+<hr><hr><hr>
+
 <h3 class="box-title">{{ datasheet.title }}</h3>
 
 <div class="table-responsive" data-datasheet-id="">
@@ -20,7 +37,3 @@
         </tbody>
     </table>
 </div>
-
-<hr>
-
-{# {{ dump(datasheet) }} #}

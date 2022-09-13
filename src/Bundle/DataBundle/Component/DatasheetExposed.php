@@ -2,9 +2,13 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Component;
 
-class DatasheetExposed// implements DatasheetInterface
+use Symfony\Component\Form\FormBuilderInterface;
+
+class DatasheetExposed
 {
     protected array $columns;
+
+    protected FormBuilderInterface $filterFormBuilder;
 
     protected DataCollection $data;
 
@@ -43,7 +47,20 @@ class DatasheetExposed// implements DatasheetInterface
     public function setData(DataCollection $data): self
     {
         $this->data = $data;
+
         return $this;
+    }
+
+    public function setFilterFormBuilder(FormBuilderInterface $filterFormBuilder): self
+    {
+        $this->filterFormBuilder = $filterFormBuilder;
+
+        return $this;
+    }
+
+    public function getFilterFormBuilder(): FormBuilderInterface
+    {
+        return $this->filterFormBuilder;
     }
 
 //    protected ?string $id;

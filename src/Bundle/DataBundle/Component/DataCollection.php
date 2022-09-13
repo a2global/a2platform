@@ -27,14 +27,14 @@ class DataCollection
         $this->items[] = $item;
     }
 
-//    public function getItemsTotal(): ?int
-//    {
-//        return $this->itemsTotal;
-//    }
-//
-//    public function setItemsTotal(?int $itemsTotal): self
-//    {
-//        $this->itemsTotal = $itemsTotal;
-//        return $this;
-//    }
+    public function getItemsTotal(): ?int
+    {
+        return $this->itemsTotal;
+    }
+
+    public function setItemsTotal(?int $itemsTotal): self
+    {
+        $this->itemsTotal = $itemsTotal;
+        return $this;
+    }
 }
