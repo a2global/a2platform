@@ -7,9 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class PaginationDataFilter implements DataFilterInterface
 {
-    protected int $page = 0;
+    protected int $page = 1;
 
-    protected int $limit = 10;
+    protected int $limit = 20;
 
     public function getPage(): int
     {

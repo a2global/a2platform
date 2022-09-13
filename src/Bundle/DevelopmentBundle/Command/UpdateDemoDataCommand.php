@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Command;
 
+use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DevelopmentBundle\Entity\Address;
 use A2Global\A2Platform\Bundle\DevelopmentBundle\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,14 +29,10 @@ class UpdateDemoDataCommand extends Command
         $faker = Factory::create();
 
         foreach ($this->entityManager->getRepository(Person::class)->findAll() as $person) {
-            $address = $this->entityManager->getRepository(Address::class)->find(rand(1, 50));
-            $version = rand(0, 15) . '.' . rand(0,12);
-            $person
-                ->setAddress($address)
-                ->setAge(rand(20,50))
-                ->setVersion((float)$version);
-            $this->entityManager->flush();
+            $person->setFullname(ucwords(StringUtility::normalize($person->getFullname())));
         }
+
+        $this->entityManager->flush();
 
         return Command::SUCCESS;
     }

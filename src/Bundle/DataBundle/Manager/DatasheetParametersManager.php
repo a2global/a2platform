@@ -13,13 +13,13 @@ class DatasheetParametersManager
     ) {
     }
 
-    public function getDatasheetFilterParameters(DatasheetExposed $exposed, string $name)
+    public function getDatasheetFilterParameters(DatasheetExposed $datasheet, string $name)
     {
         $params = $this->requestStack
             ->getMainRequest()
             ->get('datasheet', []);
 
-        return $params['filter'][$name] ?? [];
+        return $params[$datasheet->getId()]['datasheet'][$name] ?? [];
     }
 
     public function applyParameters(DataFilterInterface $filter, array $parameters): DataFilterInterface

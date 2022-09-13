@@ -14,6 +14,7 @@ class DatasheetExposed
 
     public function __construct(
         protected mixed   $datasource,
+        protected string $id,
         protected ?string $title,
     ) {
     }
@@ -26,6 +27,11 @@ class DatasheetExposed
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getColumns(): array

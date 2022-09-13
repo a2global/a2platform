@@ -4,21 +4,24 @@ namespace A2Global\A2Platform\Bundle\DataBundle\FilterApplier;
 
 use A2Global\A2Platform\Bundle\DataBundle\Filter\DataFilterInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\PaginationDataFilter;
-use A2Global\A2Platform\Bundle\DataBundle\Reader\ArrayDataReader;
 use A2Global\A2Platform\Bundle\DataBundle\Reader\DataReaderInterface;
+use A2Global\A2Platform\Bundle\DataBundle\Reader\QueryBuilderDataReader;
+use Doctrine\ORM\QueryBuilder;
 
-class ArrayPaginationFilterApplier implements FilterApplierInterface
+class QueryBuilderPaginationFilterApplier implements FilterApplierInterface
 {
     public function supports(DataReaderInterface $dataReader, DataFilterInterface $filter): bool
     {
-        return $dataReader instanceof ArrayDataReader && $filter instanceof PaginationDataFilter;
+        return $dataReader instanceof QueryBuilderDataReader && $filter instanceof PaginationDataFilter;
     }
 
     public function apply(DataReaderInterface $dataReader, DataFilterInterface $filter)
     {
         /** @var PaginationDataFilter $filter */
-        $data = $dataReader->getSource();
-        $data = array_splice($data, max($filter->getPage()-1, 0) * $filter->getLimit(), $filter->getLimit());
-        $dataReader->setSource($data);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $dataReader->getSource();
+        $queryBuilder
+            ->setFirstResult(max($filter->getPage()-1, 0) * $filter->getLimit())
+            ->setMaxResults($filter->getLimit());
     }
 }

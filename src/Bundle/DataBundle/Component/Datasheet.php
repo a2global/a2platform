@@ -5,12 +5,14 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Component;
 
 class Datasheet// implements DatasheetInterface
 {
+    protected string $invokedAt;
+
     public function __construct(
         protected mixed   $datasource,
         protected ?string $title = null,
     ) {
-//        $backtrace = debug_backtrace();
-//        $this->invokedAt = sprintf('%s:%s', $backtrace[1]['class'], $backtrace[1]['line']);
+        $backtrace = debug_backtrace();
+        $this->invokedAt = sprintf('%s:%s', $backtrace[1]['class'], $backtrace[1]['line']);
     }
 
     public function __invoke(): array
@@ -18,6 +20,7 @@ class Datasheet// implements DatasheetInterface
         return [
             'datasource' => $this->datasource,
             'title' => $this->title,
+            'invokedAt' => $this->invokedAt,
         ];
     }
 //

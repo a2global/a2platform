@@ -1,39 +1,43 @@
-{{ dump(datasheet_filters_form(datasheet)) }}
+<div data-datasheet="{{ datasheet.id }}">
+    <form action="?" method="get" data-datasheet-form="{{ datasheet.id }}">
 
-<hr>
-{% set form = datasheet_filters_form(datasheet) %}
-{{ form(form) }}
+        {% set form = datasheet_filters_form(datasheet) %}
+        {{ form(form) }}
 
-{##}
-{#{{ form_start(form) }}#}
-{##}
-{#{% for child in form.children %}#}
-{#    {{ form_widget(child) }}#}
-{#{% endfor %}#}
-{##}
-{#{{ form_end(form) }}#}
+        {{ datasheet.data.itemsTotal }}
+        <div class="row">
+            <div class="col-sm-5">
+                <h3 class="box-title">{{ datasheet.title }}</h3>
+            </div>
+            <div class="col-sm-5 text-right">
+                <ul class="pagination" data-datasheet-items-total="{{ datasheet.data.itemsTotal }}"></ul>
+            </div>
+            <div class="col-sm-2">
+                <br>
+                <input type="submit" value="Apply filter" class="form-control btn-sm btn-primary">
+            </div>
+        </div>
 
-<hr><hr><hr>
-
-<h3 class="box-title">{{ datasheet.title }}</h3>
-
-<div class="table-responsive" data-datasheet-id="">
-    <table class="table table-striped table-bordered table-sm">
-        <thead>
-        <tr>
-            {% for column in datasheet.columns %}
-                {{ datasheet_column_header(column) }}
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in datasheet.data.items %}
-            <tr>
-                {% for column in datasheet.columns %}
-                    {{ datasheet_cell(column, item) }}
+        <div class="table-responsive" data-datasheet-id="">
+            <table class="table table-striped table-bordered table-sm">
+                <thead>
+                <tr>
+                    {% for column in datasheet.columns %}
+                        {{ datasheet_column_header(column) }}
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in datasheet.data.items %}
+                    <tr>
+                        {% for column in datasheet.columns %}
+                            {{ datasheet_cell(column, item) }}
+                        {% endfor %}
+                    </tr>
                 {% endfor %}
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+
+    </form>
 </div>

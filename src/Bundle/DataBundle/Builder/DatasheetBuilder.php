@@ -28,6 +28,7 @@ class DatasheetBuilder
 
         return new DatasheetExposed(
             $config['datasource'],
+            $config['id'] ?? substr(md5($config['invokedAt']), 0, 5),
             $config['title'],
         );
     }

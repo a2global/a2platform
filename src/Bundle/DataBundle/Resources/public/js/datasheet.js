@@ -21,9 +21,10 @@ $(function () {
     //         .show()
     // }).change();
     //
-    // $('[data-datasheet]').each(function () {
-    //     var datasheetId = $(this).data('datasheet');
-    //     var datasheetForm = $(this).find('[data-datasheet-form="' + datasheetId + '"]');
+    $('[data-datasheet]').each(function () {
+        var datasheetId = $(this).data('datasheet');
+        console.log(datasheetId);
+        var datasheetForm = $(this).find('[data-datasheet-form="' + datasheetId + '"]');
     //
     //     // sort filter
     //     var filterSortTypeControl = $(this).find('[name="ds' + datasheetId + '[filter][sort][type]"]');
@@ -51,78 +52,79 @@ $(function () {
     //         })
     //     }
     //
-    //     // pagination
-    //     var paginationContainer = $(this).find('[data-datasheet-items-total]');
-    //     var paginationPageControl = $(this).find('[name="ds' + datasheetId + '[filter][pagination][page]"]');
-    //     var paginationLimitControl = $(this).find('[name="ds' + datasheetId + '[filter][pagination][limit]"]');
-    //     var itemsTotal = paginationContainer.attr('data-datasheet-items-total');
-    //     var page = parseInt(paginationPageControl.val());
-    //     var limit = paginationLimitControl.val();
-    //     var pagesTotal = Math.ceil(itemsTotal / limit);
-    //     var maxSideLength = 4;
-    //     var pages = [];
-    //
-    //     for (i = page - maxSideLength; i < page; i++) { // left side
-    //         if (i > 0) {
-    //             pages.push(i);
-    //         }
-    //     }
-    //
-    //     for (i = page; i <= (page + maxSideLength); i++) { // right side
-    //         if (i <= pagesTotal) {
-    //             pages.push(i);
-    //         }
-    //     }
-    //
-    //     if (pages.length < maxSideLength * 2 + 1) {
-    //         var notEnoughLength = (maxSideLength * 2 + 1) - pages.length;
-    //
-    //         if (pages[0] === 1) { // not enough on right side
-    //             var last = pages[pages.length - 1];
-    //             for (i = last + 1; i <= (last + notEnoughLength); i++) {
-    //                 if (i <= pagesTotal) {
-    //                     pages.push(i);
-    //                 }
-    //             }
-    //         } else {
-    //             var first = pages[0];
-    //             for (i = first - 1; i >= (first - notEnoughLength); i--) {
-    //                 if (i > 0) {
-    //                     pages.unshift(i);
-    //                 }
-    //             }
-    //         }
-    //     }
-    //
-    //     paginationContainer.append(getPaginationElement('First', 1));
-    //
-    //     for (var i = 0; i < pages.length; i++) {
-    //         paginationContainer.append(getPaginationElement(pages[i], pages[i], pages[i] == page));
-    //     }
-    //     paginationContainer.append(getPaginationElement('Last', pagesTotal));
-    //
-    //     $('[data-datasheet-items-total] li').click(function () {
-    //         paginationPageControl.val($(this).attr('data-page'));
-    //         datasheetForm.submit();
-    //     })
-    // })
-    //
-    // function getPaginationElement(text, page, isActive = false) {
-    //     var liElement = $('<li>');
-    //     var aElement = $('<a>');
-    //     liElement
-    //         .addClass('paginate_button page-item cursor-pointer')
-    //         .attr('data-page', page);
-    //
-    //     if (isActive) {
-    //         liElement.addClass('active');
-    //     }
-    //     aElement
-    //         .addClass('page-link')
-    //         .attr('data-datasheet-pagination-link', text)
-    //         .text(text)
-    //         .appendTo(liElement);
-    //
-    //     return liElement;
-    // }
+        // pagination
+        var paginationContainer = $(this).find('[data-datasheet-items-total]');
+        var paginationPageControl = $(this).find('[name="datasheet[' + datasheetId + '][datasheet][pagination][page]"]');
+        var paginationLimitControl = $(this).find('[name="datasheet[' + datasheetId + '][datasheet][pagination][limit]"]');
+        console.log(paginationLimitControl);
+        var itemsTotal = paginationContainer.attr('data-datasheet-items-total');
+        var page = parseInt(paginationPageControl.val());
+        var limit = paginationLimitControl.val();
+        var pagesTotal = Math.ceil(itemsTotal / limit);
+        var maxSideLength = 4;
+        var pages = [];
+
+        for (i = page - maxSideLength; i < page; i++) { // left side
+            if (i > 0) {
+                pages.push(i);
+            }
+        }
+
+        for (i = page; i <= (page + maxSideLength); i++) { // right side
+            if (i <= pagesTotal) {
+                pages.push(i);
+            }
+        }
+
+        if (pages.length < maxSideLength * 2 + 1) {
+            var notEnoughLength = (maxSideLength * 2 + 1) - pages.length;
+
+            if (pages[0] === 1) { // not enough on right side
+                var last = pages[pages.length - 1];
+                for (i = last + 1; i <= (last + notEnoughLength); i++) {
+                    if (i <= pagesTotal) {
+                        pages.push(i);
+                    }
+                }
+            } else {
+                var first = pages[0];
+                for (i = first - 1; i >= (first - notEnoughLength); i--) {
+                    if (i > 0) {
+                        pages.unshift(i);
+                    }
+                }
+            }
+        }
+
+        paginationContainer.append(getPaginationElement('First', 1));
+
+        for (var i = 0; i < pages.length; i++) {
+            paginationContainer.append(getPaginationElement(pages[i], pages[i], pages[i] == page));
+        }
+        paginationContainer.append(getPaginationElement('Last', pagesTotal));
+
+        $('[data-datasheet-items-total] li').click(function () {
+            paginationPageControl.val($(this).attr('data-page'));
+            datasheetForm.submit();
+        })
+    })
+
+    function getPaginationElement(text, page, isActive = false) {
+        var liElement = $('<li>');
+        var aElement = $('<a>');
+        liElement
+            .addClass('paginate_button page-item cursor-pointer')
+            .attr('data-page', page);
+
+        if (isActive) {
+            liElement.addClass('active');
+        }
+        aElement
+            .addClass('page-link')
+            .attr('data-datasheet-pagination-link', text)
+            .text(text)
+            .appendTo(liElement);
+
+        return liElement;
+    }
 })

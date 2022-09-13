@@ -17,11 +17,10 @@ class InitFilterFormEventSubscriber implements EventSubscriberInterface
 
     public function initFilterForm(OnDatasheetBuildEvent $event)
     {
-        $builder = $this->formFactory->createBuilder();
-        $builder->add('datasheet', null, [
-            'compound' => true,
-        ]);
-        $builder->add('column');
+        $builder = $this->formFactory
+            ->createNamedBuilder($event->getDatasheet()->getId())
+            ->add('datasheet', null, ['compound' => true])
+            ->add('column', null, ['compound' => true]);
         $event->getDatasheet()->setFilterFormBuilder($builder);
     }
 

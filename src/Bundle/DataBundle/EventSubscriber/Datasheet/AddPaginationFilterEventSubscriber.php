@@ -21,12 +21,11 @@ class AddPaginationFilterEventSubscriber implements EventSubscriberInterface
     {
         $parameters = $this->parametersManager->getDatasheetFilterParameters(
             $event->getDatasheet(),
-            PaginationDataFilter::class
+            $this->getFilterName(PaginationDataFilter::class),
         );
         $filter = new PaginationDataFilter();
         $this->parametersManager->applyParameters($filter, $parameters);
         $event->getDataReader()->addFilter($filter);
-
         $container = $event->getDatasheet()
             ->getFilterFormBuilder()
             ->get('datasheet')

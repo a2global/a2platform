@@ -3,6 +3,7 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Twig;
 
 use A2Global\A2Platform\Bundle\DataBundle\Builder\DatasheetBuilder;
+use A2Global\A2Platform\Bundle\DataBundle\Builder\DatasheetFilterFormBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Builder\DatasheetViewBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
 use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
@@ -16,8 +17,9 @@ use Twig\TwigFunction;
 class DatasheetTwigExtension extends AbstractExtension
 {
     public function __construct(
-        protected DatasheetBuilder $datasheetBuilder,
-        protected DatasheetViewBuilder $datasheetViewBuilder,
+        protected DatasheetBuilder           $datasheetBuilder,
+        protected DatasheetViewBuilder       $datasheetViewBuilder,
+        protected DatasheetFilterFormBuilder $filterFormBuilder,
     ) {
     }
 
@@ -65,7 +67,9 @@ class DatasheetTwigExtension extends AbstractExtension
 
     public function getDatasheetFiltersForm(DatasheetExposed $datasheet): FormView
     {
-        return $datasheet->getFilterFormBuilder()->getForm()->createView();
+        return $this->filterFormBuilder
+            ->buildDatasheetFilterForm($datasheet)
+            ->createView();
     }
 
 //    public function getDatasheetCellActionUrl(DataItem $dataItem, DatasheetColumn $column): string
