@@ -2,11 +2,8 @@
 
 namespace A2Global\A2Platform\Bundle\CoreBundle\Twig;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
-use DateTimeInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class HelperTwigExtension extends AbstractExtension
@@ -20,6 +17,7 @@ class HelperTwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('parameter', [$this, 'getParameter']),
+            new TwigFunction('chart_js_data', [$this, 'getChartJsData'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -28,5 +26,10 @@ class HelperTwigExtension extends AbstractExtension
         return $this->parameterBag->has($name)
             ? $this->parameterBag->get($name)
             : $default;
+    }
+
+    public function getChartJsData($data): string
+    {
+        return json_encode($data);
     }
 }

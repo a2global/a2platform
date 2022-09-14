@@ -28,6 +28,10 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
         /** Development */
 
         $developmentMenu = $menu->getChild(DevelopmentBundle::NAME);
+        $developmentMenu->addChild(DevelopmentBundle::NAME . '.ui', [
+            'label' => 'UI sample page',
+            'route' => 'admin_development_ui',
+        ]);
         $developmentMenu->addChild(DevelopmentBundle::NAME . '.behat_coverage', [
             'label' => 'Behat coverage',
             'route' => 'development_behat_coverage',

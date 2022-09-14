@@ -1,0 +1,39 @@
+{% extends '@Admin/layout.html.twig' %}
+
+{% block page_content %}
+    <div class="box">
+        <div class="box-body">
+            <a href="https://adminlte.io/themes/AdminLTE/index2.html" target="_blank">AdminLTE manual</a>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Charts</h3>
+        </div>
+        <div class="box-body">
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            const myChartContainer = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(myChartContainer, {
+                type: 'bar',
+                data: {{ chart_js_data(chartData) }},
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+    </script>
+{% endblock %}

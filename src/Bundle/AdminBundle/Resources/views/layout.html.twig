@@ -84,17 +84,19 @@
 {% block footer %}
     <footer class="main-footer">
         <!-- To the right -->
-{#        <div class="pull-right hidden-xs">#}
-{#            <a href="https://adminlte.io/themes/v3/index.html" target="_blank">AdminLTE Sample</a>#}
-{#        </div>#}
+        <div class="pull-right hidden-xs">
+            &nbsp;
+        </div>
         <!-- Default to the left -->
-{#        <strong><a href="#">A2Platform</a></strong> Your digital platform#}
-        {{ appTitle }}
+        <strong><a href="/">{{ appTitle }}</a></strong>
     </footer>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{#    <script src="{{ asset('bundles/core/libs/chartjs/chartjs_3.9.1.js') }}"></script>#}
     <script src="/bundles/data/js/datasheet.js"></script>
 {% endblock %}
 
