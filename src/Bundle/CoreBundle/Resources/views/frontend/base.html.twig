@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="A2Platform">
-    <title>{% block page_title %}A2Platform{% endblock %}</title>
+    <title>{% block page_title %}{{ parameter('app.meta.title') }}{% endblock %}</title>
     <style>
 
         html {
@@ -118,7 +118,7 @@
 
 <div class="page-container">
     <div class="page-title">
-        <b>A2</b>Platform
+        <b>{{ parameter('app.meta.title') }}</b>
     </div>
     <div class="page-content">
         {% block page_content %}

@@ -14,7 +14,6 @@ class HelperTwigExtension extends AbstractExtension
     public function __construct(
         protected ParameterBagInterface $parameterBag
     ) {
-
     }
 
     public function getFunctions()
