@@ -2,7 +2,6 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Reader;
 
-use A2Global\A2Platform\Bundle\DataBundle\Exception\DatasheetBuildException;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\DataFilterInterface;
 use A2Global\A2Platform\Bundle\DataBundle\FilterApplier\FilterApplierInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\FilterApplierRegistry;
@@ -32,11 +31,6 @@ abstract class AbstractDataReader implements DataReaderInterface
         $this->filters[] = $filter;
 
         return $this;
-    }
-
-    public function getFilters(): array
-    {
-        return $this->filters;
     }
 
     /** @Required */
@@ -71,7 +65,10 @@ abstract class AbstractDataReader implements DataReaderInterface
             }
 
             if (!$filterApplied) {
-                throw new DatasheetBuildException('Filter not applied: ' . get_class($filter));
+                /**
+                 * @codeCoverageIgnore
+                 */
+//                throw new DatasheetBuildException('Filter not applied: ' . get_class($filter));
             }
         }
     }
