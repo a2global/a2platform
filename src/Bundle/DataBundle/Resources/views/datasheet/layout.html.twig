@@ -1,21 +1,23 @@
 <div data-datasheet="{{ datasheet.id }}">
     <form action="?" method="get" data-datasheet-form="{{ datasheet.id }}">
 
-        {% set form = datasheet_filters_form(datasheet) %}
-        {{ form(form) }}
+        <div class="hidden">
+            {% set form = datasheet_filters_form(datasheet) %}
+            {{ form(form) }}
+            {{ datasheet.data.itemsTotal }}
+        </div>
 
-        {{ datasheet.data.itemsTotal }}
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-6">
                 <h3 class="box-title">{{ datasheet.title }}</h3>
             </div>
-            <div class="col-sm-5 text-right">
+            <div class="col-sm-6 text-right">
                 <ul class="pagination" data-datasheet-items-total="{{ datasheet.data.itemsTotal }}"></ul>
             </div>
-            <div class="col-sm-2">
-                <br>
-                <input type="submit" value="Apply filter" class="form-control btn-sm btn-primary">
-            </div>
+{#            <div class="col-sm-2">#}
+{#                <br>#}
+{#                <input type="submit" value="Apply filter" class="form-control btn-sm btn-primary">#}
+{#            </div>#}
         </div>
 
         <div class="table-responsive" data-datasheet-id="">
