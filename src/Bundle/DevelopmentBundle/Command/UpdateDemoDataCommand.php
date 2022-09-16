@@ -5,7 +5,6 @@ namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Command;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DevelopmentBundle\Entity\Address;
 use A2Global\A2Platform\Bundle\DevelopmentBundle\Entity\Person;
-use A2Global\A2Platform\Bundle\DevelopmentBundle\Entity\Position;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -28,11 +27,11 @@ class UpdateDemoDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $faker = Factory::create();
-        $positions = $this->entityManager->getRepository(Position::class)->findAll();
 
         foreach ($this->entityManager->getRepository(Person::class)->findAll() as $person) {
-            $person->setPosition($faker->randomElement($positions));
+            $person->setFullname(ucwords(StringUtility::normalize($person->getFullname())));
         }
+
         $this->entityManager->flush();
 
         return Command::SUCCESS;
