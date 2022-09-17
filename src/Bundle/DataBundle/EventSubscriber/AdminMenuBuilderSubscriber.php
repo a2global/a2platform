@@ -2,14 +2,31 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber;
 
+use A2Global\A2Platform\Bundle\CoreBundle\Entity\BaseUser;
+use A2Global\A2Platform\Bundle\CoreBundle\Entity\Setting;
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use KevinPapst\AdminLTEBundle\Event\KnpMenuEvent;
 use Knp\Menu\ItemInterface;
+use League\Bundle\OAuth2ServerBundle\Model\AbstractClient;
+use League\Bundle\OAuth2ServerBundle\Model\AccessToken;
+use League\Bundle\OAuth2ServerBundle\Model\AuthorizationCode;
+use League\Bundle\OAuth2ServerBundle\Model\Client;
+use League\Bundle\OAuth2ServerBundle\Model\RefreshToken;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AdminMenuBuilderSubscriber implements EventSubscriberInterface
 {
+    private const EXCLUDED_ENTITIES = [
+        BaseUser::class,
+        Setting::class,
+        AbstractClient::class,
+        AccessToken::class,
+        AuthorizationCode::class,
+        Client::class,
+        RefreshToken::class,
+    ];
+
     public function __construct(
         protected EntityHelper $entityHelper,
     ) {
@@ -52,6 +69,9 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
         $currentBundleName = null;
 
         foreach ($bundleEntities as $entity) {
+            if (in_array($entity, self::EXCLUDED_ENTITIES)) {
+                continue;
+            }
             $bundleName = StringUtility::getBundleNameFromClass($entity, 'Bundle');
 
             if ($currentBundleName != $bundleName) {

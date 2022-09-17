@@ -37,6 +37,11 @@ class Person
     private $company;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Position::class)
+     */
+    private $position;
+
+    /**
      * @ORM\Column(type="integer", nullable="true")
      */
     private $age;
@@ -231,6 +236,18 @@ class Person
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+    
+    public function getPosition(): ?Position
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?Position $position): self
+    {
+        $this->position = $position;
 
         return $this;
     }
