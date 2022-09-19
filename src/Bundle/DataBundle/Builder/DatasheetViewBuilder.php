@@ -4,6 +4,7 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Builder;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
+use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetExposed;
 use Symfony\Component\Routing\RouterInterface;
@@ -36,7 +37,7 @@ class DatasheetViewBuilder
         ]);
     }
 
-    public function buildDatasheetCell(DatasheetColumn $column, DataItem $dataItem)
+    public function buildDatasheetCell(DatasheetExposed $datasheet, DatasheetColumn $column, DataItem $dataItem)
     {
         $text = $column->getReadableView($dataItem);
 
@@ -49,6 +50,7 @@ class DatasheetViewBuilder
             $link = $this->router->generate($link[0], array_merge($link[1] ?? [], [
                 'id' => $dataItem->getValue('id'),
             ]));
+            $linkId = sprintf('%s.%s.%s', $datasheet->getId(), $column->getName(), $dataItem->getValue('id'));
         }
         $classes = [];
 
@@ -60,6 +62,7 @@ class DatasheetViewBuilder
             'text' => $text,
             'align' => $column->getAlign(),
             'link' => $link,
+            'linkId' => $linkId ?? null,
             'classes' => implode(' ', $classes),
         ]);
     }

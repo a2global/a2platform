@@ -33,7 +33,7 @@
                 {% for item in datasheet.data.items %}
                     <tr>
                         {% for column in datasheet.columns %}
-                            {{ datasheet_cell(column, item) }}
+                            {{ datasheet_cell(datasheet, column, item) }}
                         {% endfor %}
                     </tr>
                 {% endfor %}

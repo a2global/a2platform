@@ -60,9 +60,9 @@ class DatasheetTwigExtension extends AbstractExtension
         return $this->datasheetViewBuilder->buildDatasheetColumnHeader($column);
     }
 
-    public function buildDatasheetCell(DatasheetColumn $column, DataItem $dataItem): string
+    public function buildDatasheetCell(DatasheetExposed $datasheet, DatasheetColumn $column, DataItem $dataItem): string
     {
-        return $this->datasheetViewBuilder->buildDatasheetCell($column, $dataItem);
+        return $this->datasheetViewBuilder->buildDatasheetCell($datasheet, $column, $dataItem);
     }
 
     public function getDatasheetFiltersForm(DatasheetExposed $datasheet): FormView
