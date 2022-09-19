@@ -17,13 +17,9 @@ class ObjectColumnBuildSubscriber implements EventSubscriberInterface
         ])) {
             return;
         }
-
-        $event->setColumn(
-            new DatasheetColumn(
-                new ObjectDataType(),
-                $event->getFieldName(),
-            )
-        );
+        $column = (new DatasheetColumn($event->getFieldName()))
+            ->setType(new ObjectDataType());
+        $event->setColumn($column);
     }
 
     /**

@@ -72,7 +72,7 @@ class BuildQueryBuilderDatasheetColumns implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            OnDatasheetBuildEvent::class => ['buildColumns', 210],
+            OnDatasheetBuildEvent::class => ['buildColumns', 200],
         ];
     }
 }

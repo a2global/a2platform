@@ -14,8 +14,9 @@ class DatasheetExposed
 
     public function __construct(
         protected mixed   $datasource,
-        protected string $id,
+        protected string  $id,
         protected ?string $title,
+        protected array   $columnsToUpdate,
     ) {
     }
 
@@ -45,6 +46,16 @@ class DatasheetExposed
         return $this;
     }
 
+    public function getColumnByName(string $name): DatasheetColumn
+    {
+        /** @var DatasheetColumn $column */
+        foreach ($this->columns as $column) {
+            if ($column->getName() === $name) {
+                return $column;
+            }
+        }
+    }
+
     public function getData(): DataCollection
     {
         return $this->data;
@@ -69,6 +80,10 @@ class DatasheetExposed
         return $this->filterFormBuilder;
     }
 
+    public function getColumnsToUpdate(): array
+    {
+        return $this->columnsToUpdate;
+    }
 //    protected ?string $id;
 //
 //    /** @var DatasheetColumn[] */

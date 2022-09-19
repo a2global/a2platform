@@ -6,6 +6,7 @@ use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetExposed;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
 class DatasheetViewBuilder
@@ -13,7 +14,8 @@ class DatasheetViewBuilder
     private const TEXT_LIMIT = 20;
 
     public function __construct(
-        protected Environment $twig,
+        protected Environment     $twig,
+        protected RouterInterface $router,
     ) {
     }
 
@@ -41,10 +43,24 @@ class DatasheetViewBuilder
         if (mb_strlen($text) > self::TEXT_LIMIT) {
             $text = trim(mb_substr($text, 0, self::TEXT_LIMIT)) . '…';
         }
+        $link = $column->getLink();
+
+        if ($link) {
+            $link = $this->router->generate($link[0], array_merge($link[1] ?? [], [
+                'id' => $dataItem->getValue('id'),
+            ]));
+        }
+        $classes = [];
+
+        if ($column->isBold()) {
+            $classes[] = 'text-bold';
+        }
 
         return $this->twig->render('@Data/datasheet/cell.html.twig', [
             'text' => $text,
             'align' => $column->getAlign(),
+            'link' => $link,
+            'classes' => implode(' ', $classes),
         ]);
     }
 }

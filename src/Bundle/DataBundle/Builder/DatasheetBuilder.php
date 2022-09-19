@@ -24,12 +24,13 @@ class DatasheetBuilder
 
     protected function expose(Datasheet $datasheet): DatasheetExposed
     {
-        $config = $datasheet();
+        $parameters = $datasheet();
 
         return new DatasheetExposed(
-            $config['datasource'],
-            $config['id'] ?? substr(md5($config['invokedAt']), 0, 5),
-            $config['title'],
+            $parameters['datasource'],
+            $parameters['id'] ?? substr(md5($parameters['invokedAt']), 0, 5),
+            $parameters['title'],
+            $parameters['columnsToUpdate'],
         );
     }
 }

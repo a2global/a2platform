@@ -16,13 +16,9 @@ class DateTimeColumnBuildSubscriber implements EventSubscriberInterface
         ])) {
             return;
         }
-
-        $event->setColumn(
-            new DatasheetColumn(
-                new DateTimeDataType(),
-                $event->getFieldName(),
-            )
-        );
+        $column = (new DatasheetColumn($event->getFieldName()))
+            ->setType(new DateTimeDataType());
+        $event->setColumn($column);
     }
 
     /**

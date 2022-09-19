@@ -16,13 +16,9 @@ class BooleanColumnBuildSubscriber implements EventSubscriberInterface
         ])) {
             return;
         }
-
-        $event->setColumn(
-            new DatasheetColumn(
-                new BooleanDataType(),
-                $event->getFieldName(),
-            )
-        );
+        $column = (new DatasheetColumn($event->getFieldName()))
+            ->setType(new BooleanDataType());
+        $event->setColumn($column);
     }
 
     /**

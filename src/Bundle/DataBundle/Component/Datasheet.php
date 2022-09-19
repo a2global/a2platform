@@ -7,6 +7,8 @@ class Datasheet// implements DatasheetInterface
 {
     protected string $invokedAt;
 
+    protected array $columnsToUpdate = [];
+
     public function __construct(
         protected mixed   $datasource,
         protected ?string $title = null,
@@ -21,6 +23,7 @@ class Datasheet// implements DatasheetInterface
             'datasource' => $this->datasource,
             'title' => $this->title,
             'invokedAt' => $this->invokedAt,
+            'columnsToUpdate' => $this->columnsToUpdate,
         ];
     }
 //
@@ -38,21 +41,21 @@ class Datasheet// implements DatasheetInterface
 //        return $column;
 //    }
 //
-//    public function getColumn($fieldName): DatasheetColumn
-//    {
-//        $column = new DatasheetColumn($fieldName);
-//        $this->config['columns']['update'][$fieldName] = $column;
-//
-//        return $column;
-//    }
-//
+    public function getColumn($fieldName): DatasheetColumn
+    {
+        $column = new DatasheetColumn($fieldName);
+        $this->columnsToUpdate[$fieldName] = $column;
+
+        return $column;
+    }
+
 //    public function hideColumns(...$names): self
 //    {
 //        $this->config['columns']['hide'] = $names;
 //
 //        return $this;
 //    }
-//
+
 //    public function showColumns(...$names): self
 //    {
 //        $this->config['columns']['show'] = $names;

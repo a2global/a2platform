@@ -19,7 +19,7 @@ class BuildArrayDatasheetColumns implements EventSubscriberInterface
         $columns = [];
 
         foreach ($event->getDatasheet()->getData()->getFields() as $field) {
-            $columns[] = new DatasheetColumn(new ObjectDataType(), $field);
+            $columns[] = (new DatasheetColumn($field))->setType(new ObjectDataType());
         }
         $event->getDatasheet()->setColumns($columns);
     }

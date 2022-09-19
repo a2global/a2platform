@@ -2,7 +2,6 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Component;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataType\DataTypeInterface;
 
 class DatasheetColumn
@@ -10,16 +9,21 @@ class DatasheetColumn
     public const TEXT_ALIGN_LEFT = 'left';
     public const TEXT_ALIGN_RIGHT = 'right';
 
-    protected string $align = self::TEXT_ALIGN_LEFT;
+    protected ?string $align = null;
 
-    protected int $width = 100;
+    protected ?int $width = null;
 
-    protected array $filters = [];
+    protected mixed $link = null;
+
+    protected ?bool $isBold = null;
+
+    protected ?DataTypeInterface $type = null;
+
+//    protected array $filters = [];
 
     public function __construct(
-        protected DataTypeInterface $dataType,
-        protected string            $name,
-        protected ?string           $title = null,
+        protected string  $name,
+        protected ?string $title = null,
     ) {
     }
 
@@ -33,7 +37,18 @@ class DatasheetColumn
         return $this->title;
     }
 
-    public function getAlign(): string
+    public function getType(): ?DataTypeInterface
+    {
+        return $this->type;
+    }
+
+    public function setType(?DataTypeInterface $type): self
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function getAlign(): ?string
     {
         return $this->align;
     }
@@ -41,10 +56,11 @@ class DatasheetColumn
     public function setAlign(string $align): self
     {
         $this->align = $align;
+
         return $this;
     }
 
-    public function getWidth(): int
+    public function getWidth(): ?int
     {
         return $this->width;
     }
@@ -52,6 +68,28 @@ class DatasheetColumn
     public function setWidth(int $width): self
     {
         $this->width = $width;
+        return $this;
+    }
+
+    public function getLink(): mixed
+    {
+        return $this->link;
+    }
+
+    public function setLink(mixed $link): self
+    {
+        $this->link = $link;
+        return $this;
+    }
+
+    public function isBold(): ?bool
+    {
+        return $this->isBold;
+    }
+
+    public function setBold(?bool $isBold): self
+    {
+        $this->isBold = $isBold;
         return $this;
     }
 
@@ -73,6 +111,6 @@ class DatasheetColumn
             return '';
         }
 
-        return $this->dataType::getReadablePreview($value);
+        return $this->type::getReadablePreview($value);
     }
 }

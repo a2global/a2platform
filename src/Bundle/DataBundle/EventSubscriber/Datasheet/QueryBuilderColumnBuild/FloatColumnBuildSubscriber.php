@@ -18,7 +18,8 @@ class FloatColumnBuildSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $column = (new DatasheetColumn(new FloatDataType(), $event->getFieldName()))
+        $column = (new DatasheetColumn($event->getFieldName()))
+            ->setType(new FloatDataType())
             ->setWidth(70)
             ->setAlign(DatasheetColumn::TEXT_ALIGN_RIGHT);
         $event->setColumn($column);

@@ -1,3 +1,11 @@
 <td style="text-align: {{ align }}">
-    {{ text }}
+    {% if link %}
+    <a href="{{ link }}" class="text-primary">
+        {% endif %}
+
+        <span class="{{ classes }}">{{ text }}</span>
+
+        {% if link %}
+    </a>
+    {% endif %}
 </td>

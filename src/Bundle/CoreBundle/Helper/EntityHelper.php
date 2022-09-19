@@ -36,6 +36,10 @@ class EntityHelper
 
     public static function getEntityFields($class): array
     {
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
+
         if (array_key_exists($class, self::$cachedEntityFields)) {
             return self::$cachedEntityFields[$class];
         }

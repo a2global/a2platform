@@ -16,13 +16,9 @@ class ManyToOneBuildSubscriber implements EventSubscriberInterface
         ])) {
             return;
         }
-
-        $event->setColumn(
-            new DatasheetColumn(
-                new EntityDataType(),
-                $event->getFieldName(),
-            )
-        );
+        $column = (new DatasheetColumn($event->getFieldName()))
+            ->setType(new EntityDataType());
+        $event->setColumn($column);
     }
 
     /**
