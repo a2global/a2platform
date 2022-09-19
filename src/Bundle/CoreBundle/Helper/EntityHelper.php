@@ -3,6 +3,9 @@
 namespace A2Global\A2Platform\Bundle\CoreBundle\Helper;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\DataTypeInterface;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\BooleanDataType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\ObjectDataType;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Column;
@@ -15,10 +18,13 @@ class EntityHelper
 {
     public static array $cachedEntityFields = [];
 
+    public static array $cachedDataTypes = [];
+
     protected array $entityListCached = [];
 
     public function __construct(
-        protected EntityManagerInterface $entityManager
+        protected EntityManagerInterface $entityManager,
+        protected                        $dataTypes,
     ) {
     }
 
@@ -58,6 +64,18 @@ class EntityHelper
         }
 
         return self::$cachedEntityFields[$class] = $fields;
+    }
+
+    public function resolveDataTypeByFieldType($fieldType): DataTypeInterface
+    {
+        /** @var DataTypeInterface $dataType */
+        foreach ($this->dataTypes as $dataType) {
+            if ($dataType::supportsByOrmType($fieldType)) {
+                return $dataType;
+            }
+        }
+
+        return new ObjectDataType();
     }
 
     protected static function getFieldTypeFromAnnotation($property, AnnotationReader $annotationReader)

@@ -4,7 +4,7 @@ namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\Datasheet;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
-use A2Global\A2Platform\Bundle\DataBundle\Component\DataType\ObjectDataType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\ObjectDataType;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnDatasheetBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

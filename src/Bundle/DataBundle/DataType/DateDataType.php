@@ -1,11 +1,18 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DataBundle\Component\DataType;
+namespace A2Global\A2Platform\Bundle\DataBundle\DataType;
 
 use DateTime;
 
 class DateDataType implements DataTypeInterface
 {
+    public static function supportsByOrmType($type): bool
+    {
+        return in_array($type, [
+            'date',
+        ]);
+    }
+
     public static function getReadablePreview($value): string
     {
         /** @var DateTime $value */

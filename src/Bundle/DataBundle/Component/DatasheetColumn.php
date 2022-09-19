@@ -2,7 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Component;
 
-use A2Global\A2Platform\Bundle\DataBundle\Component\DataType\DataTypeInterface;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\DataTypeInterface;
 
 class DatasheetColumn
 {

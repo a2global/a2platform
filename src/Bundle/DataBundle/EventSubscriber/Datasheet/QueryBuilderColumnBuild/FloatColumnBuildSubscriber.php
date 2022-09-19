@@ -3,7 +3,7 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\Datasheet\QueryBuilderColumnBuild;
 
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
-use A2Global\A2Platform\Bundle\DataBundle\Component\DataType\FloatDataType;
+use A2Global\A2Platform\Bundle\DataBundle\DataType\FloatDataType;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnQueryBuilderDatasheetColumnBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
