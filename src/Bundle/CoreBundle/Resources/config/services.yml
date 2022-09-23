@@ -8,11 +8,9 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
-            - '../src/Data/Filter/'
             - '../src/Migrations/'
             - '../src/Tests/'
             - '../src/Utility/'
-            - '../src/Request/ResourceRequestConfiguration.php'
 
     _instanceof:
         A2Global\A2Platform\Bundle\CoreBundle\Handler\Response\ResponseHandlerInterface:
