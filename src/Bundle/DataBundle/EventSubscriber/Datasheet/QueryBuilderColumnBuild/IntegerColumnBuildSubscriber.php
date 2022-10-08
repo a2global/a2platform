@@ -12,7 +12,6 @@ class IntegerColumnBuildSubscriber implements EventSubscriberInterface
     public function buildColumn(OnQueryBuilderDatasheetColumnBuildEvent $event)
     {
         if (!in_array($event->getFieldType(), [
-            'int',
             'integer',
         ])) {
             return;

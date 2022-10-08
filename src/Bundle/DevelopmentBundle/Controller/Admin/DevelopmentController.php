@@ -5,6 +5,7 @@ namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Controller\Admin;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\ChartDataHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnDatasheetBuildEvent;
+use DateTime;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -50,22 +51,30 @@ class DevelopmentController extends AbstractController
     public function uiAction()
     {
         $statistix = [
-            'Jan 2022' => [
+            '22-01-01' => [
                 'Income' => 22,
                 'Outcome' => 18,
             ],
-            'Feb 2022' => [
+            '22-01-02' => [
                 'Income' => 32,
                 'Outcome' => 27,
             ],
-            'Mar 2022' => [
+            '22-01-04' => [
                 'Income' => 56,
                 'Outcome' => 53,
+            ],
+            '22-01-05' => [
+                'Income' => 89,
+                'Outcome' => 61,
             ],
         ];
 
         return $this->render('@Development/behat/datasheet/ui.html.twig', [
-            'chartData' => ChartDataHelper::buildFromArray($statistix),
+            'chartData' => ChartDataHelper::buildFromArray(
+                $statistix,
+                new DateTime('2022-01-01'),
+                new DateTime('2022-01-06'),
+            ),
         ]);
     }
 

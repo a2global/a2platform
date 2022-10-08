@@ -17,6 +17,7 @@ class DatasheetExposed
         protected string  $id,
         protected ?string $title,
         protected array   $columnsToUpdate,
+        protected array   $controls,
     ) {
     }
 
@@ -83,6 +84,11 @@ class DatasheetExposed
     public function getColumnsToUpdate(): array
     {
         return $this->columnsToUpdate;
+    }
+
+    public function getControls(): array
+    {
+        return $this->controls;
     }
 //    protected ?string $id;
 //

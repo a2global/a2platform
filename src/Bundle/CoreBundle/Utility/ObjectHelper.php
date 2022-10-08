@@ -52,8 +52,12 @@ class ObjectHelper
         );
     }
 
-    public static function getReadableTitle(mixed $object)
+    public static function getReadableTitle(mixed $object, string $nullValue = '')
     {
+        if(!$object){
+            return $nullValue;
+        }
+
         if (method_exists($object, '__toString')) {
             return (string)$object;
         }

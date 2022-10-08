@@ -6,14 +6,17 @@ use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
-use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
-use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetExposed;
+use A2Global\A2Platform\Bundle\DataBundle\Form\ImportUploadFileFormType;
+use A2Global\A2Platform\Bundle\DataBundle\Import\EntityDataImporter;
 use A2Global\A2Platform\Bundle\DataBundle\Provider\FormProvider;
-use Doctrine\ORM\AbstractQuery;
-use PhpParser\Builder\Method;
+use A2Global\A2Platform\Bundle\DataBundle\Registry\DataReaderRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Throwable;
 
 /**
  * @Route("admin/data/", name="admin_data_")
@@ -82,6 +85,89 @@ class DataCrudController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("import/upload/{entity}", name="import_upload")
+     */
+    public function importUploadAction(Request $request, $entity)
+    {
+        $form = $this->createForm(ImportUploadFileFormType::class);
+        $form->get('entity')->setData($entity);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $file */
+            $file = $form->get('file')->getData();
+            $extension = $file->guessClientExtension();
+            $filename = uniqid() . md5(microtime(true));
+            $filepath = $this->getParameter('kernel.cache_dir') . '/' . 'import';
+
+            try {
+                if (!file_exists($filepath)) {
+                    mkdir($filepath, 0777, true);
+                }
+                $file->move($filepath, $filename . '.' . $extension);
+            } catch (Throwable $exception) {
+                $this->addFlash('danger', 'There was an error, try again');
+
+                return $this->redirectToRoute('admin_data_import_upload', [
+                    'entity' => $entity,
+                ]);
+            }
+
+            return $this->redirectToRoute('admin_data_import_mapping', [
+                'entity' => $entity,
+                'filename' => $filename,
+                'filetype' => $file->guessClientExtension(),
+            ]);
+        }
+
+        return $this->render('@Admin/form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("import/mapping/{entity}", name="import_mapping")
+     */
+    public function importMappingAction(Request $request, $entity)
+    {
+        $extension = $request->get('filetype');
+        $filename = $request->get('filename');
+        $filepath = $this->getParameter('kernel.cache_dir') . '/' . 'import' . '/' . $filename . '.' . $extension;
+        $form = $this->get(FormProvider::class)->getImportMappingFormProvider($entity, $filepath, $filename, $extension);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->get(EntityDataImporter::class)->import(
+                    $request->get('entity'),
+                    $this->get(DataReaderRegistry::class)->findDataReader($filepath)->readData(),
+                    $form->get('mapping')->getData(),
+                );
+
+//                unlink($filepath);
+            } catch (Throwable $exception) {
+                $this->addFlash('danger', 'There was an error, try again');
+//                $this->addFlash('danger', $exception->getMessage());
+
+                return $this->redirectToRoute('admin_data_import_mapping', [
+                    'entity' => $entity,
+                    'filename' => $filename,
+                    'filetype' => $extension,
+                ]);
+            }
+            $this->addFlash('success', 'File was imported');
+
+            return $this->redirectToRoute('admin_data_index', [
+                'entity' => $entity,
+            ]);
+        }
+
+        return $this->render('@Admin/form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     protected function getIndexDatasheet($entityClassName): Datasheet
     {
         $datasheet = new Datasheet(
@@ -91,6 +177,7 @@ class DataCrudController extends AbstractController
         $datasheet->getColumn($this->resolveIdentityColumnName($entityClassName))
             ->setLink(['admin_data_view', ['entity' => $entityClassName]])
             ->setBold(true);
+        $datasheet->addControl('Import', $this->generateUrl('admin_data_import_upload', ['entity' => $entityClassName]));
 
         return $datasheet;
     }
@@ -114,6 +201,8 @@ class DataCrudController extends AbstractController
         return array_merge(parent::getSubscribedServices(), [
             FormProvider::class,
             EntityHelper::class,
+            EntityDataImporter::class,
+            DataReaderRegistry::class,
         ]);
     }
 }

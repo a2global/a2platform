@@ -5,8 +5,10 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Filter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class PaginationDataFilter implements DataFilterInterface
+class PaginationDataFilter extends AbstractDataFilter
 {
+    const NAME = 'pagination';
+
     protected int $page = 1;
 
     protected int $limit = 20;
@@ -35,13 +37,20 @@ class PaginationDataFilter implements DataFilterInterface
         return $this;
     }
 
-    public function addToForm(FormBuilderInterface $container): self
+    public function isEnabled(): bool
+    {
+        return true;
+    }
+
+    public function buildForm(FormBuilderInterface $container): self
     {
         $container->add('page', IntegerType::class, [
             'data' => $this->page,
+            'required' => false,
         ]);
         $container->add('limit', IntegerType::class, [
             'data' => $this->limit,
+            'required' => false,
         ]);
 
         return $this;

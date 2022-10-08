@@ -5,7 +5,9 @@ https://www.thinktocode.com/2018/03/26/symfony-4-rest-api-part-1-fosrestbundle/
 
 behat
     https://symfonycasts.com/blog/behat-symfony
-    code coverage: pecl install pcov
+    pecl install pcov
+    brew install selenium-server
+    
 
 pathes:
     phpunit/php-code-coverage

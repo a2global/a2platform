@@ -1,31 +1,37 @@
 <div data-datasheet="{{ datasheet.id }}">
     <form action="?" method="get" data-datasheet-form="{{ datasheet.id }}">
+        {% set filterForm = datasheet_filters_form(datasheet) %}
+        {{ form_start(filterForm) }}
 
-        <div class="hidden">
-            {% set form = datasheet_filters_form(datasheet) %}
-            {{ form(form) }}
-            {{ datasheet.data.itemsTotal }}
+        <div class="clearfix">
+            <span class="lead">{{ datasheet.title }}</span>
+            <div class="pull-right">
+                <div class="btn-group">
+                    {% for text, url in datasheet.controls %}
+                        <a href="{{ url }}" class="btn btn-default">{{ text }}</a>
+                    {% endfor %}
+                </div>
+                <div class="btn-group">
+                    <input type="submit" value="Apply filters" class="btn btn-default">
+                </div>
+                <div class="btn-group" data-datasheet-items-total="{{ datasheet.data.itemsTotal }}"></div>
+            </div>
+
         </div>
 
-        <div class="row">
-            <div class="col-sm-6">
-                <h3 class="box-title">{{ datasheet.title }}</h3>
-            </div>
-            <div class="col-sm-6 text-right">
-                <ul class="pagination" data-datasheet-items-total="{{ datasheet.data.itemsTotal }}"></ul>
-            </div>
-{#            <div class="col-sm-2">#}
-{#                <br>#}
-{#                <input type="submit" value="Apply filter" class="form-control btn-sm btn-primary">#}
-{#            </div>#}
-        </div>
+        <br>
 
         <div class="table-responsive" data-datasheet-id="">
             <table class="table table-striped table-bordered table-sm">
                 <thead>
                 <tr>
                     {% for column in datasheet.columns %}
-                        {{ datasheet_column_header(column) }}
+                        {% include '@Data/datasheet/column_header.html.twig' %}
+                    {% endfor %}
+                </tr>
+                <tr class="datasheet-column-filters-row">
+                    {% for column in datasheet.columns %}
+                        {% include '@Data/datasheet/column_filters.html.twig' %}
                     {% endfor %}
                 </tr>
                 </thead>
@@ -40,6 +46,13 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="hidden">
+            {{ datasheet.data.itemsTotal }}
+            {{ form_end(filterForm) }}
+        </div>
+
+        {{ app.environment == 'dev' ? dump(datasheet) : '' }}
 
     </form>
 </div>

@@ -1,0 +1,17 @@
+.datasheet-column-filters-row th {
+    padding: 0;
+}
+
+.datasheet-column-filters-row input {
+    margin: 0;
+    padding: 3px;
+    font-weight: 400;
+}
+
+[data-datasheet-items-total] {
+    margin-left: 50px;
+}
+
+[data-datasheet-items-total] > *.btn-primary {
+    color: #ffffff;
+}

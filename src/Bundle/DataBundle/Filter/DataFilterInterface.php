@@ -6,5 +6,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 interface DataFilterInterface
 {
-    public function addToForm(FormBuilderInterface $container): self;
+    public static function getName(): string;
+
+    public function isEnabled(): bool;
+
+    public function buildForm(FormBuilderInterface $container): self;
 }

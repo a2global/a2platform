@@ -3,25 +3,21 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\Datasheet;
 
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnDatasheetBuildEvent;
+use A2Global\A2Platform\Bundle\DataBundle\Manager\DatasheetParametersManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 
 class InitFilterFormEventSubscriber implements EventSubscriberInterface
 {
     public const SUPPORTED_DATASHEET_TYPE = 'all';
 
     public function __construct(
-        protected FormFactoryInterface $formFactory,
+        protected DatasheetParametersManager $datasheetParametersManager,
     ) {
     }
 
     public function initFilterForm(OnDatasheetBuildEvent $event)
     {
-        $builder = $this->formFactory
-            ->createNamedBuilder($event->getDatasheet()->getId())
-            ->add('datasheet', null, ['compound' => true])
-            ->add('column', null, ['compound' => true]);
-        $event->getDatasheet()->setFilterFormBuilder($builder);
+        $this->datasheetParametersManager->addEmptyFiltersForm($event->getDatasheet());
     }
 
     /**
@@ -30,7 +26,7 @@ class InitFilterFormEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            OnDatasheetBuildEvent::class => ['initFilterForm', 890],
+            OnDatasheetBuildEvent::class => ['initFilterForm', 800],
         ];
     }
 }

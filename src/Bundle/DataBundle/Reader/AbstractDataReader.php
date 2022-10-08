@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Reader;
 
+use A2Global\A2Platform\Bundle\DataBundle\Exception\DatasheetBuildException;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\DataFilterInterface;
 use A2Global\A2Platform\Bundle\DataBundle\FilterApplier\FilterApplierInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\FilterApplierRegistry;
@@ -10,7 +11,9 @@ abstract class AbstractDataReader implements DataReaderInterface
 {
     protected mixed $source;
 
-    protected array $filters;
+    protected array $filters = [];
+
+    protected array $fieldFilters = [];
 
     protected FilterApplierRegistry $filterApplierRegistry;
 
@@ -28,7 +31,18 @@ abstract class AbstractDataReader implements DataReaderInterface
 
     public function addFilter(DataFilterInterface $filter): self
     {
-        $this->filters[] = $filter;
+        if ($filter->isEnabled()) {
+            $this->filters[] = $filter;
+        }
+
+        return $this;
+    }
+
+    public function addFieldFilter(string $fieldName, DataFilterInterface $filter): self
+    {
+        if ($filter->isEnabled()) {
+            $this->fieldFilters[$fieldName][] = $filter;
+        }
 
         return $this;
     }
@@ -42,7 +56,9 @@ abstract class AbstractDataReader implements DataReaderInterface
     protected function applyFilters($only = [], $exclude = [])
     {
         /** @var DataFilterInterface $filter */
-        foreach ($this->filters as $filter) {
+        foreach ($this->getAllFilters() as $result) {
+            $filter = $result[0];
+            $fieldName = $result[1];
 
             // Only
             if (count($only) && !in_array($filter::class, $only)) {
@@ -57,10 +73,10 @@ abstract class AbstractDataReader implements DataReaderInterface
 
             /** @var FilterApplierInterface $filterApplier */
             foreach ($this->filterApplierRegistry->get() as $filterApplier) {
-                if ($filterApplied || !$filterApplier->supports($this, $filter)) {
+                if ($filterApplied || !$filterApplier->supports($this, $filter, $fieldName)) {
                     continue;
                 }
-                $filterApplier->apply($this, $filter);
+                $filterApplier->apply($this, $filter, $fieldName);
                 $filterApplied = true;
             }
 
@@ -68,7 +84,21 @@ abstract class AbstractDataReader implements DataReaderInterface
                 /**
                  * @codeCoverageIgnore
                  */
-//                throw new DatasheetBuildException('Filter not applied: ' . get_class($filter));
+                throw new DatasheetBuildException('Filter not applied: ' . get_class($filter));
+            }
+        }
+    }
+
+    protected function getAllFilters(): iterable
+    {
+
+        foreach ($this->filters as $filter) {
+            yield [$filter, null];
+        }
+
+        foreach ($this->fieldFilters as $fieldName => $fieldFilters) {
+            foreach ($fieldFilters as $filter) {
+                yield [$filter, $fieldName];
             }
         }
     }

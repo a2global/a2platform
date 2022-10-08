@@ -22,7 +22,7 @@ class Person
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $fullname;
 
@@ -42,22 +42,22 @@ class Person
     private $position;
 
     /**
-     * @ORM\Column(type="integer", nullable="true")
+     * @ORM\Column(type="integer", nullable="true", nullable=true)
      */
     private $age;
 
     /**
-     * @ORM\Column(type="float", nullable="true")
+     * @ORM\Column(type="float", nullable="true", nullable=true)
      */
     private $version;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $phonenumber;
 
@@ -67,12 +67,12 @@ class Person
     private $isActive;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $birthdate;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastActiveAt;
 
@@ -101,7 +101,7 @@ class Person
         return $this->fullname;
     }
 
-    public function setFullname(string $fullname): self
+    public function setFullname(?string $fullname): self
     {
         $this->fullname = $fullname;
 
@@ -137,7 +137,7 @@ class Person
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
@@ -149,7 +149,7 @@ class Person
         return $this->phonenumber;
     }
 
-    public function setPhonenumber(string $phonenumber): self
+    public function setPhonenumber(?string $phonenumber): self
     {
         $this->phonenumber = $phonenumber;
 
@@ -173,7 +173,7 @@ class Person
         return $this->birthdate;
     }
 
-    public function setBirthdate(\DateTimeInterface $birthdate): self
+    public function setBirthdate(?\DateTimeInterface $birthdate): self
     {
         $this->birthdate = $birthdate;
 
@@ -185,7 +185,7 @@ class Person
         return $this->lastActiveAt;
     }
 
-    public function setLastActiveAt(\DateTimeInterface $lastActiveAt): self
+    public function setLastActiveAt(?\DateTimeInterface $lastActiveAt): self
     {
         $this->lastActiveAt = $lastActiveAt;
 
@@ -239,7 +239,7 @@ class Person
 
         return $this;
     }
-    
+
     public function getPosition(): ?Position
     {
         return $this->position;

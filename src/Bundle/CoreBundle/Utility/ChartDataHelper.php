@@ -44,7 +44,7 @@ class ChartDataHelper
         $filledWithZeroData = [];
         $daysTotal = $from->diff($to)->days;
 
-        for ($i = 0; $i < $daysTotal; $i++) {
+        for ($i = 0; $i <= $daysTotal; $i++) {
             $day = $date->format('y-m-d');
 
             foreach ($barNames as $barName) {

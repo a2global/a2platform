@@ -54,9 +54,8 @@ $(function () {
     //
         // pagination
         var paginationContainer = $(this).find('[data-datasheet-items-total]');
-        var paginationPageControl = $(this).find('[name="datasheet[' + datasheetId + '][datasheet][pagination][page]"]');
-        var paginationLimitControl = $(this).find('[name="datasheet[' + datasheetId + '][datasheet][pagination][limit]"]');
-        console.log(paginationLimitControl);
+        var paginationPageControl = $(this).find('[name="datasheet[' + datasheetId + '][df][pagination][page]"]');
+        var paginationLimitControl = $(this).find('[name="datasheet[' + datasheetId + '][df][pagination][limit]"]');
         var itemsTotal = paginationContainer.attr('data-datasheet-items-total');
         var page = parseInt(paginationPageControl.val());
         var limit = paginationLimitControl.val();
@@ -103,28 +102,25 @@ $(function () {
         }
         paginationContainer.append(getPaginationElement('Last', pagesTotal));
 
-        $('[data-datasheet-items-total] li').click(function () {
+        $('[data-datasheet-items-total] > *').click(function () {
             paginationPageControl.val($(this).attr('data-page'));
             datasheetForm.submit();
         })
     })
 
     function getPaginationElement(text, page, isActive = false) {
-        var liElement = $('<li>');
-        var aElement = $('<a>');
-        liElement
-            .addClass('paginate_button page-item cursor-pointer')
-            .attr('data-page', page);
+        var element = $('<a>');
+
+        element
+            .addClass('btn btn-default')
+            .attr('data-page', page)
+            .attr('data-datasheet-pagination-link', text)
+            .text(text);
 
         if (isActive) {
-            liElement.addClass('active');
+            element.addClass('btn-primary');
         }
-        aElement
-            .addClass('page-link')
-            .attr('data-datasheet-pagination-link', text)
-            .text(text)
-            .appendTo(liElement);
 
-        return liElement;
+        return element;
     }
 })

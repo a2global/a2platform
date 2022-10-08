@@ -1,10 +1,10 @@
-<th>
-    <div data-datasheet-column-title="{{ name }}"
+<th data-datasheet-column-header="{{ column.name }}">
+    <div data-datasheet-column-title="{{ column.name }}"
          class="ellipsis"
          style="
-                 width:{{ width }}px;
-                 text-align: {{ align }};
+                 width:{{ column.width }}px;
+                 text-align: {{ column.align }};
                  ">
-        {{ text }}
+        {{ column.title ?? (column.name|normalize) }}
     </div>
 </th>

@@ -12,6 +12,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInterface
 {
+    protected $fields;
+
     public function __construct(
         protected EventDispatcherInterface $eventDispatcher
     ) {
@@ -27,13 +29,20 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
         return $this->source;
     }
 
+    public function getFields(): array
+    {
+        if (is_null($this->fields)) {
+            $this->buildFields();
+        }
+
+        return $this->fields;
+    }
+
     public function readData(): DataCollection
     {
         /** @var QueryBuilder $originalQueryBuilder */
         $queryBuilder = $this->source;
-        $buildFieldsEvent = new OnQueryBuilderFieldsBuildEvent($queryBuilder);
-        $this->eventDispatcher->dispatch($buildFieldsEvent);
-        $collection = new DataCollection($buildFieldsEvent->getFields());
+        $collection = new DataCollection($this->getFields());
         $this->applyFilters([], [PaginationDataFilter::class]);
         $this->setItemsTotal($collection);
         $this->applyFilters([PaginationDataFilter::class]);
@@ -45,6 +54,13 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
         }
 
         return $collection;
+    }
+
+    protected function buildFields()
+    {
+        $buildFieldsEvent = new OnQueryBuilderFieldsBuildEvent($this->source);
+        $this->eventDispatcher->dispatch($buildFieldsEvent);
+        $this->fields = $buildFieldsEvent->getFields();
     }
 
     protected function setItemsTotal(DataCollection $collection)

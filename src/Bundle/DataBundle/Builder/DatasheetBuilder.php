@@ -31,6 +31,7 @@ class DatasheetBuilder
             $parameters['id'] ?? substr(md5($parameters['invokedAt']), 0, 5),
             $parameters['title'],
             $parameters['columnsToUpdate'],
+            $parameters['controls'],
         );
     }
 }

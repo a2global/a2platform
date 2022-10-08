@@ -27,16 +27,6 @@ class DatasheetViewBuilder
         ]);
     }
 
-    public function buildDatasheetColumnHeader(DatasheetColumn $column)
-    {
-        return $this->twig->render('@Data/datasheet/column_header.html.twig', [
-            'name' => $column->getName(),
-            'text' => $column->getTitle() ?? StringUtility::normalize($column->getName()),
-            'width' => $column->getWidth(),
-            'align' => $column->getAlign(),
-        ]);
-    }
-
     public function buildDatasheetCell(DatasheetExposed $datasheet, DatasheetColumn $column, DataItem $dataItem)
     {
         $text = $column->getReadableView($dataItem);

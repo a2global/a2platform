@@ -3,11 +3,13 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Component;
 
 
-class Datasheet// implements DatasheetInterface
+class Datasheet
 {
     protected string $invokedAt;
 
     protected array $columnsToUpdate = [];
+
+    protected array $controls = [];
 
     public function __construct(
         protected mixed   $datasource,
@@ -24,6 +26,7 @@ class Datasheet// implements DatasheetInterface
             'title' => $this->title,
             'invokedAt' => $this->invokedAt,
             'columnsToUpdate' => $this->columnsToUpdate,
+            'controls' => $this->controls,
         ];
     }
 //
@@ -47,6 +50,11 @@ class Datasheet// implements DatasheetInterface
         $this->columnsToUpdate[$fieldName] = $column;
 
         return $column;
+    }
+
+    public function addControl($text, $url)
+    {
+        $this->controls[$text] = $url;
     }
 
 //    public function hideColumns(...$names): self

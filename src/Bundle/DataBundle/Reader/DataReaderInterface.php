@@ -15,5 +15,7 @@ interface DataReaderInterface
 
     public function addFilter(DataFilterInterface $filter);
 
+    public function getFields(): array;
+
     public function readData(): DataCollection;
 }

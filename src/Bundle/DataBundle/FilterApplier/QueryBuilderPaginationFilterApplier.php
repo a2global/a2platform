@@ -10,12 +10,12 @@ use Doctrine\ORM\QueryBuilder;
 
 class QueryBuilderPaginationFilterApplier implements FilterApplierInterface
 {
-    public function supports(DataReaderInterface $dataReader, DataFilterInterface $filter): bool
+    public function supports(DataReaderInterface $dataReader, DataFilterInterface $filter, string $fieldName = null): bool
     {
         return $dataReader instanceof QueryBuilderDataReader && $filter instanceof PaginationDataFilter;
     }
 
-    public function apply(DataReaderInterface $dataReader, DataFilterInterface $filter)
+    public function apply(DataReaderInterface $dataReader, DataFilterInterface $filter, string $fieldName = null)
     {
         /** @var PaginationDataFilter $filter */
         /** @var QueryBuilder $queryBuilder */

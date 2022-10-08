@@ -27,7 +27,7 @@ class StringColumnBuildSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            OnQueryBuilderDatasheetColumnBuildEvent::class => ['buildColumn'],
+            OnQueryBuilderDatasheetColumnBuildEvent::class => ['buildColumn', 200],
         ];
     }
 }

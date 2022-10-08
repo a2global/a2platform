@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/bundles/data/css/datasheet.css?nocache={{ date()|formatDateSimple('U') }}">
     {# <link rel="stylesheet" type="text/css" href="{{ asset('bundles/a2crm/css/datasheet.css') }}"> #}
     {# <style> #}
     {# .changed-field { #}

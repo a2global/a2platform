@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\CoreBundle\Utility;
 
+use A2Global\A2Platform\Bundle\DataBundle\Exception\DatasheetBuildException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Query\Expr\Join;
@@ -65,11 +66,12 @@ class QueryBuilderUtility
     public static function getFieldPathByName(QueryBuilder $queryBuilder, $fieldName)
     {
         foreach ($queryBuilder->getDQLPart('select') as $select) {
-            $fieldPath = $select->getParts()[0];
-            $pathParts = explode('.', $fieldPath);
+            $firstSelect = $select->getParts()[0];
 
-            if ($fieldName === $pathParts[1]) {
-                return $fieldPath;
+            if (str_contains($firstSelect, '.')) {
+                throw new DatasheetBuildException('No support for complex dql');
+            } else {
+                return $firstSelect . '.' . $fieldName;
             }
         }
     }
