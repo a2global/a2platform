@@ -138,28 +138,16 @@ class DataCrudController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $this->get(EntityDataImporter::class)->import(
+                $result = $this->get(EntityDataImporter::class)->import(
                     $request->get('entity'),
                     $this->get(DataReaderRegistry::class)->findDataReader($filepath)->readData(),
                     $form->get('mapping')->getData(),
                 );
+                //unlink($filepath);
 
-//                unlink($filepath);
-            } catch (Throwable $exception) {
-                $this->addFlash('danger', 'There was an error, try again');
-//                $this->addFlash('danger', $exception->getMessage());
-
-                return $this->redirectToRoute('admin_data_import_mapping', [
-                    'entity' => $entity,
-                    'filename' => $filename,
-                    'filetype' => $extension,
-                ]);
-            }
-            $this->addFlash('success', 'File was imported');
-
-            return $this->redirectToRoute('admin_data_index', [
-                'entity' => $entity,
+            return $this->render('@Data/entity/import_result.html.twig', [
+                'imported' => $result['imported'],
+                'errors' => $result['errors'],
             ]);
         }
 

@@ -1,0 +1,27 @@
+{% extends '@Admin/layout.html.twig' %}
+
+{% block page_content %}
+
+    <div class="box box-success">
+        <div class="box-header">
+            <h3 class="box-title">Success</h3>
+        </div>
+        <div class="box-body">
+            <b>Successfully imported items: {{ imported }}</b>
+        </div>
+    </div>
+
+    {% if errors|length %}
+        <div class="box box-warning">
+            <div class="box-header">
+                <h3 class="box-title">Failed items:</h3>
+            </div>
+            <div class="box-body">
+                {% for lineNumber, error in errors %}
+                    Line #{{ lineNumber }}: {{ error }}<br>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
