@@ -17,13 +17,21 @@ services:
             tags: [ 'a2platform.data.filter_applier' ]
         A2Global\A2Platform\Bundle\DataBundle\DataType\DataTypeInterface:
             tags: [ 'a2platform.data.type' ]
+        A2Global\A2Platform\Bundle\DataBundle\Import\Strategy\ImportStrategyInterface:
+            tags: [ 'a2platform.data.import.strategy' ]
 
     A2Global\A2Platform\Bundle\DataBundle\Registry\DataReaderRegistry:
         arguments:
             - !tagged_iterator a2platform.data.reader
+
     A2Global\A2Platform\Bundle\DataBundle\Registry\FilterApplierRegistry:
         arguments:
             - !tagged_iterator a2platform.data.filter_applier
+
+    A2Global\A2Platform\Bundle\DataBundle\Registry\ImportStrategyRegistry:
+        arguments:
+            - !tagged_iterator a2platform.data.import.strategy
+
     A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper:
         bind:
             $dataTypes: !tagged_iterator a2platform.data.type

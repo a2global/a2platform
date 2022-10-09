@@ -2,60 +2,53 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Import;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
-use Doctrine\ORM\EntityManagerInterface;
+use A2Global\A2Platform\Bundle\DataBundle\Registry\ImportStrategyRegistry;
 use Doctrine\Persistence\ManagerRegistry;
 use Throwable;
 
 class EntityDataImporter
 {
-    public const STRATEGY_ADD = 1;
+    protected array $result = [
+        'errors' => [],
+    ];
+    protected int $line = 1;
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
-        protected ManagerRegistry $managerRegistry,
+        protected ManagerRegistry        $managerRegistry,
+        protected ImportStrategyRegistry $importStrategyRegistry,
     ) {
     }
 
-    public function import($entity, DataCollection $sourceData, $mapping, $strategy = self::STRATEGY_ADD): array
+    public function import(string $entity, DataCollection $sourceData, array $mapping, string $strategy, string $identificationField): array
     {
-        $result = [
-            'imported' => 0,
-            'errors' => [],
-        ];
+        $strategy = $this->importStrategyRegistry->find($strategy);
 
-        $line = 1;
         /** @var DataItem $sourceObject */
         foreach ($sourceData->getItems() as $sourceObject) {
             try {
-                $targetObject = $this->createNewObject($entity);
+                $targetObjectData = [];
 
                 foreach ($mapping as $sourceFieldNumber => $targetFieldName) {
                     if (!$targetFieldName) {
                         continue;
                     }
-                    ObjectHelper::setProperty($targetObject, $targetFieldName, $sourceObject->getValue($sourceFieldNumber));
+                    $targetObjectData[$targetFieldName] = $sourceObject->getValue($sourceFieldNumber);
                 }
-                $this->entityManager->persist($targetObject);
-                $this->entityManager->flush();
-                $result['imported']++;
+                $result = $strategy->processItem($entity, $targetObjectData, $identificationField);
+                $this->result[$result] = ($this->result[$result] ?? 0) + 1;
             } catch (Throwable $exception) {
-                $result['errors'][$line] = $exception->getMessage();
+                $this->result['errors'][$this->line] = $exception->getMessage();
 
-                if(!$this->entityManager->isOpen()){
+                if (!$this->managerRegistry->getManager()->isOpen()) {
                     $this->managerRegistry->reset();
                 }
             }
-            $line++;
+            $this->line++;
         }
+        $this->result['total items'] = $this->line;
 
-        return $result;
-    }
-
-    protected function createNewObject($entity)
-    {
-        return new $entity;
+        return $this->result;
     }
 }

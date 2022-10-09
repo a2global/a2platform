@@ -142,12 +142,13 @@ class DataCrudController extends AbstractController
                     $request->get('entity'),
                     $this->get(DataReaderRegistry::class)->findDataReader($filepath)->readData(),
                     $form->get('mapping')->getData(),
+                    $form->get('strategy')->getData(),
+                    $form->get('identifier_field')->getData(),
                 );
                 //unlink($filepath);
 
             return $this->render('@Data/entity/import_result.html.twig', [
-                'imported' => $result['imported'],
-                'errors' => $result['errors'],
+                'result' => $result,
             ]);
         }
 

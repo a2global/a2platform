@@ -7,17 +7,21 @@
             <h3 class="box-title">Success</h3>
         </div>
         <div class="box-body">
-            <b>Successfully imported items: {{ imported }}</b>
+            {% for actionType, total in result %}
+                {% if actionType != 'errors' %}
+                    {{ actionType }}: {{ total }}<br>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 
-    {% if errors|length %}
+    {% if result.errors|length %}
         <div class="box box-warning">
             <div class="box-header">
                 <h3 class="box-title">Failed items:</h3>
             </div>
             <div class="box-body">
-                {% for lineNumber, error in errors %}
+                {% for lineNumber, error in result.errors %}
                     Line #{{ lineNumber }}: {{ error }}<br>
                 {% endfor %}
             </div>
