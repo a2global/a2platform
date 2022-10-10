@@ -4,15 +4,14 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
-use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
+use A2Global\A2Platform\Bundle\DataBundle\Event\OnEntityListDatasheetBuild;
 use A2Global\A2Platform\Bundle\DataBundle\Form\ImportUploadFileFormType;
 use A2Global\A2Platform\Bundle\DataBundle\Import\EntityDataImporter;
+use A2Global\A2Platform\Bundle\DataBundle\Provider\DatasheetProvider;
 use A2Global\A2Platform\Bundle\DataBundle\Provider\FormProvider;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\DataReaderRegistry;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +27,10 @@ class DataCrudController extends AbstractController
      */
     public function indexAction($entity)
     {
-        $datasheet = $this->getIndexDatasheet($entity);
+        $event = new OnEntityListDatasheetBuild($entity);
+        $this->get(EventDispatcherInterface::class)->dispatch($event);
+        $datasheet = $event->getDatasheet()
+            ?? $this->get(DatasheetProvider::class)->getDefaultEntityListDatasheet($entity);
 
         return $this->render('@Admin/datasheet.html.twig', [
             'datasheet' => $datasheet,
@@ -134,18 +136,26 @@ class DataCrudController extends AbstractController
         $extension = $request->get('filetype');
         $filename = $request->get('filename');
         $filepath = $this->getParameter('kernel.cache_dir') . '/' . 'import' . '/' . $filename . '.' . $extension;
+
+        if (!file_exists($filepath)) {
+            $this->addFlash('warning', 'Please upload CSV file again');
+
+            return $this->redirectToRoute('admin_data_import_upload', [
+                'entity' => $entity,
+            ]);
+        }
         $form = $this->get(FormProvider::class)->getImportMappingFormProvider($entity, $filepath, $filename, $extension);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-                $result = $this->get(EntityDataImporter::class)->import(
-                    $request->get('entity'),
-                    $this->get(DataReaderRegistry::class)->findDataReader($filepath)->readData(),
-                    $form->get('mapping')->getData(),
-                    $form->get('strategy')->getData(),
-                    $form->get('identifier_field')->getData(),
-                );
-                //unlink($filepath);
+            $result = $this->get(EntityDataImporter::class)->import(
+                $request->get('entity'),
+                $this->get(DataReaderRegistry::class)->findDataReader($filepath)->readData(),
+                $form->get('mapping')->getData(),
+                $form->get('strategy')->getData(),
+                $form->get('identifier_field')->getData(),
+            );
+            unlink($filepath);
 
             return $this->render('@Data/entity/import_result.html.twig', [
                 'result' => $result,
@@ -155,31 +165,6 @@ class DataCrudController extends AbstractController
         return $this->render('@Admin/form.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    protected function getIndexDatasheet($entityClassName): Datasheet
-    {
-        $datasheet = new Datasheet(
-            $this->getDoctrine()->getRepository($entityClassName)->createQueryBuilder('a'),
-            'List of the ' . StringUtility::normalize(StringUtility::getShortClassName($entityClassName)),
-        );
-        $datasheet->getColumn($this->resolveIdentityColumnName($entityClassName))
-            ->setLink(['admin_data_view', ['entity' => $entityClassName]])
-            ->setBold(true);
-        $datasheet->addControl('Import', $this->generateUrl('admin_data_import_upload', ['entity' => $entityClassName]));
-
-        return $datasheet;
-    }
-
-    protected function resolveIdentityColumnName($entityClassName): string
-    {
-        foreach (EntityHelper::getEntityFields($entityClassName) as $fieldName => $fieldType) {
-            if (in_array($fieldName, ObjectHelper::$identityFields)) {
-                return $fieldName;
-            }
-        }
-
-        return 'id';
     }
 
     /**
@@ -192,6 +177,8 @@ class DataCrudController extends AbstractController
             EntityHelper::class,
             EntityDataImporter::class,
             DataReaderRegistry::class,
+            EventDispatcherInterface::class,
+            DatasheetProvider::class,
         ]);
     }
 }

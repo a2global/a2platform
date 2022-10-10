@@ -17,7 +17,8 @@ class TextColumnBuildSubscriber implements EventSubscriberInterface
             return;
         }
         $column = (new DatasheetColumn($event->getFieldName()))
-            ->setType(new TextDataType());
+            ->setType(new TextDataType())
+            ->setWidth(250);
         $event->setColumn($column);
     }
 

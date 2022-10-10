@@ -17,7 +17,8 @@ class StringColumnBuildSubscriber implements EventSubscriberInterface
             return;
         }
         $column = (new DatasheetColumn($event->getFieldName()))
-            ->setType(new StringDataType());
+            ->setType(new StringDataType())
+            ->setWidth(250);
         $event->setColumn($column);
     }
 
