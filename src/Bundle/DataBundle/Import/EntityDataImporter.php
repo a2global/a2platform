@@ -47,7 +47,7 @@ class EntityDataImporter
             }
             $this->line++;
         }
-        $this->result['total items'] = $this->line;
+        $this->result['total items'] = $sourceData->getItemsTotal();
 
         return $this->result;
     }
