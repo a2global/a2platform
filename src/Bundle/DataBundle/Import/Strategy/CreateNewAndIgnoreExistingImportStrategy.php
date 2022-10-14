@@ -21,7 +21,7 @@ class CreateNewAndIgnoreExistingImportStrategy extends AbstractImportStrategy
     public function processItem(string $entity, array $data, string $identificationField): string
     {
         // Dispatch event with raw data, for modify purposes
-        $event = new OnItemBeforeImportEvent($data);
+        $event = new OnItemBeforeImportEvent($entity, $data);
         $this->eventDispatcher->dispatch($event);
         $data = $event->getData();
 
