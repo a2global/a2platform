@@ -67,18 +67,15 @@ class DataCrudController extends AbstractController
         $object = $this->getDoctrine()->getRepository($entity)->find($id);
         $form = $this->get(FormProvider::class)->getFor($object);
         $form->setData($object);
+        $form->handleRequest($request);
 
-        if ($request->getMethod() === Request::METHOD_POST) {
-            $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
-
-                return $this->redirectToRoute('admin_data_view', [
-                    'entity' => $entity,
-                    'id' => $id,
-                ]);
-            }
+            return $this->redirectToRoute('admin_data_view', [
+                'entity' => $entity,
+                'id' => $id,
+            ]);
         }
 
 

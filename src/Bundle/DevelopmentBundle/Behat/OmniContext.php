@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Behat;
 
+use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\MinkContext;
 
 class OmniContext extends MinkContext
@@ -52,22 +53,22 @@ class OmniContext extends MinkContext
 //        }
 //    }
 //
-//    /**
-//     * @AfterStep
-//     * Take screenshot when step fails. Works only with Selenium2Driver.
-//     * Screenshot is saved at [Date]/[Feature]/[Scenario]/[Step].jpg
-//     */
-//    public function after($scope)
-//    {
-//        if ($scope->getTestResult()->getResultCode() === 99) {
-//            $driver = $this->getSession()->getDriver();
-//            if ($driver instanceof Behat\Mink\Driver\Selenium2Driver) {
-//                $fileName = date('d-m-y') . '-' . uniqid() . '.png';
-//                $this->saveScreenshot($fileName, self::SCREENSHOTS_DIRECTORY);
-//                print 'Screenshot at: ' . self::SCREENSHOTS_DIRECTORY . '/' . $fileName;
-//            }
-//        }
-//    }
+    /**
+     * @AfterStep
+     * Take screenshot when step fails. Works only with Selenium2Driver.
+     * Screenshot is saved at [Date]/[Feature]/[Scenario]/[Step].jpg
+     */
+    public function after($scope)
+    {
+        if ($scope->getTestResult()->getResultCode() === 99) {
+            $driver = $this->getSession()->getDriver();
+            if ($driver instanceof Selenium2Driver) {
+                $fileName = date('d-m-y') . '-' . uniqid() . '.png';
+                $this->saveScreenshot($fileName, self::SCREENSHOTS_DIRECTORY);
+                print 'Screenshot at: ' . self::SCREENSHOTS_DIRECTORY . '/' . $fileName;
+            }
+        }
+    }
 
 //    /**
 //     * @Given /^(?:|I )am "([^"]*)"$/

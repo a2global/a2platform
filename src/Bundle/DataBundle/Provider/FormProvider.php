@@ -8,6 +8,8 @@ use A2Global\A2Platform\Bundle\DataBundle\Import\Strategy\ImportStrategyInterfac
 use A2Global\A2Platform\Bundle\DataBundle\Registry\DataReaderRegistry;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\ImportStrategyRegistry;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -27,6 +29,8 @@ class FormProvider
     ];
     private const FORM_FIELDS_MAPPING = [
         'many_to_one' => null,
+        'date' => DateType::class,
+        'datetime' => DateTimeType::class,
     ];
 
     public function __construct(
@@ -53,11 +57,11 @@ class FormProvider
 
                 continue;
             }
-            $formFieldType = self::FORM_FIELDS_MAPPING[$fieldType];
 
-            if (is_null($formFieldType)) {
+            if (!self::FORM_FIELDS_MAPPING[$fieldType]) {
                 continue;
             }
+            $formBuilder->add($fieldName, self::FORM_FIELDS_MAPPING[$fieldType]);
         }
 
         return $formBuilder->getForm();
@@ -117,7 +121,7 @@ class FormProvider
 
     protected function getChoicesAttr($fileField, $entityFields)
     {
-        if(in_array($fileField, $entityFields) || in_array(StringUtility::toCamelCase($fileField), $entityFields)){
+        if (in_array($fileField, $entityFields) || in_array(StringUtility::toCamelCase($fileField), $entityFields)) {
             return [
                 StringUtility::normalize($fileField) => ['selected' => 'selected'],
             ];

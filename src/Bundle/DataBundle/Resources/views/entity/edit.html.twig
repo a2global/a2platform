@@ -9,7 +9,12 @@
                     {% if child.vars.name != '_token' %}
                         <tr>
                             <td width="200"><b>{{ child.vars.name|normalize }}:</b></td>
-                            <td>{{ form_widget(child) }}</td>
+                            <td>
+                                {{ form_widget(child) }}
+                                {% if form_errors(child) %}
+                                    {{ form_errors(child) }}
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endif %}
                 {% endfor %}
