@@ -67,6 +67,8 @@ class DatasheetExposed
                 return $this;
             }
         }
+
+        return $this;
     }
 
     public function getData(): DataCollection
