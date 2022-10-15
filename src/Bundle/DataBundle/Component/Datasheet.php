@@ -7,7 +7,7 @@ class Datasheet
 {
     protected string $invokedAt;
 
-    protected array $columnsToUpdate = [];
+    protected array $columns = [];
 
     protected array $controls = [];
 
@@ -25,7 +25,7 @@ class Datasheet
             'datasource' => $this->datasource,
             'title' => $this->title,
             'invokedAt' => $this->invokedAt,
-            'columnsToUpdate' => $this->columnsToUpdate,
+            'columnsToUpdate' => $this->columns,
             'controls' => $this->controls,
         ];
     }
@@ -47,7 +47,7 @@ class Datasheet
     public function getColumn($fieldName): DatasheetColumn
     {
         $column = new DatasheetColumn($fieldName);
-        $this->columnsToUpdate[$fieldName] = $column;
+        $this->columns[$fieldName] = $column;
 
         return $column;
     }
@@ -57,12 +57,14 @@ class Datasheet
         $this->controls[$text] = $url;
     }
 
-//    public function hideColumns(...$names): self
-//    {
-//        $this->config['columns']['hide'] = $names;
-//
-//        return $this;
-//    }
+    public function hideColumns(...$names): self
+    {
+        foreach ($names as $name) {
+            $this->columns[$name] = null;
+        }
+
+        return $this;
+    }
 
 //    public function showColumns(...$names): self
 //    {

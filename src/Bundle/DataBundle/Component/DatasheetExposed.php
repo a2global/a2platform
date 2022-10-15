@@ -57,6 +57,18 @@ class DatasheetExposed
         }
     }
 
+    public function removeColumn(string $name): self
+    {
+        /** @var DatasheetColumn $column */
+        foreach ($this->columns as $key => $column) {
+            if ($column->getName() === $name) {
+                unset($this->columns[$key]);
+
+                return $this;
+            }
+        }
+    }
+
     public function getData(): DataCollection
     {
         return $this->data;

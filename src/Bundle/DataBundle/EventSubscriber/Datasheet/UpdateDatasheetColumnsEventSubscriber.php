@@ -23,6 +23,11 @@ class UpdateDatasheetColumnsEventSubscriber implements EventSubscriberInterface
     public function updateColumns(OnDatasheetBuildEvent $event)
     {
         foreach ($event->getDatasheet()->getColumnsToUpdate() as $name => $predefinedColumn) {
+            if (is_null($predefinedColumn)) {
+                $event->getDatasheet()->removeColumn($name);
+
+                continue;
+            }
             $datasheetColumn = $event->getDatasheet()->getColumnByName($name);
             $this->updateWithPredefinedColumnParameters($datasheetColumn, $predefinedColumn);
         }

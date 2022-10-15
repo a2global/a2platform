@@ -41,6 +41,7 @@ class DatasheetController extends AbstractController
             ->createQueryBuilder('p');
 
         $datasheet = new Datasheet($source, 'List of the person (from simple query builder)');
+        $datasheet->hideColumns('age', 'version', 'phonenumber');
 
         return $this->render('@Admin/datasheet.html.twig', [
             'datasheet' => $datasheet,
