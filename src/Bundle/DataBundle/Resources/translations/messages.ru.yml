@@ -1,0 +1,19 @@
+data:
+  admin_menu:
+    data: 'Данные'
+  crud:
+    list:
+      datasheet:
+        title: 'Список объектов «%entity%»'
+  typical_entity:
+    field:
+      id: '№'
+      createdAt: 'Создано'
+      updatedAt: 'Обновлено'
+      user: 'Пользователь'
+      author: 'Автор'
+      name: 'Имя'
+      title: 'Название'
+      password: 'Пароль'
+      enabled: 'Включено'
+      isActive: 'Активно'

@@ -11,6 +11,8 @@ class DatasheetColumn
 
     protected ?string $align = null;
 
+    protected ?string $title = null;
+
     protected ?int $width = null;
 
     protected mixed $link = null;
@@ -19,17 +21,21 @@ class DatasheetColumn
 
     protected ?DataTypeInterface $type = null;
 
-//    protected array $filters = [];
-
     public function __construct(
-        protected string  $name,
-        protected ?string $title = null,
+        protected string $name
     ) {
     }
 
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setTitle(string $title): ?self
+    {
+        $this->title = $title;
+
+        return $this;
     }
 
     public function getTitle(): ?string
@@ -93,16 +99,6 @@ class DatasheetColumn
         return $this;
     }
 
-//    public function getFilters(): array
-//    {
-//        return $this->filters;
-//    }
-//
-//    public function setFilters(array $filters): self
-//    {
-//        $this->filters = $filters;
-//        return $this;
-//    }
     public function getReadableView(DataItem $dataItem): string
     {
         $value = $dataItem->getValue($this->getName());

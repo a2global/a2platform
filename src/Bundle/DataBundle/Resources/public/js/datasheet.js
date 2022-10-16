@@ -95,12 +95,12 @@ $(function () {
             }
         }
 
-        paginationContainer.append(getPaginationElement('First', 1));
+        paginationContainer.append(getPaginationElement(window.translations.page_first, 1));
 
         for (var i = 0; i < pages.length; i++) {
             paginationContainer.append(getPaginationElement(pages[i], pages[i], pages[i] == page));
         }
-        paginationContainer.append(getPaginationElement('Last', pagesTotal));
+        paginationContainer.append(getPaginationElement(window.translations.page_last, pagesTotal));
 
         $('[data-datasheet-items-total] > *').click(function () {
             paginationPageControl.val($(this).attr('data-page'));

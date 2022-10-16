@@ -1,9 +1,9 @@
 ui:
-  apply_filters: 'Apply filters'
-  import: 'Import'
-  language: 'Language'
-  page_first: 'First'
-  page_last: 'Last'
+  apply_filters: 'Применить фильтры'
+  import: 'Импорт'
+  language: 'Язык'
+  page_first: 'Первая'
+  page_last: 'Последняя'
 
 core:
   authentication:
@@ -23,3 +23,11 @@ core:
       name_placeholder: 'username'
       password_placeholder: 'password'
       register: 'Register'
+
+data:
+  entity:
+    user:
+      title: 'Пользователь'
+      field:
+        roles: 'Роли'
+        locale: 'Локализация'

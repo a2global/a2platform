@@ -8,11 +8,11 @@
             <div class="pull-right">
                 <div class="btn-group">
                     {% for text, url in datasheet.controls %}
-                        <a href="{{ url }}" class="btn btn-default">{{ text }}</a>
+                        <a href="{{ url }}" class="btn btn-default">{{ text|trans }}</a>
                     {% endfor %}
                 </div>
                 <div class="btn-group">
-                    <input type="submit" value="Apply filters" class="btn btn-default">
+                    <input type="submit" value="{{ 'ui.apply_filters'|trans }}" class="btn btn-default">
                 </div>
                 <div class="btn-group" data-datasheet-items-total="{{ datasheet.data.itemsTotal }}"></div>
             </div>

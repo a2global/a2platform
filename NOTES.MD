@@ -24,3 +24,5 @@ composer
         "url": "../A2Platform"
     }
 ]
+
+https://symfony.com/doc/current/session/locale_sticky_session.html

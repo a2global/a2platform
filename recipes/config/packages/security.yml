@@ -6,6 +6,6 @@ security:
             custom_authenticator: A2Global\A2Platform\Bundle\AuthBundle\Security\LoginFormAuthenticator
             logout:
                 path: authentication_logout
-                target: app_default
+                target: app_default_page_resolver
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }

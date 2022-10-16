@@ -46,10 +46,11 @@ class Datasheet
 //
     public function getColumn($fieldName): DatasheetColumn
     {
-        $column = new DatasheetColumn($fieldName);
-        $this->columns[$fieldName] = $column;
+        if (!isset($this->columns[$fieldName])) {
+            $this->columns[$fieldName] = new DatasheetColumn($fieldName);
+        }
 
-        return $column;
+        return $this->columns[$fieldName];
     }
 
     public function addControl($text, $url)

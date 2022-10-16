@@ -13,6 +13,7 @@ class UpdateDatasheetColumnsEventSubscriber implements EventSubscriberInterface
     public const SUPPORTED_DATASHEET_TYPE = 'all';
 
     private const COLUMN_PARAMETERS_DEFAULTS = [
+        'title' => null,
         'width' => 200,
         'align' => DatasheetColumn::TEXT_ALIGN_LEFT,
         'link' => null,
@@ -56,7 +57,7 @@ class UpdateDatasheetColumnsEventSubscriber implements EventSubscriberInterface
         foreach (self::COLUMN_PARAMETERS_DEFAULTS as $paramName => $defaultValue) {
             $value = ObjectHelper::getProperty($datasheetColumn, $paramName);
 
-            if (!is_null($value)) {
+            if (!is_null($value) || is_null($defaultValue)) {
                 continue;
             }
             ObjectHelper::setProperty($datasheetColumn, $paramName, $defaultValue);

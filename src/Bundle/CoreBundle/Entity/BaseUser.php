@@ -38,6 +38,11 @@ abstract class BaseUser implements UserInterface, PasswordAuthenticatedUserInter
      */
     protected $password;
 
+    /**
+     * @ORM\Column(type="string", length=4, nullable=true)
+     */
+    protected $locale;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -123,6 +128,18 @@ abstract class BaseUser implements UserInterface, PasswordAuthenticatedUserInter
     public function setName($name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    public function setLocale($locale): self
+    {
+        $this->locale = $locale;
 
         return $this;
     }

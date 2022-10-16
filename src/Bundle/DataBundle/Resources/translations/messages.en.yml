@@ -1,0 +1,10 @@
+data:
+  admin_menu:
+    data: 'Data'
+  crud:
+    list:
+      datasheet:
+        title: 'List of the objects «%entity%»'
+  typical_entity:
+    field:
+      id: '№'
