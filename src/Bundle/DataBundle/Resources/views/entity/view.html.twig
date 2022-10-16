@@ -2,15 +2,29 @@
 
 {% block page_content %}
     <div class="box">
+{#        <div class="box-header">#}
+{#            <a href="{{ path('admin_data_index', {entity: entityClass}) }}"#}
+{#               onClick="history.back();return false;" class="btn btn-default">&larr; {{ 'ui.back'|trans }}</a>#}
+{#            <br>#}
+{#        </div>#}
         <div class="box-header">
-            <a href="{{ editUrl }}" class="btn btn-primary" data-entity-crud-edit-link="">Edit</a>
+            <table>
+                <tr>
+                    <td width="200">
+                        <h4 class="m-5">{{ entityName }} #{{ id }}</h4>
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_data_edit', {entity: entityClass, id: id}) }}" class="btn btn-primary" data-entity-crud-edit-link="">{{ 'ui.edit'|trans }}</a>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="box-body">
             <table class="table table-bordered table-striped">
-                {% for name, value in data %}
+                {% for item in data %}
                     <tr>
-                        <td width="200"><b>{{ name|normalize }}:</b></td>
-                        <td>{{ value }}</td>
+                        <td width="200"><b>{{ item.name }}:</b></td>
+                        <td>{{ item.value }}</td>
                     </tr>
                 {% endfor %}
             </table>

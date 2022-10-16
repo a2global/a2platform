@@ -7,4 +7,5 @@ data:
         title: 'List of the objects «%entity%»'
   typical_entity:
     field:
-      id: '№'
+      id: 'ID'
+      email: 'e-mail'

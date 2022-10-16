@@ -47,15 +47,17 @@ class DataCrudController extends AbstractController
 
         foreach (EntityHelper::getEntityFields($object) as $fieldName => $fieldType) {
             $dataType = $this->get(EntityHelper::class)->resolveDataTypeByFieldType($fieldType);
-            $data[$fieldName] = $dataType::getReadablePreview(ObjectHelper::getProperty($object, $fieldName));
+            $data[] = [
+                'name' => $this->get(EntityHelper::class)->getFieldName($entity, $fieldName),
+                'value' => $dataType::getReadablePreview(ObjectHelper::getProperty($object, $fieldName)),
+            ];
         }
 
         return $this->render('@Data/entity/view.html.twig', [
             'data' => $data,
-            'editUrl' => $this->generateUrl('admin_data_edit', [
-                'entity' => $entity,
-                'id' => $id,
-            ]),
+            'entityClass' => $entity,
+            'entityName' => $this->get(EntityHelper::class)->getName($entity),
+            'id' => $id,
         ]);
     }
 
@@ -81,6 +83,9 @@ class DataCrudController extends AbstractController
 
         return $this->render('@Data/entity/edit.html.twig', [
             'form' => $form->createView(),
+            'entityClass' => $entity,
+            'entityName' => $this->get(EntityHelper::class)->getName($entity),
+            'id' => $id,
         ]);
     }
 

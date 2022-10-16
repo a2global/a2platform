@@ -12,54 +12,28 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DatasheetProvider
 {
-    private const TYPICAL_FIELDS = [
-        'id',
-        'createdAt',
-        'updatedAt',
-        'user',
-        'name',
-        'title',
-        'password',
-        'enabled',
-        'isActive',
-    ];
-
-    private const TYPICAL_FIELD_TRANSLATION_PREFIX = 'data.typical_entity.field.';
-
     public function __construct(
         protected EntityManagerInterface $entityManager,
         protected RouterInterface        $router,
         protected TranslatorInterface    $translator,
+        protected EntityHelper           $entityHelper,
     ) {
     }
 
     public function getDefaultEntityListDatasheet($entityClassName, $includeColumns = true): Datasheet
     {
-        $snakedEntityName = StringUtility::toSnakeCase(StringUtility::getShortClassName($entityClassName));
-        $objectName = $this->translator->trans('data.entity.'.$snakedEntityName.'.title');
-
         // Create datasheet with the title
         $datasheet = new Datasheet(
             $this->entityManager->getRepository($entityClassName)->createQueryBuilder('a'),
             $this->translator->trans('data.crud.list.datasheet.title', [
-                '%entity%' => $objectName,
+                '%entity%' => $this->entityHelper->getName($entityClassName),
             ]),
         );
 
-        // Set column titles
+        // Set column titles translated
         foreach (EntityHelper::getEntityFields($entityClassName) as $fieldName => $fieldType) {
-            if (in_array($fieldName, self::TYPICAL_FIELDS)) {
-                $title = self::TYPICAL_FIELD_TRANSLATION_PREFIX . $fieldName;
-            } else {
-                $title = sprintf(
-                    'data.entity.%s.field.%s',
-                    StringUtility::toCamelCase(StringUtility::getShortClassName($entityClassName)),
-                    StringUtility::toCamelCase($fieldName)
-                );
-            }
-            $translatedTitle = $this->translator->trans($title);
-            $finalTitle = $translatedTitle === $title ? StringUtility::normalize($fieldName) : $translatedTitle;
-            $datasheet->getColumn($fieldName)->setTitle($finalTitle);
+            $datasheet->getColumn($fieldName)
+                ->setTitle($this->entityHelper->getFieldName($entityClassName, $fieldName));
         }
 
         // Add controls

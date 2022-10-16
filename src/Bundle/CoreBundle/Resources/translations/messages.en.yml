@@ -1,9 +1,12 @@
 ui:
   apply_filters: 'Apply filters'
+  back: 'Back'
+  edit: 'Edit'
   import: 'Import'
   language: 'Language'
   page_first: 'First'
   page_last: 'Last'
+  save: 'Save'
 
 core:
   authentication:

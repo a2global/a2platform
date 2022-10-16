@@ -1,9 +1,12 @@
 ui:
   apply_filters: 'Применить фильтры'
+  back: 'Назад'
+  edit: 'Правка'
   import: 'Импорт'
   language: 'Язык'
   page_first: 'Первая'
   page_last: 'Последняя'
+  save: 'Сохранить'
 
 core:
   authentication:
@@ -28,6 +31,3 @@ data:
   entity:
     user:
       title: 'Пользователь'
-      field:
-        roles: 'Роли'
-        locale: 'Локализация'

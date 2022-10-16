@@ -52,16 +52,12 @@ class FormProvider
                 continue;
             }
 
-            if (!array_key_exists($fieldType, self::FORM_FIELDS_MAPPING)) {
-                $formBuilder->add($fieldName);
-
+            if (array_key_exists($fieldType, self::FORM_FIELDS_MAPPING) && is_null(self::FORM_FIELDS_MAPPING[$fieldType])) {
                 continue;
             }
-
-            if (!self::FORM_FIELDS_MAPPING[$fieldType]) {
-                continue;
-            }
-            $formBuilder->add($fieldName, self::FORM_FIELDS_MAPPING[$fieldType]);
+            $formBuilder->add($fieldName, self::FORM_FIELDS_MAPPING[$fieldType] ?? null, [
+                'label' => $this->entityHelper->getFieldName($object, $fieldName),
+            ]);
         }
 
         return $formBuilder->getForm();

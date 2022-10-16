@@ -4,7 +4,6 @@ namespace A2Global\A2Platform\Bundle\CoreBundle\Helper;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\DataTypeInterface;
-use A2Global\A2Platform\Bundle\DataBundle\DataType\BooleanDataType;
 use A2Global\A2Platform\Bundle\DataBundle\DataType\ObjectDataType;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +12,7 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use ReflectionClass;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EntityHelper
 {
@@ -22,8 +22,11 @@ class EntityHelper
 
     protected array $entityListCached = [];
 
+    private const TYPICAL_FIELD_TRANSLATION_PREFIX = 'data.typical_entity.field.';
+
     public function __construct(
         protected EntityManagerInterface $entityManager,
+        protected TranslatorInterface    $translator,
         protected                        $dataTypes,
     ) {
     }
@@ -38,6 +41,46 @@ class EntityHelper
         }
 
         return $this->entityListCached;
+    }
+
+    public function resolveDataTypeByFieldType($fieldType): DataTypeInterface
+    {
+        /** @var DataTypeInterface $dataType */
+        foreach ($this->dataTypes as $dataType) {
+            if ($dataType::supportsByOrmType($fieldType)) {
+                return $dataType;
+            }
+        }
+
+        return new ObjectDataType();
+    }
+
+    public function getName($objectOrClassName)
+    {
+        $name = StringUtility::getShortClassName($objectOrClassName);
+        $code = 'data.entity.' . StringUtility::toSnakeCase($name) . '.title';
+        $translated = $this->translator->trans($code);
+
+        return $translated === $code ? StringUtility::normalize($name) : $translated;
+    }
+
+    public function getFieldName($objectOrClassName, $fieldName)
+    {
+        $entityNameSnaked = StringUtility::toSnakeCase(StringUtility::getShortClassName($objectOrClassName));
+        $code = self::TYPICAL_FIELD_TRANSLATION_PREFIX . $fieldName;
+        $translated = $this->translator->trans($code);
+
+        if ($translated != $code) {
+            return $translated;
+        }
+        $code = sprintf(
+            'data.entity.%s.field.%s',
+            $entityNameSnaked,
+            StringUtility::toCamelCase($fieldName)
+        );
+        $translated = $this->translator->trans($code);
+
+        return $translated === $code ? StringUtility::normalize($fieldName) : $translated;
     }
 
     public static function getEntityFields($class): array
@@ -64,18 +107,6 @@ class EntityHelper
         }
 
         return self::$cachedEntityFields[$class] = $fields;
-    }
-
-    public function resolveDataTypeByFieldType($fieldType): DataTypeInterface
-    {
-        /** @var DataTypeInterface $dataType */
-        foreach ($this->dataTypes as $dataType) {
-            if ($dataType::supportsByOrmType($fieldType)) {
-                return $dataType;
-            }
-        }
-
-        return new ObjectDataType();
     }
 
     protected static function getFieldTypeFromAnnotation($property, AnnotationReader $annotationReader)

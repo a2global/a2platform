@@ -14,7 +14,6 @@ use League\Bundle\OAuth2ServerBundle\Model\AuthorizationCode;
 use League\Bundle\OAuth2ServerBundle\Model\Client;
 use League\Bundle\OAuth2ServerBundle\Model\RefreshToken;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminMenuBuilderSubscriber implements EventSubscriberInterface
 {
@@ -30,7 +29,6 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
 
     public function __construct(
         protected EntityHelper $entityHelper,
-        protected TranslatorInterface $translator,
     ) {
     }
 
@@ -96,7 +94,7 @@ class AdminMenuBuilderSubscriber implements EventSubscriberInterface
         $entityName = StringUtility::getShortClassName($entity);
         $menuName = $name . '.' . StringUtility::toCamelCase($entityName);
         $menu->addChild($menuName, [
-            'label' => 'data.entity.' . StringUtility::toCamelCase($entityName) . '.title',
+            'label' => $this->entityHelper->getName($entity),
             'route' => 'admin_data_index',
             'routeParameters' => [
                 'entity' => $entity,

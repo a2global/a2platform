@@ -3,12 +3,26 @@
 {% block page_content %}
     {{ form_start(form) }}
     <div class="box">
+{#        <div class="box-header">#}
+{#            <a href="{{ path('admin_data_index', {entity: entityClass}) }}"#}
+{#               onClick="history.back();return false;" class="btn btn-default">&larr; {{ 'ui.back'|trans }}</a>#}
+{#            <br>#}
+{#        </div>#}
+        <div class="box-header">
+            <table>
+                <tr>
+                    <td width="200">
+                        <h4 class="m-5">{{ entityName }} #{{ id }}</h4>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div class="box-body">
             <table class="table table-bordered table-striped">
                 {% for child in form.children %}
                     {% if child.vars.name != '_token' %}
                         <tr>
-                            <td width="200"><b>{{ child.vars.name|normalize }}:</b></td>
+                            <td width="200"><b>{{ child.vars.label }}:</b></td>
                             <td>
                                 {{ form_widget(child) }}
                                 {% if form_errors(child) %}
@@ -20,7 +34,7 @@
                 {% endfor %}
                 <tr>
                     <td width="200"></td>
-                    <td><input type="submit" class="btn btn-primary" data-entity-crud-edit-submit-button=""></td>
+                    <td><input type="submit" value="{{ 'ui.save'|trans }}" class="btn btn-primary" data-entity-crud-edit-submit-button=""></td>
                 </tr>
             </table>
         </div>
