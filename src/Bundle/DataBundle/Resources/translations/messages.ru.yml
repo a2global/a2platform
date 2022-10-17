@@ -31,3 +31,4 @@ data:
       locale: 'Локализация'
       age: 'Возраст'
       fullname: 'Полное имя'
+      status: 'Статус'
