@@ -4,6 +4,8 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Provider;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
+use A2Global\A2Platform\Bundle\DataBundle\Entity\Comment;
+use A2Global\A2Platform\Bundle\DataBundle\Form\CommentFormType;
 use A2Global\A2Platform\Bundle\DataBundle\Import\Strategy\ImportStrategyInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\DataReaderRegistry;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\ImportStrategyRegistry;
@@ -14,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class FormProvider
 {
@@ -38,6 +41,7 @@ class FormProvider
         protected DataReaderRegistry     $dataReaderRegistry,
         protected EntityHelper           $entityHelper,
         protected ImportStrategyRegistry $importStrategyRegistry,
+        protected RouterInterface        $router,
     ) {
     }
 
@@ -113,6 +117,21 @@ class FormProvider
         }
 
         return $form;
+    }
+
+    public function getCommentForm($object = null)
+    {
+        $comment = new Comment();
+
+        if ($object) {
+            $comment
+                ->setTargetClass(get_class($object))
+                ->setTargetId($object->getId());
+        }
+
+        return $this->formFactory->create(CommentFormType::class, $comment, [
+            'action' => $this->router->generate('admin_data_comment_add'),
+        ]);
     }
 
     protected function getChoicesAttr($fileField, $entityFields)

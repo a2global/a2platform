@@ -1,0 +1,12 @@
+<h4>{{ 'data.comment.list_title'|trans }}:</h4>
+<br>
+
+{% if object.comments|length %}
+    {% for comment in object.comments %}
+        <div>{{ comment.body }}</div>
+        <div class="text-muted text-sm">{{ comment.createdAt|formatDateSimple('Y-m-d H:i:s') }}</div>
+        <br>
+    {% endfor %}
+{% else %}
+    <div class="text-muted text-sm">{{ 'data.comment.no_comments'|trans }}:</div>
+{% endif %}

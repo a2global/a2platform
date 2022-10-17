@@ -4,6 +4,8 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
+use A2Global\A2Platform\Bundle\DataBundle\Entity\Comment;
+use A2Global\A2Platform\Bundle\DataBundle\Entity\CommentableEntityInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Event\OnEntityListDatasheetBuild;
 use A2Global\A2Platform\Bundle\DataBundle\Form\ImportUploadFileFormType;
 use A2Global\A2Platform\Bundle\DataBundle\Import\EntityDataImporter;
@@ -54,10 +56,12 @@ class DataCrudController extends AbstractController
         }
 
         return $this->render('@Data/entity/view.html.twig', [
+            'object' => $object,
             'data' => $data,
             'entityClass' => $entity,
             'entityName' => $this->get(EntityHelper::class)->getName($entity),
             'id' => $id,
+            'hasComments' => $object instanceof CommentableEntityInterface,
         ]);
     }
 
@@ -79,7 +83,6 @@ class DataCrudController extends AbstractController
                 'id' => $id,
             ]);
         }
-
 
         return $this->render('@Data/entity/edit.html.twig', [
             'form' => $form->createView(),

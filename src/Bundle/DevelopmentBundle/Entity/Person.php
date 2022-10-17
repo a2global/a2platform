@@ -2,6 +2,8 @@
 
 namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Entity;
 
+use A2Global\A2Platform\Bundle\DataBundle\Entity\CommentableEntityInterface;
+use A2Global\A2Platform\Bundle\DataBundle\Entity\CommentableEntityTrait;
 use A2Global\A2Platform\Bundle\DevelopmentBundle\Repository\PersonRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -10,9 +12,9 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  * @ORM\Entity(repositoryClass=PersonRepository::class)
  * @ORM\Table(name="development_persons")
  */
-class Person
+class Person implements CommentableEntityInterface
 {
-    use TimestampableEntity;
+    use TimestampableEntity, CommentableEntityTrait;
 
     /**
      * @ORM\Id

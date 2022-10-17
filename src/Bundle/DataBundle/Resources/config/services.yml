@@ -35,3 +35,7 @@ services:
     A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper:
         bind:
             $dataTypes: !tagged_iterator a2platform.data.type
+
+    A2Global\A2Platform\Bundle\DataBundle\EventListener\EntityPostLoadListener:
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }

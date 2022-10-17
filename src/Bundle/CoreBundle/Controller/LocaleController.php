@@ -2,9 +2,12 @@
 
 namespace A2Global\A2Platform\Bundle\CoreBundle\Controller;
 
+use A2Global\A2Platform\Bundle\CoreBundle\Helper\ControllerHelper;
+use A2Global\A2Platform\Bundle\DataBundle\Provider\FormProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/locale/', name: 'locale_')]
 class LocaleController extends AbstractController
@@ -17,8 +20,16 @@ class LocaleController extends AbstractController
         $this->getUser()->setLocale($locale);
         $this->getDoctrine()->getManager()->flush();
 
-        return $request->headers->get('referer') ?
-            $this->redirect($request->headers->get('referer')) :
-            $this->redirectToRoute('app_default_page_resolver');
+        return $this->get(ControllerHelper::class)->redirectBackOrTo();
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            ControllerHelper::class,
+        ]);
     }
 }

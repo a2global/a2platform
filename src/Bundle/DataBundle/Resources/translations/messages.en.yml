@@ -5,6 +5,11 @@ data:
     list:
       datasheet:
         title: 'List of the objects «%entity%»'
+  comment:
+    list_title: 'Comments'
+    form_title: 'Add comment'
+    added: 'Comment added'
+    no_comments: 'No comment'
   typical_entity:
     field:
       id: 'ID'
