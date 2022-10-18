@@ -9,6 +9,7 @@ ui:
   save: 'Сохранить'
   saved: 'Сохранено'
   add: 'Добавить'
+  send: 'Отправить'
 
 core:
   authentication:

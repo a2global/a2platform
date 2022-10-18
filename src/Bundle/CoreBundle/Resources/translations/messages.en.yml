@@ -8,6 +8,7 @@ ui:
   page_last: 'Last'
   save: 'Save'
   add: 'Add'
+  send: 'Send'
 
 core:
   authentication:
