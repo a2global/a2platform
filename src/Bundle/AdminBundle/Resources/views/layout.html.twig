@@ -5,14 +5,53 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css"
-          href="/bundles/data/css/datasheet.css?nocache={{ date()|formatDateSimple('U') }}">
-    {# <link rel="stylesheet" type="text/css" href="{{ asset('bundles/a2crm/css/datasheet.css') }}"> #}
-    {# <style> #}
-    {# .changed-field { #}
-    {# color: #cc0000; #}
-    {# font-weight: 800; #}
-    {# } #}
-    {# </style> #}
+          href="{{ asset('bundles/data/css/datasheet.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/data/libs/amsify-suggestags/amsify.suggestags.css') }}">
+
+    <style>
+        .tags-container{
+            padding:10px 5px;
+            border:1px #f3f3f3 solid;
+            border-radius:4px;
+            background:#fafafa;
+            margin:5px 0;
+        }
+        .tag,
+        .amsify-select-tag{
+            padding:5px 10px !important;
+            font-size:10pt !important;
+            font-weight:600 !important;
+            border-radius:4px !important;
+            background:#447788 !important;
+            color:#ffffff !important;
+            margin:2px !important;
+        }
+        .amsify-list-item {
+            padding:10px 10px !important;
+            padding-left:20px !important;
+        }
+        .amsify-list-item.active{
+            background:#447788 !important;
+            color:#ffffff !important;
+        }
+        .amsify-list{
+            max-height:300px !important;
+        }
+
+        .m-1 {
+            margin: 2px 4px;
+        }
+
+        .m-2 {
+            margin: 5px 10px;
+        }
+
+        {# .changed-field { #}
+        {# color: #cc0000; #}
+        {# font-weight: 800; #}
+        {# } #}
+    </style>
     {# {% if app.environment == 'dev' %} #}
     {# <style> #}
     {# .main-header .navbar { #}
@@ -132,9 +171,10 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script src="{{ asset('bundles/data/libs/amsify-suggestags/jquery.amsify.suggestags.js') }}"></script>
+    <script src="{{ asset('bundles/data/js/datasheet.js') }}"></script>
+    <script src="{{ asset('bundles/data/js/admin.js') }}"></script>
     {#    <script src="{{ asset('bundles/core/libs/chartjs/chartjs_3.9.1.js') }}"></script> #}
-    <script src="/bundles/data/js/datasheet.js"></script>
     <script>
         window.translations = {{ core_dump_translations() }}
     </script>

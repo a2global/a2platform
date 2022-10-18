@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Twig;
 
+use A2Global\A2Platform\Bundle\DataBundle\Entity\TaggableEntityInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Provider\FormProvider;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -18,9 +19,17 @@ class DataTwigExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
+            new TwigFunction('tag_list', [$this, 'viewTagList'], ['is_safe' => ['html']]),
             new TwigFunction('comment_list', [$this, 'viewCommentList'], ['is_safe' => ['html']]),
             new TwigFunction('comment_form', [$this, 'viewCommentForm'], ['is_safe' => ['html']]),
         ];
+    }
+
+    public function viewTagList(TaggableEntityInterface $object)
+    {
+        return $this->twig->render('@Data/data/tag_list.html.twig', [
+            'object' => $object,
+        ]);
     }
 
     public function viewCommentList($object)

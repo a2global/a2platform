@@ -3,14 +3,12 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\ControllerHelper;
-use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\Comment;
-use A2Global\A2Platform\Bundle\DataBundle\Import\EntityDataImporter;
-use A2Global\A2Platform\Bundle\DataBundle\Provider\DatasheetProvider;
+use A2Global\A2Platform\Bundle\DataBundle\Entity\Tag;
+use A2Global\A2Platform\Bundle\DataBundle\Manager\TagManager;
 use A2Global\A2Platform\Bundle\DataBundle\Provider\FormProvider;
-use A2Global\A2Platform\Bundle\DataBundle\Registry\DataReaderRegistry;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -42,6 +40,20 @@ class DataDecorationController extends AbstractController
                 ])
             );
         }
+    }
+
+    /**
+     * @Route("tags/suggest", name="tags_suggest")
+     */
+    public function tagsSuggestAction(Request $request)
+    {
+        $tags = $this->getDoctrine()
+            ->getRepository(Tag::class)
+            ->getSuggestions($request->get('term'), $request->get('existingTags'));
+
+        return new JsonResponse([
+            'suggestions' => $tags,
+        ]);
     }
 
     /**

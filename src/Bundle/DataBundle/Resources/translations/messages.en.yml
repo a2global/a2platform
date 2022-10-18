@@ -10,6 +10,9 @@ data:
     form_title: 'Add comment'
     added: 'Comment added'
     no_comments: 'No comment'
+  tags:
+    form_field_title: 'Tags'
+    no_tags: 'Without tags'
   typical_entity:
     field:
       id: 'ID'

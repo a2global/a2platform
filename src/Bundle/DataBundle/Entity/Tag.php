@@ -6,10 +6,10 @@ use A2Global\A2Platform\Bundle\DataBundle\Repository\TagRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-///**
-// * @ORM\Entity(repositoryClass=TagRepository::class)
-// * @ORM\Table(name="a2data_tags")
-// */
+/**
+ * @ORM\Entity(repositoryClass=TagRepository::class)
+ * @ORM\Table(name="data_tags")
+ */
 class Tag
 {
     use TimestampableEntity;

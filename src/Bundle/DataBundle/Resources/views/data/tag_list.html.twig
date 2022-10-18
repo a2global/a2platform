@@ -1,0 +1,9 @@
+<div class="tags-container">
+    {% if object.tags|length %}
+        {% for tag in object.tags %}
+            <span class="tag">{{ tag.name }}</span>
+        {% endfor %}
+    {% else %}
+        <small class="text-muted">{{ 'data.tags.no_tags'|trans }}</small>
+    {% endif %}
+</div>

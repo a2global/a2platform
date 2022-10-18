@@ -39,6 +39,21 @@ class TagRepository extends ServiceEntityRepository
         }
     }
 
+    public function getSuggestions($term, $existingTags = [])
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.name')
+            ->where('t.name LIKE :term')
+            ->andWhere('t.name NOT IN (:existing)')
+            ->setParameters([
+                'term' => '%'.$term.'%',
+                'existing' => $existingTags,
+            ])
+            ->orderBy('t.name')
+            ->getQuery()
+            ->getSingleColumnResult();
+    }
+
 //    /**
 //     * @return Tag[] Returns an array of Tag objects
 //     */

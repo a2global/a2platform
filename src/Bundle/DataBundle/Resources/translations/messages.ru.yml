@@ -10,6 +10,9 @@ data:
     form_title: 'Добавить комментарий'
     added: 'Комментарий добавлен'
     no_comments: 'Комментариев нет'
+  tags:
+    form_field_title: 'Теги'
+    no_tags: 'Без тегов'
   typical_entity:
     field:
       createdAt: 'Создано'

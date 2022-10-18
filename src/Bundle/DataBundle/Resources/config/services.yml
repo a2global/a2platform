@@ -36,6 +36,11 @@ services:
         bind:
             $dataTypes: !tagged_iterator a2platform.data.type
 
-    A2Global\A2Platform\Bundle\DataBundle\EventListener\EntityPostLoadListener:
+    A2Global\A2Platform\Bundle\DataBundle\EventListener\EntityDecorationEventListener:
         tags:
             - { name: doctrine.event_listener, event: postLoad }
+
+    A2Global\A2Platform\Bundle\DataBundle\EventListener\TagsUpdateEventListener:
+          tags:
+              - { name: doctrine.event_listener, event: preUpdate }
+              - { name: doctrine.event_listener, event: postFlush }

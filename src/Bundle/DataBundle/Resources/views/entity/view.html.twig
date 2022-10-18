@@ -7,23 +7,23 @@
         {#               onClick="history.back();return false;" class="btn btn-default">&larr; {{ 'ui.back'|trans }}</a> #}
         {#            <br> #}
         {#        </div> #}
-        <div class="box-header">
-            <table>
-                <tr>
-                    <td width="200">
-                        <h4 class="m-5">{{ entityName }} #{{ id }}</h4>
-                    </td>
-                    <td>
-                        <a href="{{ path('admin_data_edit', {entity: entityClass, id: id}) }}" class="btn btn-primary"
-                           data-entity-crud-edit-link="">{{ 'ui.edit'|trans }}</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
         <div class="box-body">
             <div class="row">
                 <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h4 class="m-5">{{ entityName }} #{{ id }}</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ path('admin_data_edit', {entity: entityClass, id: id}) }}"
+                               class="btn btn-primary btn-block"
+                               data-entity-crud-edit-link="">{{ 'ui.edit'|trans }}</a>
+                        </div>
+                    </div>
                     <table class="table table-bordered table-striped">
+                        {% if taggable %}
+                            {{ tag_list(object) }}
+                        {% endif %}
                         {% for item in data %}
                             <tr>
                                 <td width="200"><b>{{ item.name }}:</b></td>
@@ -33,7 +33,7 @@
                     </table>
                 </div>
                 <div class="col-md-6">
-                    {% if hasComments %}
+                    {% if commentable %}
                         {{ comment_list(object) }}
                         <br>
                         {{ comment_form(object) }}

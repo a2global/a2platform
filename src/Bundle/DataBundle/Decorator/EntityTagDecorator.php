@@ -2,7 +2,6 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Decorator;
 
-use A2Global\A2Platform\Bundle\DataBundle\Entity\Comment;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\CommentableEntityInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\TaggableEntityInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\TagMapping;

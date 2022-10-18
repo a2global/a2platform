@@ -47,7 +47,7 @@ class FormProvider
 
     public function getFor(mixed $object): FormInterface
     {
-        $formBuilder = $this->formFactory->createBuilder(FormType::class, null, [
+        $formBuilder = $this->formFactory->createBuilder(FormType::class, $object, [
             'data_class' => get_class($object),
         ]);
 
