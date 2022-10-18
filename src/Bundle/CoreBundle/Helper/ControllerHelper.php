@@ -16,7 +16,7 @@ class ControllerHelper
 
     public function redirectBackOrTo($url = null)
     {
-        $referer = $this->requestStack->getMainRequest()->get('referer');
+        $referer = $this->requestStack->getMainRequest()->headers->get('referer');
 
         if ($referer) {
             return new RedirectResponse($referer);
