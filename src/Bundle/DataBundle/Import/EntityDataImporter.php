@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Import;
 
+use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\ImportStrategyRegistry;
@@ -18,6 +19,7 @@ class EntityDataImporter
     public function __construct(
         protected ManagerRegistry        $managerRegistry,
         protected ImportStrategyRegistry $importStrategyRegistry,
+        protected EntityHelper           $entityHelper,
     ) {
     }
 
@@ -36,6 +38,7 @@ class EntityDataImporter
                     }
                     $targetObjectData[$targetFieldName] = $sourceObject->getValue($sourceFieldNumber);
                 }
+                $targetObjectData = $this->prepareRawObjectData($entity, $targetObjectData);
                 $result = $strategy->processItem($entity, $targetObjectData, $identificationField);
                 $this->result[$result] = ($this->result[$result] ?? 0) + 1;
             } catch (Throwable $exception) {
@@ -50,5 +53,17 @@ class EntityDataImporter
         $this->result['total items'] = $sourceData->getItemsTotal();
 
         return $this->result;
+    }
+
+    public function prepareRawObjectData($entity, $data)
+    {
+        $fieldTypes = EntityHelper::getEntityFields($entity);
+
+        foreach($data as $fieldName => $value){
+            $dataType = $this->entityHelper->resolveDataTypeByFieldType($fieldTypes[$fieldName]);
+            $data[$fieldName] = $dataType::fromRaw($value);
+        }
+
+        return $data;
     }
 }

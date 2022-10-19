@@ -15,4 +15,9 @@ class BooleanDataType implements DataTypeInterface
     {
         return (string)$value;
     }
+
+    public static function fromRaw($value)
+    {
+        return (bool)$value;
+    }
 }

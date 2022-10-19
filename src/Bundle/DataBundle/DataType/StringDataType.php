@@ -2,6 +2,8 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\DataType;
 
+use DateTime;
+
 class StringDataType implements DataTypeInterface
 {
     public static function supportsByOrmType($type): bool
@@ -16,4 +18,8 @@ class StringDataType implements DataTypeInterface
         return (string)$value;
     }
 
+    public static function fromRaw($value)
+    {
+        return (string) $value;
+    }
 }

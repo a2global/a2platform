@@ -18,4 +18,9 @@ class DateTimeDataType implements DataTypeInterface
         /** @var DateTime $value */
         return $value ? $value->format('Y-m-d h:i:s') : '';
     }
+
+    public static function fromRaw($value)
+    {
+        return new DateTime($value);
+    }
 }

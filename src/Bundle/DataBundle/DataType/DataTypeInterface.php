@@ -6,4 +6,5 @@ interface DataTypeInterface
 {
     public static function supportsByOrmType($type): bool;
     public static function getReadablePreview($value): string;
+    public static function fromRaw($value);
 }

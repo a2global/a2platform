@@ -2,6 +2,8 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\DataType;
 
+use DateTime;
+
 class FloatDataType implements DataTypeInterface
 {
     public static function supportsByOrmType($type): bool
@@ -17,4 +19,8 @@ class FloatDataType implements DataTypeInterface
         return (string)$value;
     }
 
+    public static function fromRaw($value)
+    {
+        return (float)$value;
+    }
 }

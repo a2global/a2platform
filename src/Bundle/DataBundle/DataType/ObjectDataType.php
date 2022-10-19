@@ -2,6 +2,9 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\DataType;
 
+use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
+use DateTime;
+
 class ObjectDataType implements DataTypeInterface
 {
     public static function supportsByOrmType($type): bool
@@ -20,4 +23,8 @@ class ObjectDataType implements DataTypeInterface
         return json_encode($value);
     }
 
+    public static function fromRaw($value)
+    {
+        return StringUtility::getShortClassName($value);
+    }
 }
