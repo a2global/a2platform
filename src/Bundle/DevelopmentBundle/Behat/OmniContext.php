@@ -104,6 +104,8 @@ class OmniContext extends MinkContext
         $this->getSession()->getPage()->clickLink($link);
     }
 
+
+
     /**
      * @Then /^I should see "([^"]*)" in the code$/
      */

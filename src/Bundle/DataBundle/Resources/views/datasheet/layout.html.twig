@@ -8,7 +8,7 @@
             <div class="pull-right">
                 <div class="btn-group">
                     {% for text, url in datasheet.controls %}
-                        <a href="{{ url }}" class="btn btn-default">{{ text|trans }}</a>
+                        <a href="{{ url }}" class="btn btn-default" data-datasheet-control="{{ text }}">{{ text|trans }}</a>
                     {% endfor %}
                 </div>
                 <div class="btn-group">
