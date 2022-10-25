@@ -47,7 +47,7 @@ class ObjectHelper
                 'Failed to set data %s to %s via set+%s',
                 $propertyName,
                 get_class($object),
-                StringUtility::toPascalCase($object)
+                StringUtility::toPascalCase($method)
             )
         );
     }

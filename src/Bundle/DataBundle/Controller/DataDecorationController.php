@@ -49,7 +49,7 @@ class DataDecorationController extends AbstractController
     {
         $tags = $this->getDoctrine()
             ->getRepository(Tag::class)
-            ->getSuggestions($request->get('term'), $request->get('existingTags'));
+            ->getSuggestions($request->get('term'), $request->get('existingTags', []));
 
         return new JsonResponse([
             'suggestions' => $tags,

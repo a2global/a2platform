@@ -3,10 +3,8 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Import\Strategy;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
-use A2Global\A2Platform\Bundle\DataBundle\Event\Import\OnItemBeforeImportEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CreateNewAndIgnoreExistingImportStrategy extends AbstractImportStrategy
 {
@@ -14,17 +12,11 @@ class CreateNewAndIgnoreExistingImportStrategy extends AbstractImportStrategy
 
     public function __construct(
         protected EntityManagerInterface   $entityManager,
-        protected EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
     public function processItem(string $entity, array $data, string $identificationField): string
     {
-        // Dispatch event with raw data, for modify purposes
-        $event = new OnItemBeforeImportEvent($entity, $data);
-        $this->eventDispatcher->dispatch($event);
-        $data = $event->getData();
-
         if (!isset($data[$identificationField])) {
             throw new Exception('Identification field must be mapped');
         }

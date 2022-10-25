@@ -171,7 +171,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ asset('bundles/data/libs/amsify-suggestags/jquery.amsify.suggestags.js') }}"></script>
+{#    {% if app.environment != 'behat' %}#}
+        <script src="{{ asset('bundles/data/libs/amsify-suggestags/jquery.amsify.suggestags.js') }}"></script>
+{#    {% endif %}#}
     <script src="{{ asset('bundles/data/js/datasheet.js') }}"></script>
     <script src="{{ asset('bundles/data/js/admin.js') }}"></script>
     {#    <script src="{{ asset('bundles/core/libs/chartjs/chartjs_3.9.1.js') }}"></script> #}

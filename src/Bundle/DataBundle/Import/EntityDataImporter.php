@@ -5,8 +5,10 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Import;
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataCollection;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
+use A2Global\A2Platform\Bundle\DataBundle\Event\Import\OnItemBeforeImportEvent;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\ImportStrategyRegistry;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Throwable;
 
 class EntityDataImporter
@@ -17,9 +19,10 @@ class EntityDataImporter
     protected int $line = 1;
 
     public function __construct(
-        protected ManagerRegistry        $managerRegistry,
-        protected ImportStrategyRegistry $importStrategyRegistry,
-        protected EntityHelper           $entityHelper,
+        protected ManagerRegistry          $managerRegistry,
+        protected ImportStrategyRegistry   $importStrategyRegistry,
+        protected EntityHelper             $entityHelper,
+        protected EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -59,11 +62,15 @@ class EntityDataImporter
     {
         $fieldTypes = EntityHelper::getEntityFields($entity);
 
-        foreach($data as $fieldName => $value){
+        foreach ($data as $fieldName => $value) {
             $dataType = $this->entityHelper->resolveDataTypeByFieldType($fieldTypes[$fieldName]);
             $data[$fieldName] = $dataType::fromRaw($value);
         }
 
-        return $data;
+        // Dispatch event with raw data, for modify purposes
+        $event = new OnItemBeforeImportEvent($entity, $data);
+        $this->eventDispatcher->dispatch($event);
+
+        return $event->getData();
     }
 }

@@ -35,8 +35,5 @@ class QueryBuilderBooleanFilterApplier implements FilterApplierInterface
                 )
             );
         }
-//        $queryBuilder
-//            ->andWhere(sprintf('%s LIKE :%sContains', $fieldPath, $fieldName))
-//            ->setParameter(sprintf('%sContains', $fieldName), sprintf('%%%s%%', $filter->getValue()));
     }
 }

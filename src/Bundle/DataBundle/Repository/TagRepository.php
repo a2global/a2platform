@@ -21,61 +21,24 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
-    public function add(Tag $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(Tag $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
     public function getSuggestions($term, $existingTags = [])
     {
-        return $this->createQueryBuilder('t')
+        $qb = $this
+            ->createQueryBuilder('t')
             ->select('t.name')
             ->where('t.name LIKE :term')
-            ->andWhere('t.name NOT IN (:existing)')
-            ->setParameters([
-                'term' => '%'.$term.'%',
-                'existing' => $existingTags,
-            ])
+            ->setParameter('term', '%' . $term . '%');
+
+        if (count($existingTags) > 0) {
+            $qb
+                ->andWhere('t.name NOT IN (:existing)')
+                ->setParameter('existing', $existingTags);
+        }
+
+//        $query = $qb->getQuery()->getSQL();
+        return $qb
             ->orderBy('t.name')
             ->getQuery()
             ->getSingleColumnResult();
     }
-
-//    /**
-//     * @return Tag[] Returns an array of Tag objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Tag
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

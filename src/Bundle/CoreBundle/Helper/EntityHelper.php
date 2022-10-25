@@ -61,7 +61,13 @@ class EntityHelper
         $code = 'data.entity.' . StringUtility::toSnakeCase($name) . '.title';
         $translated = $this->translator->trans($code);
 
-        return $translated === $code ? StringUtility::normalize($name) : $translated;
+        if ($translated != $code) {
+            return $translated;
+        }
+
+        $translated = $this->translator->trans($name);
+
+        return $translated === $name ? StringUtility::normalize($name) : $translated;
     }
 
     public function getFieldName($objectOrClassName, $fieldName)
