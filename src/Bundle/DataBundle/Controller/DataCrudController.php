@@ -4,6 +4,7 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
+use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\CommentableEntityInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\TaggableEntityInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Event\OnEntityListDatasheetBuild;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
+use Twig\Environment;
 
 /**
  * @Route("admin/data/", name="admin_data_")
@@ -49,13 +51,25 @@ class DataCrudController extends AbstractController
 
         foreach (EntityHelper::getEntityFields($object) as $fieldName => $fieldType) {
             $dataType = $this->get(EntityHelper::class)->resolveDataTypeByFieldType($fieldType);
+
+            if ($fieldName === 'id') {
+                continue;
+            }
             $data[] = [
                 'name' => $this->get(EntityHelper::class)->getFieldName($entity, $fieldName),
                 'value' => $dataType::getReadablePreview(ObjectHelper::getProperty($object, $fieldName)),
             ];
         }
+        $templateName = sprintf(
+            'admin/crud/%s/view.html.twig',
+            StringUtility::toSnakeCase(StringUtility::getShortClassName($entity))
+        );
 
-        return $this->render('@Data/entity/view.html.twig', [
+        if(!$this->get(Environment::class)->getLoader()->exists($templateName)){
+            $templateName = '@Data/crud/view.html.twig';
+        }
+
+        return $this->render($templateName, [
             'object' => $object,
             'data' => $data,
             'entityClass' => $entity,
@@ -85,7 +99,7 @@ class DataCrudController extends AbstractController
             ]);
         }
 
-        return $this->render('@Data/entity/edit.html.twig', [
+        return $this->render('@Data/crud/edit.html.twig', [
             'form' => $form->createView(),
             'entityClass' => $entity,
             'entityName' => $this->get(EntityHelper::class)->getName($entity),
@@ -150,10 +164,10 @@ class DataCrudController extends AbstractController
         $filepath = $this->getParameter('kernel.cache_dir') . '/' . 'import' . '/' . $filename . '.' . $extension;
 
         if (!file_exists($filepath)) {
-            /** @codeCoverageIgnore  */
+            /** @codeCoverageIgnore */
             $this->addFlash('warning', 'Please upload CSV file again');
 
-            /** @codeCoverageIgnore  */
+            /** @codeCoverageIgnore */
             return $this->redirectToRoute('admin_data_import_upload', [
                 'entity' => $entity,
             ]);
@@ -193,6 +207,7 @@ class DataCrudController extends AbstractController
             DataReaderRegistry::class,
             EventDispatcherInterface::class,
             DatasheetProvider::class,
+            Environment::class,
         ]);
     }
 }

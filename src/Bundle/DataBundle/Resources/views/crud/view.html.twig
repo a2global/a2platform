@@ -1,0 +1,9 @@
+{% extends '@Data/crud/view.layout.html.twig' %}
+
+{% block sidebar_content %}
+    {% if commentable %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+
