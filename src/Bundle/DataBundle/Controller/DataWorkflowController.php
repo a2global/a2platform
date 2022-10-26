@@ -3,12 +3,8 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\ControllerHelper;
-use A2Global\A2Platform\Bundle\DataBundle\Entity\Comment;
-use A2Global\A2Platform\Bundle\DataBundle\Entity\Tag;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\WorkflowTransition;
-use A2Global\A2Platform\Bundle\DataBundle\Provider\FormProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Workflow\Registry;
@@ -16,7 +12,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 /**
- * @Route("admin/data/workflow", name="admin_data_workflow_")
+ * @Route("admin/data/workflow/", name="admin_data_workflow_")
  */
 class DataWorkflowController extends AbstractController
 {
@@ -52,7 +48,7 @@ class DataWorkflowController extends AbstractController
 
         return $this->get(ControllerHelper::class)->redirectBackOrTo(
             $this->generateUrl('admin_data_view', [
-                'entity' => $object,
+                'entity' => $objectClass,
                 'id' => $objectId,
             ])
         );
