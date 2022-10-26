@@ -46,7 +46,7 @@ class WorkflowTimeLineBuilder
             if ($this->twig->getLoader()->exists($transitionDetailsTemplateName)) {
                 $content = $this->twig->render($transitionDetailsTemplateName, [
                     'object' => $object,
-                    'data' => $pastTransition->getData(),
+                    'context' => $pastTransition->getContext(),
                 ]);
             }
             $name = $this->getTransitionName($pastTransition->getTransitionName(), $object, $pastTransition->getWorkflowName());

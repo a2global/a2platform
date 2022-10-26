@@ -4,6 +4,7 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\ControllerHelper;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\WorkflowTransition;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,23 +28,24 @@ class DataWorkflowController extends AbstractController
         $objectId = $request->get('objectId');
         $object = $this->getDoctrine()->getRepository($objectClass)->find($objectId);
         $stateMachine = $this->get(Registry::class)->get($object, $workflowName);
-        $transitionData = $request->get('data');
 
         try {
-            $stateMachine->apply($object, $transitionName);
+            if (!$stateMachine->can($object, $transitionName)) {
+                throw new Exception('This transition is not possible');
+            }
+            $context = $this->get('request_stack')->getCurrentRequest()->request->all();
+            $stateMachine->apply($object, $transitionName, $context);
             $workflowTransition = (new WorkflowTransition())
                 ->setTargetClass($objectClass)
                 ->setTargetId($objectId)
                 ->setWorkflowName($workflowName)
-                ->setTransitionName($transitionName);
-
-            if($transitionData){
-                $workflowTransition->setData($transitionData);
-            }
+                ->setTransitionName($transitionName)
+                ->setContext($context);
             $this->getDoctrine()->getManager()->persist($workflowTransition);
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', 'Saved');
         } catch (Throwable $exception) {
-            $this->addFlash('danger', $exception->getMessage() . ' in '. $exception->getTraceAsString());
+            $this->addFlash('danger', $exception->getMessage() . ' in ' . $exception->getTraceAsString());
         }
 
         return $this->get(ControllerHelper::class)->redirectBackOrTo(

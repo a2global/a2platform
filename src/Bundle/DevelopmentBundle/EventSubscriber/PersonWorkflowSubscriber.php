@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Workflow\Event\TransitionEvent;
 
-class OrderDialogWorkflowSubscriber implements EventSubscriberInterface
+class PersonWorkflowSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         protected RequestStack $requestStack,
@@ -23,11 +23,11 @@ class OrderDialogWorkflowSubscriber implements EventSubscriberInterface
 
     public function setEnglishLevel(TransitionEvent $event)
     {
-        $event->getSubject()->setVersion($event->getMarking()->getContext()['englishLevel']);
+        $event->getSubject()->setVersion($event->getContext()['englishLevel']);
     }
 
     public function setSalary(TransitionEvent $event)
     {
-        $event->getSubject()->setAge($event->getMarking()->getContext()['salary']);
+        $event->getSubject()->setAge($event->getContext()['salary']);
     }
 }

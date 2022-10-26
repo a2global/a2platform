@@ -44,7 +44,7 @@ class WorkflowTransition
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $data;
+    private $context;
 
     public function getId(): ?int
     {
@@ -97,14 +97,14 @@ class WorkflowTransition
         return $this;
     }
 
-    public function getData()
+    public function getContext()
     {
-        return $this->data;
+        return $this->context;
     }
 
-    public function setData($data): self
+    public function setContext($context): self
     {
-        $this->data = $data;
+        $this->context = $context;
         return $this;
     }
 }
