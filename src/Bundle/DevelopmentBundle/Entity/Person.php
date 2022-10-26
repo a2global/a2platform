@@ -86,13 +86,18 @@ class Person implements CommentableEntityInterface, TaggableEntityInterface
     private $latitude;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $state = 'new';
+
+    /**
      * @ORM\Column(type="array", nullable=true)
      */
     private $roles = [];
 
     public function __toString(): string
     {
-        return sprintf('#%s %s %s', $this->getId(), $this->getFirstname());
+        return sprintf('#%s %s', $this->getId(), $this->getFullname());
     }
 
     public function getId(): ?int
@@ -253,6 +258,17 @@ class Person implements CommentableEntityInterface, TaggableEntityInterface
     {
         $this->position = $position;
 
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): self
+    {
+        $this->state = $state;
         return $this;
     }
 }

@@ -22,7 +22,13 @@ class HelperTwigExtension extends AbstractExtension
             new TwigFunction('parameter', [$this, 'getParameter']),
             new TwigFunction('core_dump_translations', [$this, 'dumpTranslations'], ['is_safe' => ['html']]),
             new TwigFunction('chart_js_data', [$this, 'getChartJsData'], ['is_safe' => ['html']]),
+            new TwigFunction('getClass', [$this, 'getClass']),
         ];
+    }
+
+    public function getClass($object)
+    {
+        return get_class($object);
     }
 
     public function getParameter($name, $default = null)

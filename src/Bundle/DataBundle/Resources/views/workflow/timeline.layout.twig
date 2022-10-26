@@ -1,0 +1,61 @@
+<ul class="timeline">
+
+    <!-- timeline time label -->
+    <li class="time-label">
+        <span class="bg-red">
+            {{ startDatetime|formatDateSimple('Y-m-d H:i') }}
+        </span>
+    </li>
+    <!-- /.timeline-label -->
+
+    {% for step in steps %}
+        <li>
+            <!-- timeline icon -->
+            <i class="fa fa-play-circle bg-blue"></i>
+            <div class="timeline-item">
+                {% if step.datetime is not null %}
+                    <span class="time">
+                        <i class="fa fa-clock-o"></i>
+                        {{ step.datetime|formatDateSimple('Y-m-d H:i') }}
+                    </span>
+                {% endif %}
+
+                <h3 class="timeline-header">
+                    {{ step.name }}
+                </h3>
+
+                <div class="timeline-body">
+                    {{ step.content|raw }}
+                </div>
+
+                {#                <div class="timeline-footer"> #}
+                {#                    <a class="btn btn-primary btn-xs">...</a> #}
+                {#                </div> #}
+            </div>
+        </li>
+    {% endfor %}
+
+    {#    <!-- timeline item --> #}
+    {#    <li> #}
+    {#        <!-- timeline icon --> #}
+    {#        <i class="fa fa-envelope bg-blue"></i> #}
+    {#        <div class="timeline-item"> #}
+    {#            <span class="time"><i class="fa fa-clock-o"></i> 12:05</span> #}
+
+    {#            <h3 class="timeline-header"><a href="#">Support Team</a> ...</h3> #}
+
+    {#            <div class="timeline-body"> #}
+    {#                ... #}
+    {#                Content goes here #}
+    {#            </div> #}
+
+    {#            <div class="timeline-footer"> #}
+    {#                <a class="btn btn-primary btn-xs">...</a> #}
+    {#            </div> #}
+    {#        </div> #}
+    {#    </li> #}
+    {#    <!-- END timeline item --> #}
+
+    {#    ... #}
+
+</ul>

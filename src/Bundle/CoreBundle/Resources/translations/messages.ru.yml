@@ -11,6 +11,9 @@ ui:
   add: 'Добавить'
   send: 'Отправить'
 
+Progress: 'Прогресс'
+Next step: 'Следующий шаг'
+
 core:
   authentication:
     logged_as_admin:

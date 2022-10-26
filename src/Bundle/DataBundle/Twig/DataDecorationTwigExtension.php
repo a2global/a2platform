@@ -8,7 +8,7 @@ use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class DataTwigExtension extends AbstractExtension
+class DataDecorationTwigExtension extends AbstractExtension
 {
     public function __construct(
         protected FormProvider $formProvider,

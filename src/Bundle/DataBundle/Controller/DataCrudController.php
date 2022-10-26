@@ -185,7 +185,7 @@ class DataCrudController extends AbstractController
             );
             unlink($filepath);
 
-            return $this->render('@Data/entity/import_result.html.twig', [
+            return $this->render('@Data/crud/import_result.html.twig', [
                 'result' => $result,
             ]);
         }

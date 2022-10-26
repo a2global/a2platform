@@ -1,0 +1,27 @@
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        {% for transition in transitions %}
+            <li {{ loop.first ? 'class="active"' : '' }}>
+                <a href="#{{ transition.name }}" data-toggle="tab" aria-expanded="true">
+                    {{ transition.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content">
+        {% for transition in transitions %}
+            <div class="tab-pane {{ loop.first ? 'active' : '' }}" id="{{ transition.name }}">
+                <form action="{{ path('admin_data_workflow_apply_transition') }}" method="post">
+                    <input type="hidden" name="objectClass" value="{{ getClass(object) }}">
+                    <input type="hidden" name="objectId" value="{{ object.id }}">
+                    <input type="hidden" name="workflowName" value="{{ workflowName }}">
+                    <input type="hidden" name="transitionName" value="{{ transition.name }}">
+
+                    {{ (forms[transition.name] ?? '')|raw }}
+                    <br><br>
+                    <input type="submit" value="{{ 'Apply'|trans }}" class="btn btn-primary">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</div>
