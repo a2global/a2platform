@@ -43,7 +43,7 @@ class DataWorkflowController extends AbstractController
             $this->getDoctrine()->getManager()->persist($workflowTransition);
             $this->getDoctrine()->getManager()->flush();
         } catch (Throwable $exception) {
-            $this->addFlash('danger', $exception->getMessage());
+            $this->addFlash('danger', $exception->getMessage() . ' in '. $exception->getTraceAsString());
         }
 
         return $this->get(ControllerHelper::class)->redirectBackOrTo(
