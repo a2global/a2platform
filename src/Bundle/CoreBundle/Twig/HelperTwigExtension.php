@@ -45,8 +45,10 @@ class HelperTwigExtension extends AbstractExtension
             __DIR__,
             $this->requestStack->getMainRequest()->getLocale(),
         ));
+        unset($dump['core']);
+        unset($dump['data']);
 
-        return json_encode($dump['ui'], JSON_UNESCAPED_UNICODE);
+        return json_encode($dump, JSON_UNESCAPED_UNICODE);
     }
 
     public function getChartJsData($data): string

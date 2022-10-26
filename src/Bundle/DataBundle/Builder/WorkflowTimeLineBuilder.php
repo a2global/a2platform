@@ -32,18 +32,9 @@ class WorkflowTimeLineBuilder
             'targetId' => $object->getId(),
             'workflowName' => $workflowName,
         ], ['id' => 'ASC']);
-        $snakeCasedEntityName = StringUtility::toSnakeCase(StringUtility::getShortClassName($object));
         $camelCasedEntityName = StringUtility::toCamelCase(StringUtility::getShortClassName($object));
 
         foreach ($pastTransitions as $pastTransition) {
-            $code = sprintf(
-                'workflow.%s.%s.transition.%s.name',
-                $snakeCasedEntityName,
-                $pastTransition->getWorkflowName() ?: $snakeCasedEntityName,
-                $pastTransition->getTransitionName()
-            );
-            $translated = $this->translator->trans($code);
-            $name = $translated === $code ? StringUtility::normalize($pastTransition->getTransitionName()) : $translated;
             $transitionDetailsTemplateName = sprintf(
                 'admin/workflow/%s/%s/transition.%s.details.html.twig',
                 $camelCasedEntityName,
@@ -58,6 +49,7 @@ class WorkflowTimeLineBuilder
                     'data' => $pastTransition->getData(),
                 ]);
             }
+            $name = $this->getTransitionName($pastTransition->getTransitionName(), $object, $pastTransition->getWorkflowName());
             $timelineSteps[] = (new TimeLineStep())
                 ->setName($name)
                 ->setDatetime($pastTransition->getCreatedAt())
@@ -65,10 +57,14 @@ class WorkflowTimeLineBuilder
         }
 
         // Next step
+        $availableTransitions = [];
         if (count($stateMachine->getEnabledTransitions($object, $workflowName))) {
-            $forms = [];
-
             foreach ($stateMachine->getEnabledTransitions($object) as $transition) {
+                $availableTransition = [
+                    'name' => $transition->getName(),
+                    'title' => $this->getTransitionName($transition->getName(), $object, $workflowName),
+                    'form' => null,
+                ];
                 $transitionFormTemplateName = sprintf(
                     'admin/workflow/%s/%s/transition.%s.form.html.twig',
                     $camelCasedEntityName,
@@ -76,18 +72,17 @@ class WorkflowTimeLineBuilder
                     $transition->getName()
                 );
 
-                if (!$this->twig->getLoader()->exists($transitionFormTemplateName)) {
-                    continue;
+                if ($this->twig->getLoader()->exists($transitionFormTemplateName)) {
+                    $availableTransition['form'] = $this->twig->render($transitionFormTemplateName, [
+                        'object' => $object,
+                    ]);
                 }
-                $forms[$transition->getName()] = $this->twig->render($transitionFormTemplateName, [
-                    'object' => $object,
-                ]);
+                $availableTransitions[] = $availableTransition;
             }
             $content = $this->twig->render('@Data/workflow/timeline.transition.html.twig', [
                 'workflowName' => $workflowName,
                 'object' => $object,
-                'transitions' => $stateMachine->getEnabledTransitions($object),
-                'forms' => $forms,
+                'transitions' => $availableTransitions,
             ]);
             $timelineSteps[] = (new TimeLineStep())
                 ->setName($this->translator->trans('Next step') . ':')
@@ -98,5 +93,19 @@ class WorkflowTimeLineBuilder
             'object' => $object,
             'steps' => $timelineSteps,
         ];
+    }
+
+    protected function getTransitionName($transitionName, $object, $workflowName = null)
+    {
+        $snakeCasedEntityName = StringUtility::toSnakeCase(StringUtility::getShortClassName($object));
+        $code = sprintf(
+            'workflow.%s.%s.transition.%s.name',
+            $snakeCasedEntityName,
+            $workflowName ?: $snakeCasedEntityName,
+            $transitionName
+        );
+        $translated = $this->translator->trans($code);
+
+        return $translated === $code ? StringUtility::normalize($transitionName) : $translated;
     }
 }

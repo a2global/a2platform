@@ -3,7 +3,7 @@
         {% for transition in transitions %}
             <li {{ loop.first ? 'class="active"' : '' }}>
                 <a href="#{{ transition.name }}" data-toggle="tab" aria-expanded="true">
-                    {{ transition.name }}
+                    {{  transition.title }}
                 </a>
             </li>
         {% endfor %}
@@ -17,7 +17,7 @@
                     <input type="hidden" name="workflowName" value="{{ workflowName }}">
                     <input type="hidden" name="transitionName" value="{{ transition.name }}">
 
-                    {{ (forms[transition.name] ?? '')|raw }}
+                    {{ (transition.form ?? '')|raw }}
                     <br><br>
                     <input type="submit" value="{{ 'Apply'|trans }}" class="btn btn-primary">
                 </form>

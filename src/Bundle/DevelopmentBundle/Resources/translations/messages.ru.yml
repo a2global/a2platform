@@ -2,3 +2,8 @@ data:
   entity:
     person:
       title: 'Персона'
+
+workflow:
+  person:
+    person:
+      transition.interview_with_hr.name: 'Интерьвью с HR'
