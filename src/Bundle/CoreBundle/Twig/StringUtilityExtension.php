@@ -9,7 +9,8 @@ use Twig\TwigFilter;
 
 class StringUtilityExtension extends AbstractExtension
 {
-    public function getFilters() {
+    public function getFilters()
+    {
         return [
             new TwigFilter('normalize', [$this, 'normalize']),
             new TwigFilter('urlize', [$this, 'urlize']),
@@ -21,23 +22,28 @@ class StringUtilityExtension extends AbstractExtension
         ];
     }
 
-    public function normalize($input) {
+    public function normalize($input)
+    {
         return StringUtility::normalize($input);
     }
 
-    public function urlize($input) {
+    public function urlize($input)
+    {
         return StringUtility::urlize($input);
     }
 
-    public function toCamelCase($input) {
+    public function toCamelCase($input)
+    {
         return StringUtility::toCamelCase($input);
     }
 
-    public function toSnakeCase($input) {
+    public function toSnakeCase($input)
+    {
         return StringUtility::toSnakeCase($input);
     }
 
-    public function toPascalCase($input) {
+    public function toPascalCase($input)
+    {
         return StringUtility::toPascalCase($input);
     }
 
@@ -46,8 +52,8 @@ class StringUtilityExtension extends AbstractExtension
         return StringUtility::removeEmoji($text);
     }
 
-    public function formatDateSimple(DateTimeInterface $datetime, $format): string
+    public function formatDateSimple(DateTimeInterface $datetime, $format, $hoursShift = 0): string
     {
-        return $datetime->format($format);
+        return $datetime->modify('+' . $hoursShift . ' hours')->format($format);
     }
 }
