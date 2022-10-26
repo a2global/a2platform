@@ -38,7 +38,7 @@ class DatasheetProvider
 
         // Add controls
         $datasheet->addControl(
-            'ui.import',
+            'Import',
             $this->router->generate('admin_data_import_upload', ['entity' => $entityClassName])
         );
 
