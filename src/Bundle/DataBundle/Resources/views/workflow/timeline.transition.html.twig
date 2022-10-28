@@ -1,9 +1,9 @@
-<div class="nav-tabs-custom">
+<div class="nav-tabs-custom" style="margin:0;">
     <ul class="nav nav-tabs">
         {% for transition in transitions %}
             <li {{ loop.first ? 'class="active"' : '' }}>
-                <a href="#{{ transition.name }}" data-toggle="tab" aria-expanded="true">
-                    {{  transition.title }}
+                <a href="#{{ transition.name }}" data-toggle="tab" aria-expanded="true" style="font-size:13pt;">
+                    {{ transition.title }}
                 </a>
             </li>
         {% endfor %}

@@ -12,6 +12,8 @@ class TimeLineStep
 
     protected ?string $content = null;
 
+    protected bool $isTabs = false;
+
     public function getName(): ?string
     {
         return $this->name;
@@ -42,6 +44,17 @@ class TimeLineStep
     public function setContent(?string $content): self
     {
         $this->content = $content;
+        return $this;
+    }
+
+    public function isTabs(): bool
+    {
+        return $this->isTabs;
+    }
+
+    public function setIsTabs(bool $isTabs): self
+    {
+        $this->isTabs = $isTabs;
         return $this;
     }
 }

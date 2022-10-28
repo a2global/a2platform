@@ -58,7 +58,8 @@ class WorkflowTimeLineBuilder
 
         // Next step
         $availableTransitions = [];
-        if (count($stateMachine->getEnabledTransitions($object, $workflowName))) {
+
+        if (count($stateMachine->getEnabledTransitions($object))) {
             foreach ($stateMachine->getEnabledTransitions($object) as $transition) {
                 $availableTransition = [
                     'name' => $transition->getName(),
@@ -85,6 +86,7 @@ class WorkflowTimeLineBuilder
                 'transitions' => $availableTransitions,
             ]);
             $timelineSteps[] = (new TimeLineStep())
+                ->setIsTabs(true)
                 ->setName($this->translator->trans('Next step') . ':')
                 ->setContent($content);
         }
