@@ -5,6 +5,7 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Builder;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\TimeLineStep;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\WorkflowTransition;
+use A2Global\A2Platform\Bundle\DataBundle\Provider\FormProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,6 +18,7 @@ class WorkflowTimeLineBuilder
         protected EntityManagerInterface $entityManager,
         protected Environment            $twig,
         protected TranslatorInterface    $translator,
+        protected FormProvider           $formProvider,
     ) {
     }
 
@@ -61,24 +63,26 @@ class WorkflowTimeLineBuilder
 
         if (count($stateMachine->getEnabledTransitions($object))) {
             foreach ($stateMachine->getEnabledTransitions($object) as $transition) {
-                $availableTransition = [
+                $availableTransitions[] = [
                     'name' => $transition->getName(),
                     'title' => $this->getTransitionName($transition->getName(), $object, $workflowName),
-                    'form' => null,
+                    'form' => $this->formProvider
+                        ->getTransitionForm($object, $workflowName, $transition->getName())
+                        ->createView(),
                 ];
-                $transitionFormTemplateName = sprintf(
-                    'admin/workflow/%s/%s/transition.%s.form.html.twig',
-                    $camelCasedEntityName,
-                    $workflowName ?: $camelCasedEntityName,
-                    $transition->getName()
-                );
-
-                if ($this->twig->getLoader()->exists($transitionFormTemplateName)) {
-                    $availableTransition['form'] = $this->twig->render($transitionFormTemplateName, [
-                        'object' => $object,
-                    ]);
-                }
-                $availableTransitions[] = $availableTransition;
+//                $transitionFormTemplateName = sprintf(
+//                    'admin/workflow/%s/%s/transition.%s.form.html.twig',
+//                    $camelCasedEntityName,
+//                    $workflowName ?: $camelCasedEntityName,
+//                    $transition->getName()
+//                );
+//
+//                if ($this->twig->getLoader()->exists($transitionFormTemplateName)) {
+//                    $availableTransition['form'] = $this->twig->render($transitionFormTemplateName, [
+//                        'object' => $object,
+//                    ]);
+//                }
+//                $availableTransitions[] = $availableTransition;
             }
             $content = $this->twig->render('@Data/workflow/timeline.transition.html.twig', [
                 'workflowName' => $workflowName,

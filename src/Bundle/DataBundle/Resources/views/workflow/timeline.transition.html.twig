@@ -11,16 +11,7 @@
     <div class="tab-content">
         {% for transition in transitions %}
             <div class="tab-pane {{ loop.first ? 'active' : '' }}" id="{{ transition.name }}">
-                <form action="{{ path('admin_data_workflow_apply_transition') }}" method="post">
-                    <input type="hidden" name="objectClass" value="{{ getClass(object) }}">
-                    <input type="hidden" name="objectId" value="{{ object.id }}">
-                    <input type="hidden" name="workflowName" value="{{ workflowName }}">
-                    <input type="hidden" name="transitionName" value="{{ transition.name }}">
-
-                    {{ (transition.form ?? '')|raw }}
-                    <br><br>
-                    <input type="submit" value="{{ 'Apply'|trans }}" class="btn btn-primary">
-                </form>
+                {{ form(transition.form) }}
             </div>
         {% endfor %}
     </div>

@@ -2,7 +2,6 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Event\DataReader;
 
-
 use Doctrine\ORM\QueryBuilder;
 
 class OnQueryBuilderFieldsBuildEvent

@@ -22,10 +22,11 @@ class DataWorkflowController extends AbstractController
      */
     public function applyTransitionAction(Request $request)
     {
-        $workflowName = $request->get('workflowName') ?: null;
-        $transitionName = $request->get('transitionName');
-        $objectClass = $request->get('objectClass');
-        $objectId = $request->get('objectId');
+        $context = $request->request->get('form');
+        $workflowName = $context['workflowName'] ?: null;
+        $transitionName = $context['transitionName'];
+        $objectClass = $context['objectClass'];
+        $objectId = $context['objectId'];
         $object = $this->getDoctrine()->getRepository($objectClass)->find($objectId);
         $stateMachine = $this->get(Registry::class)->get($object, $workflowName);
 
@@ -33,7 +34,6 @@ class DataWorkflowController extends AbstractController
             if (!$stateMachine->can($object, $transitionName)) {
                 throw new Exception('This transition is not possible');
             }
-            $context = $this->get('request_stack')->getCurrentRequest()->request->all();
             $stateMachine->apply($object, $transitionName, $context);
             $workflowTransition = (new WorkflowTransition())
                 ->setTargetClass($objectClass)

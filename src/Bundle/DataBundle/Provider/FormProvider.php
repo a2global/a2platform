@@ -5,15 +5,18 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Provider;
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\Comment;
+use A2Global\A2Platform\Bundle\DataBundle\Event\OnWorkflowTransitionFormBuild;
 use A2Global\A2Platform\Bundle\DataBundle\Form\CommentFormType;
 use A2Global\A2Platform\Bundle\DataBundle\Import\Strategy\ImportStrategyInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\DataReaderRegistry;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\ImportStrategyRegistry;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -37,11 +40,12 @@ class FormProvider
     ];
 
     public function __construct(
-        protected FormFactoryInterface   $formFactory,
-        protected DataReaderRegistry     $dataReaderRegistry,
-        protected EntityHelper           $entityHelper,
-        protected ImportStrategyRegistry $importStrategyRegistry,
-        protected RouterInterface        $router,
+        protected FormFactoryInterface     $formFactory,
+        protected DataReaderRegistry       $dataReaderRegistry,
+        protected EntityHelper             $entityHelper,
+        protected ImportStrategyRegistry   $importStrategyRegistry,
+        protected RouterInterface          $router,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -67,7 +71,7 @@ class FormProvider
         return $formBuilder->getForm();
     }
 
-    public function getImportMappingFormProvider($entity, $filepath, $filename, $filetype)
+    public function getImportMappingFormProvider($entity, $filepath, $filename, $filetype): FormInterface
     {
         $targetObjectFields = [];
 
@@ -119,7 +123,7 @@ class FormProvider
         return $form;
     }
 
-    public function getCommentForm($object = null)
+    public function getCommentForm($object = null): FormInterface
     {
         $comment = new Comment();
 
@@ -134,7 +138,28 @@ class FormProvider
         ]);
     }
 
-    protected function getChoicesAttr($fileField, $entityFields)
+    public function getTransitionForm($object, $workflowName, $transitionName): FormInterface
+    {
+        $form = $this->formFactory->create(FormType::class, null, [
+            'action' => $this->router->generate('admin_data_workflow_apply_transition'),
+        ]);
+        $form->add('objectClass', HiddenType::class, ['data' => get_class($object)]);
+        $form->add('objectId', HiddenType::class, ['data' => $object->getId()]);
+        $form->add('workflowName', HiddenType::class, ['data' => $workflowName]);
+        $form->add('transitionName', HiddenType::class, ['data' => $transitionName]);
+
+        // Dispatching event in order to customize transition form
+        $event = new OnWorkflowTransitionFormBuild(get_class($object), $workflowName, $transitionName, $form);
+        $this->eventDispatcher->dispatch($event, $event->getName());
+
+        $form->add('submit', SubmitType::class, [
+            'label' => 'Apply',
+        ]);
+
+        return $form;
+    }
+
+    protected function getChoicesAttr($fileField, $entityFields): array
     {
         if (in_array($fileField, $entityFields) || in_array(StringUtility::toCamelCase($fileField), $entityFields)) {
             return [
