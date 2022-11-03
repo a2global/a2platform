@@ -5,7 +5,7 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Provider;
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\Comment;
-use A2Global\A2Platform\Bundle\DataBundle\Event\OnWorkflowTransitionFormBuild;
+use A2Global\A2Platform\Bundle\DataBundle\Event\Workflow\OnWorkflowTransitionFormBuild;
 use A2Global\A2Platform\Bundle\DataBundle\Form\CommentFormType;
 use A2Global\A2Platform\Bundle\DataBundle\Import\Strategy\ImportStrategyInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Registry\DataReaderRegistry;
@@ -149,7 +149,7 @@ class FormProvider
         $form->add('transitionName', HiddenType::class, ['data' => $transitionName]);
 
         // Dispatching event in order to customize transition form
-        $event = new OnWorkflowTransitionFormBuild(get_class($object), $workflowName, $transitionName, $form);
+        $event = new OnWorkflowTransitionFormBuild($object, $workflowName, $transitionName, $form);
         $this->eventDispatcher->dispatch($event, $event->getName());
 
         $form->add('submit', SubmitType::class, [

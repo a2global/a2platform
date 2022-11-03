@@ -2,7 +2,8 @@
 
 namespace A2Global\A2Platform\Bundle\DevelopmentBundle\EventSubscriber;
 
-use A2Global\A2Platform\Bundle\DataBundle\Event\OnWorkflowTransitionFormBuild;
+use A2Global\A2Platform\Bundle\DataBundle\Event\Workflow\OnWorkflowTransitionFormBuild;
+use A2Global\A2Platform\Bundle\DataBundle\Event\Workflow\OnWorkflowTransitionViewBuild;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,6 +22,8 @@ class PersonWorkflowSubscriber implements EventSubscriberInterface
         return [
             'workflow.person.transition_form.interview_with_hr' => 'addEnglishLevelForm',
             'workflow.person.transition_form.provide_offer' => 'addSalaryForm',
+            'workflow.person.transition_view.interview_with_hr' => 'viewEnglishLevel',
+            'workflow.person.transition_view.provide_offer' => 'viewSalary',
             'workflow.person.transition.interview_with_hr' => 'setEnglishLevel',
             'workflow.person.transition.provide_offer' => 'setSalary',
         ];
@@ -36,6 +39,16 @@ class PersonWorkflowSubscriber implements EventSubscriberInterface
     public function addSalaryForm(OnWorkflowTransitionFormBuild $event)
     {
         $event->getForm()->add('salary', TextType::class);
+    }
+
+    public function viewEnglishLevel(OnWorkflowTransitionViewBuild $event)
+    {
+        $event->addParameters('English level', $event->getObject()->getVersion());
+    }
+
+    public function viewSalary(OnWorkflowTransitionViewBuild $event)
+    {
+        $event->addParameters('Salary', $event->getObject()->getAge());
     }
 
     public function setEnglishLevel(TransitionEvent $event)

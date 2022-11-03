@@ -1,6 +1,6 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DataBundle\Event;
+namespace A2Global\A2Platform\Bundle\DataBundle\Event\Workflow;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use Symfony\Component\Form\FormInterface;
@@ -8,16 +8,16 @@ use Symfony\Component\Form\FormInterface;
 class OnWorkflowTransitionFormBuild
 {
     public function __construct(
-        protected string        $objectClass,
+        protected object        $object,
         protected ?string       $workflowName,
         protected string        $transitionName,
         protected FormInterface $form,
     ) {
     }
 
-    public function getObjectClass(): string
+    public function getObject(): object
     {
-        return $this->objectClass;
+        return $this->object;
     }
 
     public function getWorkflowName(): ?string
@@ -39,7 +39,7 @@ class OnWorkflowTransitionFormBuild
     {
         return sprintf(
             'workflow.%s.transition_form.%s',
-            StringUtility::toSnakeCase($this->getWorkflowName() ?: StringUtility::getShortClassName($this->getObjectClass())),
+            StringUtility::toSnakeCase($this->getWorkflowName() ?: StringUtility::getShortClassName($this->getObject())),
             $this->getTransitionName(),
         );
     }
