@@ -43,12 +43,12 @@ class PersonWorkflowSubscriber implements EventSubscriberInterface
 
     public function viewEnglishLevel(OnWorkflowTransitionViewBuild $event)
     {
-        $event->addParameters('English level', $event->getObject()->getVersion());
+        $event->addParameter('English level', $event->getObject()->getVersion());
     }
 
     public function viewSalary(OnWorkflowTransitionViewBuild $event)
     {
-        $event->addParameters('Salary', $event->getObject()->getAge());
+        $event->addParameter('Salary', $event->getObject()->getAge());
     }
 
     public function setEnglishLevel(TransitionEvent $event)

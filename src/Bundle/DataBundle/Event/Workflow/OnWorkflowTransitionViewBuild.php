@@ -38,7 +38,7 @@ class OnWorkflowTransitionViewBuild
         return $this->parameters;
     }
 
-    public function addParameters($name, $value): self
+    public function addParameter($name, $value): self
     {
         $this->parameters->set($name, $value);
 
