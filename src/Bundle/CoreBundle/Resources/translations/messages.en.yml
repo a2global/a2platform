@@ -1,3 +1,6 @@
+First page: 'First'
+Last page: 'Last'
+
 ui:
   apply_filters: 'Apply filters'
   back: 'Back'
