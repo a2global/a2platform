@@ -8,35 +8,41 @@
           href="{{ asset('bundles/data/css/datasheet.css') }}">
     <link rel="stylesheet" type="text/css"
           href="{{ asset('bundles/data/libs/amsify-suggestags/amsify.suggestags.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/core/libs/selectpicker/bootstrap-select.min.css') }}">
 
     <style>
-        .tags-container{
-            padding:10px 5px;
-            border:1px #f3f3f3 solid;
-            border-radius:4px;
-            background:#fafafa;
-            margin:5px 0;
+        .tags-container {
+            padding: 10px 5px;
+            border: 1px #f3f3f3 solid;
+            border-radius: 4px;
+            background: #fafafa;
+            margin: 5px 0;
         }
+
         .tag,
-        .amsify-select-tag{
-            padding:5px 10px !important;
-            font-size:10pt !important;
-            font-weight:600 !important;
-            border-radius:4px !important;
-            background:#447788 !important;
-            color:#ffffff !important;
-            margin:2px !important;
+        .amsify-select-tag {
+            padding: 5px 10px !important;
+            font-size: 10pt !important;
+            font-weight: 600 !important;
+            border-radius: 4px !important;
+            background: #447788 !important;
+            color: #ffffff !important;
+            margin: 2px !important;
         }
+
         .amsify-list-item {
-            padding:10px 10px !important;
-            padding-left:20px !important;
+            padding: 10px 10px !important;
+            padding-left: 20px !important;
         }
-        .amsify-list-item.active{
-            background:#447788 !important;
-            color:#ffffff !important;
+
+        .amsify-list-item.active {
+            background: #447788 !important;
+            color: #ffffff !important;
         }
-        .amsify-list{
-            max-height:300px !important;
+
+        .amsify-list {
+            max-height: 300px !important;
         }
 
         .m-1 {
@@ -171,14 +177,22 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{#    {% if app.environment != 'behat' %}#}
-        <script src="{{ asset('bundles/data/libs/amsify-suggestags/jquery.amsify.suggestags.js') }}"></script>
-{#    {% endif %}#}
+    <script src="{{ asset('bundles/data/libs/amsify-suggestags/jquery.amsify.suggestags.js') }}"></script>
+    <script src="{{ asset('bundles/core/libs/selectpicker/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('bundles/data/js/datasheet.js') }}"></script>
     <script src="{{ asset('bundles/data/js/admin.js') }}"></script>
     {#    <script src="{{ asset('bundles/core/libs/chartjs/chartjs_3.9.1.js') }}"></script> #}
     <script>
         window.translations = {{ core_dump_translations() }}
+    </script>
+    <script>
+        $(function () {
+            initSelectPickers();
+        });
+
+        function initSelectPickers(){
+            $("[data-search-picker]").selectpicker({liveSearch: true});
+        }
     </script>
 {% endblock %}
 

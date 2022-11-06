@@ -2,10 +2,10 @@
 
 namespace A2Global\A2Platform\Bundle\DevelopmentBundle\EventSubscriber;
 
+use A2Global\A2Platform\Bundle\CoreBundle\Form\Type\ChoiceSearchableType;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Workflow\OnWorkflowTransitionFormBuild;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Workflow\OnWorkflowTransitionViewBuild;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Workflow\Event\TransitionEvent;
@@ -31,7 +31,7 @@ class PersonWorkflowSubscriber implements EventSubscriberInterface
 
     public function addEnglishLevelForm(OnWorkflowTransitionFormBuild $event)
     {
-        $event->getForm()->add('englishLevel', ChoiceType::class, [
+        $event->getForm()->add('englishLevel', ChoiceSearchableType::class, [
             'choices' => [1, 2, 3, 4, 5]
         ]);
     }
