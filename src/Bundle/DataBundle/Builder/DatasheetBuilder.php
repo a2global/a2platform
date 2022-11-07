@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Builder;
 
+use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetExposed;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnDatasheetBuildEvent;
@@ -25,10 +26,13 @@ class DatasheetBuilder
     protected function expose(Datasheet $datasheet): DatasheetExposed
     {
         $parameters = $datasheet();
+        $id = $parameters['id']
+            ? StringUtility::toSnakeCase($parameters['id'])
+            : substr(md5($parameters['invokedAt']), 0, 5);
 
         return new DatasheetExposed(
             $parameters['datasource'],
-            $parameters['id'] ?? substr(md5($parameters['invokedAt']), 0, 5),
+            $id,
             $parameters['title'],
             $parameters['columnsToUpdate'],
             $parameters['controls'],

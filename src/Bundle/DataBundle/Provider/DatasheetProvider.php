@@ -7,6 +7,7 @@ use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
 use Doctrine\ORM\EntityManagerInterface;
+use DoctrineExtensions\Query\Postgresql\StringAgg;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -28,6 +29,7 @@ class DatasheetProvider
             $this->translator->trans('data.crud.list.datasheet.title', [
                 '%entity%' => $this->entityHelper->getName($entityClassName),
             ]),
+            'data_index_' . StringUtility::toSnakeCase($entityClassName),
         );
 
         // Set column titles translated

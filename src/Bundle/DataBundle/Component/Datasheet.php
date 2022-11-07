@@ -14,6 +14,7 @@ class Datasheet
     public function __construct(
         protected mixed   $datasource,
         protected ?string $title = null,
+        protected ?string $id = null,
     ) {
         $backtrace = debug_backtrace();
         $this->invokedAt = sprintf('%s:%s', $backtrace[1]['class'], $backtrace[1]['line']);
@@ -24,6 +25,7 @@ class Datasheet
         return [
             'datasource' => $this->datasource,
             'title' => $this->title,
+            'id' => $this->id,
             'invokedAt' => $this->invokedAt,
             'columnsToUpdate' => $this->columns,
             'controls' => $this->controls,
