@@ -18,6 +18,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Workflow\Registry;
+use Symfony\Component\Workflow\StateMachine;
 use Throwable;
 use Twig\Environment;
 
@@ -60,16 +62,15 @@ class DataCrudController extends AbstractController
                 'value' => $dataType::getReadablePreview(ObjectHelper::getProperty($object, $fieldName)),
             ];
         }
-        $templateName = sprintf(
-            'admin/crud/%s/view.html.twig',
-            StringUtility::toSnakeCase(StringUtility::getShortClassName($entity))
-        );
+        $workflows = [];
 
-        if(!$this->get(Environment::class)->getLoader()->exists($templateName)){
-            $templateName = '@Data/crud/view.html.twig';
+        if($stateMachines = $this->get(Registry::class)->all($object)){
+            $workflows = array_map(function(StateMachine $stateMachine){
+                return $stateMachine->getName();
+            }, $stateMachines);
         }
 
-        return $this->render($templateName, [
+        return $this->render('@Data/crud/view.html.twig', [
             'object' => $object,
             'data' => $data,
             'entityClass' => $entity,
@@ -77,6 +78,7 @@ class DataCrudController extends AbstractController
             'id' => $id,
             'commentable' => $object instanceof CommentableEntityInterface,
             'taggable' => $object instanceof TaggableEntityInterface,
+            'workflows' => $workflows,
         ]);
     }
 
@@ -208,6 +210,7 @@ class DataCrudController extends AbstractController
             EventDispatcherInterface::class,
             DatasheetProvider::class,
             Environment::class,
+            Registry::class,
         ]);
     }
 }

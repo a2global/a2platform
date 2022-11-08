@@ -1,9 +1,93 @@
-{% extends '@Data/crud/view.layout.html.twig' %}
+{% extends '@Admin/layout.html.twig' %}
 
-{% block sidebar_content %}
-    {% if commentable %}
-        {{ parent() }}
-    {% endif %}
+{% set generalTab = app.request.query.get('general_tab') ?? 'data' %}
+
+{% block page_content %}
+
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-9">
+                    <h4 class="m-5">{{ entityName }} # {{ id }}</h4>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ path('admin_data_edit', {entity: entityClass, id: id}) }}"
+                       class="btn btn-primary btn-block"
+                       data-entity-crud-edit-link="">{{ 'Edit'|trans }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-7">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    {% block general_tabs %}
+                        <li class="{{ generalTab == 'data' ? 'active' : '' }}">
+                            <a href="#data" data-toggle="tab" data-crud-view-general-tab="data" aria-expanded="true">Data</a>
+                        </li>
+                        {% for workflow in workflows %}
+                            <li class="{{ generalTab == 'workflow_' ~ workflow ? 'active' : '' }}">
+                                <a
+                                        href="#workflow_{{ workflow }}" data-toggle="tab"
+                                        data-crud-view-general-tab="{{ 'workflow_' ~ workflow }}" aria-expanded="false"
+                                >{{ workflow|normalize }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endblock %}
+                </ul>
+                <div class="tab-content">
+                    {% block general_tabs_content %}
+                        <div class="tab-pane {{ generalTab == 'data' ? 'active' : '' }}" id="data">
+                            <table class="table table-bordered table-striped">
+                                {% if taggable %}
+                                    {{ tag_list(object) }}
+                                {% endif %}
+                                {% for item in data %}
+                                    <tr>
+                                        <td width="200"><b>{{ item.name }}:</b></td>
+                                        <td>{{ item.value }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        {% for workflow in workflows %}
+                            <div class="tab-pane {{ generalTab == 'workflow_' ~ workflow ? 'active' : '' }}" id="workflow_{{ workflow }}">
+                                {{ workflowTimeline(object, workflow) }}
+                            </div>
+                        {% endfor %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            {% block sidebar_content %}
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        {% block sidebar_tabs %}
+                            <li class="active"><a href="#comments" data-toggle="tab" aria-expanded="true">Comments</a>
+                            </li>
+                            {# <li class=""><a href="#sample" data-toggle="tab" aria-expanded="false">Sample</a></li> #}
+                        {% endblock %}
+                    </ul>
+                    <div class="tab-content">
+                        {% block sidebar_tabs_content %}
+                            <div class="tab-pane active" id="comments">
+                                {% if commentable %}
+                                    {{ comment_list(object) }}
+                                    <br>
+                                    {{ comment_form(object) }}
+                                {% endif %}
+                            </div>
+                            {# <div class="tab-pane" id="sample"></div> #}
+                        {% endblock %}
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
 {% endblock %}
-
-

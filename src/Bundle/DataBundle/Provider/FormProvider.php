@@ -154,6 +154,9 @@ class FormProvider
 
         $form->add('submit', SubmitType::class, [
             'label' => 'Apply',
+            'attr' => [
+                'data-crud-workflow-transition-apply' => $workflowName . ':' . $transitionName,
+            ],
         ]);
 
         return $form;

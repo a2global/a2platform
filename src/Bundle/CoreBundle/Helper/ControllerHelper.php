@@ -14,12 +14,27 @@ class ControllerHelper
     ) {
     }
 
-    public function redirectBackOrTo($url = null)
+    public function redirectBackOrTo($url = null, $addToReferer = [])
     {
         $referer = $this->requestStack->getMainRequest()->headers->get('referer');
 
         if ($referer) {
-            return new RedirectResponse($referer);
+            $targetUrl = $referer;
+
+            if ($addToReferer) {
+                $urlParts = parse_url($referer);
+                parse_str($urlParts['query'] ?? '', $parameters);
+                $parameters = array_merge($parameters, $addToReferer);
+                $targetUrl = sprintf(
+                    '%s://%s%s?%s',
+                    $urlParts['scheme'],
+                    $urlParts['host'],
+                    $urlParts['path'],
+                    http_build_query($parameters)
+                );
+            }
+
+            return new RedirectResponse($targetUrl);
         }
 
         if ($url) {

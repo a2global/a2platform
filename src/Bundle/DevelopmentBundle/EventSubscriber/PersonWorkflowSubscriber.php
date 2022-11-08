@@ -20,19 +20,20 @@ class PersonWorkflowSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.person.transition_form.interview_with_hr' => 'addEnglishLevelForm',
-            'workflow.person.transition_form.provide_offer' => 'addSalaryForm',
-            'workflow.person.transition_view.interview_with_hr' => 'viewEnglishLevel',
-            'workflow.person.transition_view.provide_offer' => 'viewSalary',
-            'workflow.person.transition.interview_with_hr' => 'setEnglishLevel',
-            'workflow.person.transition.provide_offer' => 'setSalary',
+            'workflow.hiring.transition_form.interview_with_hr' => 'addEnglishLevelForm',
+            'workflow.hiring.transition_form.provide_offer' => 'addSalaryForm',
+            'workflow.hiring.transition_view.interview_with_hr' => 'viewEnglishLevel',
+            'workflow.hiring.transition_view.provide_offer' => 'viewSalary',
+            'workflow.hiring.transition.interview_with_hr' => 'setEnglishLevel',
+            'workflow.hiring.transition.provide_offer' => 'setSalary',
         ];
     }
 
     public function addEnglishLevelForm(OnWorkflowTransitionFormBuild $event)
     {
+        $levels = [1, 2, 3, 4, 5];
         $event->getForm()->add('englishLevel', ChoiceSearchableType::class, [
-            'choices' => [1, 2, 3, 4, 5]
+            'choices' => array_combine($levels, $levels),
         ]);
     }
 

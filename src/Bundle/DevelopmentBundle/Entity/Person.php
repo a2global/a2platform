@@ -91,6 +91,11 @@ class Person implements CommentableEntityInterface, TaggableEntityInterface
     private $state = 'new';
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $onBoardingState = 'new';
+
+    /**
      * @ORM\Column(type="array", nullable=true)
      */
     private $roles = [];
@@ -269,6 +274,17 @@ class Person implements CommentableEntityInterface, TaggableEntityInterface
     public function setState(?string $state): self
     {
         $this->state = $state;
+        return $this;
+    }
+
+    public function getOnBoardingState(): string
+    {
+        return $this->onBoardingState;
+    }
+
+    public function setOnBoardingState(string $onBoardingState): self
+    {
+        $this->onBoardingState = $onBoardingState;
         return $this;
     }
 }

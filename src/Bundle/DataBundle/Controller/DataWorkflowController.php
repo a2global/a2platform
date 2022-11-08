@@ -52,7 +52,9 @@ class DataWorkflowController extends AbstractController
             $this->generateUrl('admin_data_view', [
                 'entity' => $objectClass,
                 'id' => $objectId,
-            ])
+                'general_tab' => 'workflow_' . $workflowName,
+            ]),
+            ['general_tab' => 'workflow_' . $workflowName,]
         );
     }
 
