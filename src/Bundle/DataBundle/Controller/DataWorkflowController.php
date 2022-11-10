@@ -18,6 +18,19 @@ use Throwable;
 class DataWorkflowController extends AbstractController
 {
     /**
+     * @Route("view/{entity}/{id}/{workflow}", name="view")
+     */
+    public function viewAction(Request $request, $entity, $id, $workflow)
+    {
+        $object = $this->getDoctrine()->getRepository($entity)->find($id);
+
+        return $this->render('@Data/entity/workflow.html.twig', [
+            'object' => $object,
+            'workflow' => $workflow,
+        ]);
+    }
+
+    /**
      * @Route("apply_transition", name="apply_transition")
      */
     public function applyTransitionAction(Request $request)

@@ -25,8 +25,12 @@ class DataDecorationTwigExtension extends AbstractExtension
         ];
     }
 
-    public function viewTagList(TaggableEntityInterface $object)
+    public function viewTagList($object)
     {
+        if (!$object instanceof TaggableEntityInterface) {
+            return '';
+        }
+
         return $this->twig->render('@Data/data/tag_list.html.twig', [
             'object' => $object,
         ]);

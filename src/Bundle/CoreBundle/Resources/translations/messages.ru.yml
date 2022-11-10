@@ -28,6 +28,7 @@ Send: 'Отправить'
 Send SMS: 'Отправить SMS'
 Show: 'Показать'
 State: 'Состояние'
+View: 'Просмотр'
 
 core:
   authentication:

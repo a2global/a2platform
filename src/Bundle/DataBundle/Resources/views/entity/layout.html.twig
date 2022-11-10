@@ -1,0 +1,31 @@
+{% extends '@Admin/layout.html.twig' %}
+
+{% block page_content %}
+
+    <h4 class="m-5">
+        <a
+                href="{{ path('admin_data_edit', {'entity': object|classname, 'id': object.id }) }}"
+                class="btn btn-info btn-sm"
+                data-entity-crud-edit-link="{{ object.id }}"
+        >Edit</a>
+        {{ object|entityName }} #{{ object.id }}
+    </h4>
+
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            {% for menuName, menuItem in admin_entity_menu(object) %}
+                <li class="{{ menuItem.current ? 'active' : '' }}">
+                    <a href="{{ menuItem.uri }}" data-entity-menu="{{ menuName }}">
+                        {{ menuItem.label|normalize|trans }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends '@Data/entity/layout.html.twig' %}
+
+{% block content %}
+
+    {{ form_start(form) }}
+    <table class="table table-bordered table-striped">
+        {% for child in form.children %}
+            {% if child.vars.name != '_token' %}
+                <tr>
+                    <td width="200"><b>{{ child.vars.label }}:</b></td>
+                    <td>
+                        {{ form_widget(child) }}
+                        {% if form_errors(child) %}
+                            {{ form_errors(child) }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        <tr>
+            <td width="200"></td>
+            <td><input type="submit" value="{{ 'Save'|trans }}" class="btn btn-primary"
+                       data-entity-crud-edit-submit-button=""></td>
+        </tr>
+    </table>
+    {{ form_end(form) }}
+
+{% endblock %}

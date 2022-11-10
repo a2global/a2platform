@@ -5,7 +5,6 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\ControllerHelper;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\Comment;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\Tag;
-use A2Global\A2Platform\Bundle\DataBundle\Manager\TagManager;
 use A2Global\A2Platform\Bundle\DataBundle\Provider\FormProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +17,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class DataDecorationController extends AbstractController
 {
+    /**
+     * @Route("comment/list/{entity}/{id}", name="comment_list")
+     */
+    public function commentListAction($entity, $id)
+    {
+        $object = $this->getDoctrine()->getRepository($entity)->find($id);
+
+        return $this->render('@Data/entity/comments.html.twig', [
+            'object' => $object,
+        ]);
+    }
+
     /**
      * @Route("comment/add", name="comment_add")
      */

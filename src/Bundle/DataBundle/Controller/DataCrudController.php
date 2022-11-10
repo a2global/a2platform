@@ -3,9 +3,7 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
-use A2Global\A2Platform\Bundle\DataBundle\Entity\CommentableEntityInterface;
+use A2Global\A2Platform\Bundle\DataBundle\Builder\EntityDataBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Entity\TaggableEntityInterface;
 use A2Global\A2Platform\Bundle\DataBundle\Event\OnEntityListDatasheetBuild;
 use A2Global\A2Platform\Bundle\DataBundle\Form\ImportUploadFileFormType;
@@ -19,7 +17,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Workflow\Registry;
-use Symfony\Component\Workflow\StateMachine;
 use Throwable;
 use Twig\Environment;
 
@@ -46,39 +43,13 @@ class DataCrudController extends AbstractController
     /**
      * @Route("view/{entity}/{id}", name="view")
      */
-    public function viewAction(Request $request, $entity, $id)
+    public function viewAction($entity, $id)
     {
         $object = $this->getDoctrine()->getRepository($entity)->find($id);
-        $data = [];
 
-        foreach (EntityHelper::getEntityFields($object) as $fieldName => $fieldType) {
-            $dataType = $this->get(EntityHelper::class)->resolveDataTypeByFieldType($fieldType);
-
-            if ($fieldName === 'id') {
-                continue;
-            }
-            $data[] = [
-                'name' => $this->get(EntityHelper::class)->getFieldName($entity, $fieldName),
-                'value' => $dataType::getReadablePreview(ObjectHelper::getProperty($object, $fieldName)),
-            ];
-        }
-        $workflows = [];
-
-        if($stateMachines = $this->get(Registry::class)->all($object)){
-            $workflows = array_map(function(StateMachine $stateMachine){
-                return $stateMachine->getName();
-            }, $stateMachines);
-        }
-
-        return $this->render('@Data/crud/view.html.twig', [
+        return $this->render('@Data/entity/view.html.twig', [
             'object' => $object,
-            'data' => $data,
-            'entityClass' => $entity,
-            'entityName' => $this->get(EntityHelper::class)->getName($entity),
-            'id' => $id,
-            'commentable' => $object instanceof CommentableEntityInterface,
-            'taggable' => $object instanceof TaggableEntityInterface,
-            'workflows' => $workflows,
+            'data' => $this->get(EntityDataBuilder::class)->getData($object),
         ]);
     }
 
@@ -101,12 +72,9 @@ class DataCrudController extends AbstractController
             ]);
         }
 
-        return $this->render('@Data/crud/edit.html.twig', [
+        return $this->render('@Data/entity/edit.html.twig', [
             'form' => $form->createView(),
-            'entityClass' => $entity,
-            'entityName' => $this->get(EntityHelper::class)->getName($entity),
-            'id' => $id,
-            'taggable' => $object instanceof TaggableEntityInterface,
+            'object' => $object,
         ]);
     }
 
@@ -187,7 +155,7 @@ class DataCrudController extends AbstractController
             );
             unlink($filepath);
 
-            return $this->render('@Data/crud/import_result.html.twig', [
+            return $this->render('@Data/entity/import_result.html.twig', [
                 'result' => $result,
             ]);
         }
@@ -211,6 +179,7 @@ class DataCrudController extends AbstractController
             DatasheetProvider::class,
             Environment::class,
             Registry::class,
+            EntityDataBuilder::class,
         ]);
     }
 }
