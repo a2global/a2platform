@@ -46,9 +46,9 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
         $this->applyFilters([], [PaginationDataFilter::class]);
         $this->setItemsTotal($collection);
         $this->applyFilters([PaginationDataFilter::class]);
-        $sql = $queryBuilder->getQuery()->getSql();
-        $params = $queryBuilder->getQuery()->getParameters();
 
+//        $sql = $queryBuilder->getQuery()->getSql();
+//        $params = $queryBuilder->getQuery()->getParameters();
 //        print_r($sql);
 //        echo '<hr>';
 //        print_r($params);
@@ -70,7 +70,6 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
 
     protected function setItemsTotal(DataCollection $collection)
     {
-        return;
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = clone($this->getSource());
         $queryBuilder
