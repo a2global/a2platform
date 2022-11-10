@@ -16,7 +16,7 @@ class AddPaginationFilterEventSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public function addPaginationFilter(OnDatasheetBuildEvent $event)
+    public function addFilter(OnDatasheetBuildEvent $event)
     {
         $parameters = $this->parametersManager->getDatasheetFilterParameters(
             $event->getDatasheet(),
@@ -34,7 +34,7 @@ class AddPaginationFilterEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            OnDatasheetBuildEvent::class => ['addPaginationFilter', 700],
+            OnDatasheetBuildEvent::class => ['addFilter', 700],
         ];
     }
 }

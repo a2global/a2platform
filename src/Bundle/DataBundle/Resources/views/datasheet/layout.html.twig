@@ -8,17 +8,26 @@
             <div class="pull-right">
                 <div class="btn-group">
                     {% for text, url in datasheet.controls %}
-                        <a href="{{ url }}" class="btn btn-default" data-datasheet-control="{{ text }}">{{ text|trans }}</a>
+                        <a href="{{ url }}" class="btn btn-default"
+                           data-datasheet-control="{{ text }}">{{ text|trans }}</a>
                     {% endfor %}
                 </div>
                 <div class="btn-group">
-                    <input type="submit" value="{{ 'Apply filters'|trans }}" class="btn btn-default" data-datasheet-control-apply-filters="1">
+                    <input type="submit" value="{{ 'Apply filters'|trans }}" class="btn btn-default"
+                           data-datasheet-control-apply-filters="1">
                 </div>
                 <div class="btn-group" data-datasheet-items-total="{{ datasheet.data.itemsTotal }}"></div>
             </div>
 
         </div>
 
+        <br>
+        {% if filterForm.children[datasheet.id]['df']['tags']['value'] ?? false %}
+            <div class="row">
+                <div class="col-sm-4">{{ form_widget(filterForm.children[datasheet.id]['df']['tags']['value']) }}</div>
+                <div class="col-sm-2"><input type="submit" class="btn btn-default" value="Search"></div>
+            </div>
+        {% endif %}
         <br>
 
         <div class="table-responsive" data-datasheet-id="">
@@ -52,7 +61,7 @@
             {{ form_end(filterForm) }}
         </div>
 
-{#        {{ app.environment == 'dev' ? dump(datasheet) : '' }}#}
+        {#        {{ app.environment == 'dev' ? dump(datasheet) : '' }} #}
 
     </form>
 </div>

@@ -11,6 +11,7 @@ use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetExposed;
 use A2Global\A2Platform\Bundle\DataBundle\Manager\DatasheetParametersManager;
 use Symfony\Component\Form\FormView;
+use Throwable;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -41,18 +42,19 @@ class DatasheetTwigExtension extends AbstractExtension
 
     public function buildDatasheet(Datasheet $datasheet): string
     {
-//        try {
+        try {
         return $this->datasheetViewBuilder->buildDatasheet(
             $this->datasheetBuilder->buildDatasheet($datasheet)
         );
-//        } catch (Throwable $exception) {
-//            return implode('', [
-//                '<div class="alert alert-danger">',
-//                'Failed to build datasheet: ' . $exception->getMessage() . '<br>',
-//                'on ' . $exception->getFile() . ':' . $exception->getLine(),
-//                '</div>',
-//            ]);
-//        }
+        } catch (Throwable $exception) {
+            return implode('', [
+                '<div class="alert alert-danger">',
+                'Failed to build datasheet: ' . $exception->getMessage() . '<br>',
+                '<details><summary>on ' . $exception->getFile() . ':' . $exception->getLine().' &darr;</summary>',
+                $exception->getTraceAsString() .'</details>',
+                '</div>',
+            ]);
+        }
     }
 
     public function buildDatasheetCell(DatasheetExposed $datasheet, DatasheetColumn $column, DataItem $dataItem): string

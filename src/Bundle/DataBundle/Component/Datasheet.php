@@ -2,7 +2,6 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Component;
 
-
 class Datasheet
 {
     protected string $invokedAt;

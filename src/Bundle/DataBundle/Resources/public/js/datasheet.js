@@ -52,7 +52,10 @@ $(function () {
     //         })
     //     }
     //
-        // pagination
+        /**
+         * Pagination
+         */
+
         var paginationContainer = $(this).find('[data-datasheet-items-total]');
         var paginationPageControl = $(this).find('[name="datasheet[' + datasheetId + '][df][pagination][page]"]');
         var paginationLimitControl = $(this).find('[name="datasheet[' + datasheetId + '][df][pagination][limit]"]');
@@ -106,6 +109,12 @@ $(function () {
             paginationPageControl.val($(this).attr('data-page'));
             datasheetForm.submit();
         })
+
+        /**
+         * Tags
+         */
+
+        $('[data-form-control-tags]').appendTo('#datasheet-before-table');
     })
 
     function getPaginationElement(text, page, isActive = false) {
