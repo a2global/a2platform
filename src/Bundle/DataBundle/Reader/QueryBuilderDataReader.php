@@ -74,6 +74,7 @@ class QueryBuilderDataReader extends AbstractDataReader implements DataReaderInt
         $queryBuilder = clone($this->getSource());
         $queryBuilder
             ->resetDQLPart('select')
+            ->resetDQLPart('groupBy')
             ->addSelect(sprintf('COUNT(%s.id) AS total', QueryBuilderUtility::getPrimaryAlias($queryBuilder)))
             ->setFirstResult(null)
             ->setMaxResults(null);
