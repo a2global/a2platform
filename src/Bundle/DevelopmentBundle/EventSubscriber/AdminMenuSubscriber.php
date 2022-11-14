@@ -8,7 +8,7 @@ use KevinPapst\AdminLTEBundle\Event\KnpMenuEvent;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class AdminMenuBuilderSubscriber implements EventSubscriberInterface
+class AdminMenuSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         protected ParameterBagInterface $parameters,
