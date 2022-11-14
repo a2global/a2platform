@@ -65,6 +65,7 @@ $(function () {
         var pagesTotal = Math.ceil(itemsTotal / limit);
         var maxSideLength = 4;
         var pages = [];
+        paginationContainer.attr('data-datasheet-page', page);
 
         for (i = page - maxSideLength; i < page; i++) { // left side
             if (i > 0) {

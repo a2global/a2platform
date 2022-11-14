@@ -3,6 +3,7 @@
         {% set filterForm = datasheet_filters_form(datasheet) %}
         {{ form_start(filterForm) }}
 
+
         <div class="clearfix">
             <span class="lead">{{ datasheet.title }}</span>
             <div class="pull-right">
@@ -56,12 +57,12 @@
             </table>
         </div>
 
-        <div class="hidden">
+        <div class="{{ app.environment == 'dev' ? '' : 'hidden' }}">
             {{ datasheet.data.itemsTotal }}
             {{ form_end(filterForm) }}
         </div>
 
-        {#        {{ app.environment == 'dev' ? dump(datasheet) : '' }} #}
+        {#        {{ app.environment == 'dev' ? dump(datasheet) : '' }}#}
 
     </form>
 </div>

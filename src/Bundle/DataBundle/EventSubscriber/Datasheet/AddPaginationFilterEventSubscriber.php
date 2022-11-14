@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\Datasheet;
 
+use A2Global\A2Platform\Bundle\DataBundle\Builder\DataFilterHashBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Event\Datasheet\OnDatasheetBuildEvent;
 use A2Global\A2Platform\Bundle\DataBundle\Filter\PaginationDataFilter;
 use A2Global\A2Platform\Bundle\DataBundle\Manager\DatasheetParametersManager;
@@ -22,8 +23,18 @@ class AddPaginationFilterEventSubscriber implements EventSubscriberInterface
             $event->getDatasheet(),
             PaginationDataFilter::getName(),
         );
+        $filters = [];
+
+        foreach ($event->getDataReader()->getAllFilters() as $item) {
+            $filters[] = reset($item);
+        }
+        $currentFiltersHash = DataFilterHashBuilder::build($filters);
         $filter = new PaginationDataFilter();
-        $this->parametersManager->applyParameters($filter, $parameters);
+
+        if (empty($parameters['hash']) || ($parameters['hash'] === $currentFiltersHash)) {
+            $this->parametersManager->applyParameters($filter, $parameters);
+        }
+        $filter->setHash($currentFiltersHash);
         $event->getDataReader()->addFilter($filter);
         $this->parametersManager->addFilterToDatasheet($event->getDatasheet(), $filter);
     }
@@ -34,7 +45,7 @@ class AddPaginationFilterEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            OnDatasheetBuildEvent::class => ['addFilter', 700],
+            OnDatasheetBuildEvent::class => ['addFilter', 500],
         ];
     }
 }

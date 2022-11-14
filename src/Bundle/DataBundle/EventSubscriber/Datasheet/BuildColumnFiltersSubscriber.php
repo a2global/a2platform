@@ -35,7 +35,7 @@ class BuildColumnFiltersSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            OnDatasheetBuildEvent::class => ['buildColumnFilters', 500],
+            OnDatasheetBuildEvent::class => ['buildColumnFilters', 550],
         ];
     }
 }

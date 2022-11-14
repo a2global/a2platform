@@ -3,6 +3,7 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Filter;
 
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class PaginationDataFilter extends AbstractDataFilter
@@ -12,6 +13,9 @@ class PaginationDataFilter extends AbstractDataFilter
     protected int $page = 1;
 
     protected int $limit = 20;
+
+    /** Other filters hash */
+    protected string $hash = '';
 
     public function getPage(): int
     {
@@ -42,6 +46,17 @@ class PaginationDataFilter extends AbstractDataFilter
         return true;
     }
 
+    public function getHash(): string
+    {
+        return $this->hash;
+    }
+
+    public function setHash(string $hash): self
+    {
+        $this->hash = $hash;
+        return $this;
+    }
+
     public function buildForm(FormBuilderInterface $container): self
     {
         $container->add('page', IntegerType::class, [
@@ -50,6 +65,10 @@ class PaginationDataFilter extends AbstractDataFilter
         ]);
         $container->add('limit', IntegerType::class, [
             'data' => $this->limit,
+            'required' => false,
+        ]);
+        $container->add('hash', TextType::class, [
+            'data' => $this->hash,
             'required' => false,
         ]);
 

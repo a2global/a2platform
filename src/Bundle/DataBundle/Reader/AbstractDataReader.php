@@ -53,6 +53,20 @@ abstract class AbstractDataReader implements DataReaderInterface
         $this->filterApplierRegistry = $filterApplierRegistry;
     }
 
+    public function getAllFilters(): iterable
+    {
+
+        foreach ($this->filters as $filter) {
+            yield [$filter, null];
+        }
+
+        foreach ($this->fieldFilters as $fieldName => $fieldFilters) {
+            foreach ($fieldFilters as $filter) {
+                yield [$filter, $fieldName];
+            }
+        }
+    }
+
     protected function applyFilters($only = [], $exclude = [])
     {
         /** @var DataFilterInterface $filter */
@@ -85,20 +99,6 @@ abstract class AbstractDataReader implements DataReaderInterface
                  * @codeCoverageIgnore
                  */
                 throw new DatasheetBuildException('Filter not applied: ' . get_class($filter));
-            }
-        }
-    }
-
-    protected function getAllFilters(): iterable
-    {
-
-        foreach ($this->filters as $filter) {
-            yield [$filter, null];
-        }
-
-        foreach ($this->fieldFilters as $fieldName => $fieldFilters) {
-            foreach ($fieldFilters as $filter) {
-                yield [$filter, $fieldName];
             }
         }
     }
