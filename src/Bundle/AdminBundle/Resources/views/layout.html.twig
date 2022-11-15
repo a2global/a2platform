@@ -53,10 +53,14 @@
             margin: 5px 10px;
         }
 
-        {# .changed-field { #}
-        {# color: #cc0000; #}
-        {# font-weight: 800; #}
-        {# } #}
+        .changed-field {
+            color: #cc0000;
+            font-weight: 800;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
     </style>
     {# {% if app.environment == 'dev' %} #}
     {# <style> #}
@@ -190,7 +194,7 @@
             initSelectPickers();
         });
 
-        function initSelectPickers(){
+        function initSelectPickers() {
             $("[data-search-picker]").selectpicker({liveSearch: true});
         }
     </script>

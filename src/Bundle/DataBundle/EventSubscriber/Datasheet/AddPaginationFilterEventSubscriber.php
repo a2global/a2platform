@@ -45,7 +45,11 @@ class AddPaginationFilterEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            OnDatasheetBuildEvent::class => ['addFilter', 500],
+            /**
+             * Should go after all filters, except SortDataFilter
+             * in order to get proper 'other filters hash'
+             */
+            OnDatasheetBuildEvent::class => ['addFilter', 520],
         ];
     }
 }

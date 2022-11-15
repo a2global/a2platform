@@ -25,33 +25,32 @@ $(function () {
         var datasheetId = $(this).data('datasheet');
         console.log(datasheetId);
         var datasheetForm = $(this).find('[data-datasheet-form="' + datasheetId + '"]');
-    //
-    //     // sort filter
-    //     var filterSortTypeControl = $(this).find('[name="ds' + datasheetId + '[filter][sort][type]"]');
-    //
-    //     if (filterSortTypeControl.length) {
-    //         var filterSortByControl = $(this).find('[name="ds' + datasheetId + '[filter][sort][by]"]');
-    //         var filterSortDirectionControl = $(this).find('[name="ds' + datasheetId + '[filter][sort][direction]"]');
-    //
-    //         if (filterSortByControl.val()) {
-    //             var symbol = filterSortDirectionControl.val() == 'descending' ? '&#128317;' : '&#128316;';
-    //             $('[data-datasheet="' + datasheetId + '"] [data-datasheet-column-title="' + filterSortByControl.val() + '"]')
-    //                 .prepend(symbol + ' ');
-    //         }
-    //
-    //         $('[data-datasheet="' + datasheetId + '"] [data-datasheet-column-title]').addClass('cursor-pointer').click(function () {
-    //             var columnName = $(this).attr('data-datasheet-column-title');
-    //             var sortDirection = 'ascending';
-    //
-    //             if (filterSortByControl.val() == columnName) {
-    //                 sortDirection = filterSortDirectionControl.val() == 'descending' ? 'ascending' : 'descending';
-    //             }
-    //             filterSortByControl.val(columnName);
-    //             filterSortDirectionControl.val(sortDirection);
-    //             datasheetForm.submit();
-    //         })
-    //     }
-    //
+
+        /**
+         * Sorting
+         */
+
+        var filterSortFieldNameControl = $(this).find('[name="datasheet[' + datasheetId + '][df][sort][fieldName]"]');
+        var filterSortTypeControl = $(this).find('[name="datasheet[' + datasheetId + '][df][sort][type]"]');
+
+            if (filterSortFieldNameControl.val()) {
+                var symbol = filterSortTypeControl.val() === 'descending' ? '&#128317;' : '&#128316;';
+                $('[data-datasheet="'+datasheetId+'"] [data-datasheet-column-title="' +filterSortFieldNameControl.val()+ '"]')
+                    .prepend(symbol + ' ');
+            }
+
+            $('[data-datasheet="' + datasheetId + '"] [data-datasheet-column-title]').addClass('cursor-pointer').click(function () {
+                var columnName = $(this).attr('data-datasheet-column-title');
+                var sortDirection = 'ascending';
+
+                if (filterSortFieldNameControl.val() === columnName) {
+                    sortDirection = filterSortTypeControl.val() === 'descending' ? 'ascending' : 'descending';
+                }
+                filterSortFieldNameControl.val(columnName);
+                filterSortTypeControl.val(sortDirection);
+                datasheetForm.submit();
+            })
+
         /**
          * Pagination
          */
