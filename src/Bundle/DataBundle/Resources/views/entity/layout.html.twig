@@ -1,4 +1,5 @@
 {% extends '@Admin/layout.html.twig' %}
+{% set entityConfiguration = get_entity_configuration(object) %}
 
 {% block page_content %}
 
@@ -13,10 +14,10 @@
 
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
-            {% for menuName, menuItem in admin_entity_menu(object) %}
-                <li class="{{ menuItem.current ? 'active' : '' }}">
-                    <a href="{{ menuItem.uri }}" data-entity-menu="{{ menuName }}">
-                        {{ menuItem.label|normalize|trans }}
+            {% for action in entityConfiguration.actions %}
+                <li class="{{ app.request.requestUri == action.url ? 'active' : '' }}">
+                    <a href="{{ action.url }}" data-entity-menu="{{ action.name }}">
+                        {{ action.title|normalize|trans }}
                     </a>
                 </li>
             {% endfor %}
