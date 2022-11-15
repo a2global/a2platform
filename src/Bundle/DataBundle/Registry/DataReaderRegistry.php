@@ -17,6 +17,6 @@ class DataReaderRegistry extends AbstractRegistry
             }
         }
 
-        throw new Exception('Failed to find proper data reader');
+        throw new Exception('Failed to find proper data reader'); // @codeCoverageIgnore
     }
 }

@@ -96,18 +96,13 @@ class DataCrudController extends AbstractController
 
             try {
                 if (!file_exists($filepath)) {
-                    /** @codeCoverageIgnoreStart */
-                    mkdir($filepath, 0777, true);
-                    /** @codeCoverageIgnoreEnd */
+                    mkdir($filepath, 0777, true); // @codeCoverageIgnore
                 }
                 $file->move($filepath, $filename . '.' . $extension);
-                /**
-                 * @codeCoverageIgnore
-                 */
-            } catch (Throwable $exception) {
-                $this->addFlash('danger', 'There was an error, try again');
+            } catch (Throwable $exception) { // @codeCoverageIgnore
+                $this->addFlash('danger', 'There was an error, try again'); // @codeCoverageIgnore
 
-                return $this->redirectToRoute('admin_data_import_upload', [
+                return $this->redirectToRoute('admin_data_import_upload', [ // @codeCoverageIgnore
                     'entity' => $entity,
                 ]);
             }
@@ -134,11 +129,9 @@ class DataCrudController extends AbstractController
         $filepath = $this->getParameter('kernel.cache_dir') . '/' . 'import' . '/' . $filename . '.' . $extension;
 
         if (!file_exists($filepath)) {
-            /** @codeCoverageIgnore */
-            $this->addFlash('warning', 'Please upload CSV file again');
+            $this->addFlash('warning', 'Please upload CSV file again'); // @codeCoverageIgnore
 
-            /** @codeCoverageIgnore */
-            return $this->redirectToRoute('admin_data_import_upload', [
+            return $this->redirectToRoute('admin_data_import_upload', [ // @codeCoverageIgnore
                 'entity' => $entity,
             ]);
         }

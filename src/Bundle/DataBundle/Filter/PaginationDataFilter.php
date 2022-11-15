@@ -46,6 +46,9 @@ class PaginationDataFilter extends AbstractDataFilter
         return true;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getHash(): string
     {
         return $this->hash;

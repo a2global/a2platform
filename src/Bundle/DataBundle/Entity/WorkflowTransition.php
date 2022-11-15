@@ -46,11 +46,17 @@ class WorkflowTransition
      */
     private $context;
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getTargetClass(): ?string
     {
         return $this->targetClass;
@@ -63,6 +69,9 @@ class WorkflowTransition
         return $this;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getTargetId(): ?int
     {
         return $this->targetId;
@@ -97,6 +106,9 @@ class WorkflowTransition
         return $this;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getContext()
     {
         return $this->context;

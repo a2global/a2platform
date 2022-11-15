@@ -95,10 +95,7 @@ abstract class AbstractDataReader implements DataReaderInterface
             }
 
             if (!$filterApplied) {
-                /**
-                 * @codeCoverageIgnore
-                 */
-                throw new DatasheetBuildException('Filter not applied: ' . get_class($filter));
+                throw new DatasheetBuildException('Filter not applied: ' . get_class($filter)); // @codeCoverageIgnore
             }
         }
     }

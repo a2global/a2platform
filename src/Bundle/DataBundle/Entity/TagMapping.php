@@ -37,11 +37,17 @@ class TagMapping
      */
     private $tag;
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getTargetClass(): ?string
     {
         return $this->targetClass;
@@ -54,6 +60,9 @@ class TagMapping
         return $this;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getTargetId(): ?int
     {
         return $this->targetId;

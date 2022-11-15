@@ -36,6 +36,9 @@ class Comment
      */
     private $body;
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getId(): ?int
     {
         return $this->id;

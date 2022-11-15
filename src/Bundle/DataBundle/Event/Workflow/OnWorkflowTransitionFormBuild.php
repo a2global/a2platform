@@ -15,6 +15,9 @@ class OnWorkflowTransitionFormBuild
     ) {
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getObject(): object
     {
         return $this->object;

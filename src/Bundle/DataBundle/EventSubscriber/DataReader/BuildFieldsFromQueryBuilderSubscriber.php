@@ -26,7 +26,7 @@ class BuildFieldsFromQueryBuilderSubscriber implements EventSubscriberInterface
         $selects = $queryBuilder->getDQLPart('select');
 
         if (count($selects) !== 1) {
-            throw new DatasheetBuildException('Not supports custom dql for now');
+            throw new DatasheetBuildException('Not supports custom dql for now'); // @codeCoverageIgnore
         }
         $entityFields = EntityHelper::getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder));
         $event->setFields(array_keys($entityFields));

@@ -16,6 +16,9 @@ class DataDecorationTwigExtension extends AbstractExtension
     ) {
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getFunctions()
     {
         return [

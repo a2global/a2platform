@@ -44,11 +44,11 @@ class EntityDataImporter
                 $targetObjectData = $this->prepareRawObjectData($entity, $targetObjectData);
                 $result = $strategy->processItem($entity, $targetObjectData, $identificationField);
                 $this->result[$result] = ($this->result[$result] ?? 0) + 1;
-            } catch (Throwable $exception) {
-                $this->result['errors'][$this->line] = $exception->getMessage();
+            } catch (Throwable $exception) { // @codeCoverageIgnore
+                $this->result['errors'][$this->line] = $exception->getMessage(); // @codeCoverageIgnore
 
-                if (!$this->managerRegistry->getManager()->isOpen()) {
-                    $this->managerRegistry->reset();
+                if (!$this->managerRegistry->getManager()->isOpen()) { // @codeCoverageIgnore
+                    $this->managerRegistry->reset(); // @codeCoverageIgnore
                 }
             }
             $this->line++;

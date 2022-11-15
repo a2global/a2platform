@@ -6,6 +6,9 @@ use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CreateNewAndUpdateExistingImportStrategy extends AbstractImportStrategy
 {
     const NAME = 'Create new records and update existing';

@@ -17,6 +17,9 @@ class WorkflowMenuItemSubscriber implements EventSubscriberInterface
     ) {
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public static function getSubscribedEvents(): array
     {
         return [

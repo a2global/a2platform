@@ -23,7 +23,7 @@ class TagsUpdateEventListener
         }
 
         if (!$args->getObject()->isTagsNeedsToBeUpdated()) {
-            return;
+            return; // @codeCoverageIgnore
         }
         $this->objectsToUpdate[] = $args->getObject();
     }

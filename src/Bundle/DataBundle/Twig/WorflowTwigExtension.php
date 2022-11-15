@@ -18,6 +18,9 @@ class WorflowTwigExtension extends AbstractExtension
     ) {
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getFunctions()
     {
         return [

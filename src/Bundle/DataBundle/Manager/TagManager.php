@@ -104,7 +104,7 @@ class TagManager
             }
         }
 
-        return $tags;
+        return $tags; // @codeCoverageIgnore
     }
 
     protected function mapTag(TaggableEntityInterface $object, Tag $tag)
@@ -117,7 +117,7 @@ class TagManager
         ]);
 
         if ($existing) {
-            return;
+            return;  // @codeCoverageIgnore
         }
         $tagMapping = (new TagMapping())
             ->setTargetClass($objectClass)

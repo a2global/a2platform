@@ -538,7 +538,7 @@ var AmsifySuggestags;
 				value = value.replace(/\s+/g, '-');
 			}
 
-			var html = '<span class="'+this.classes.tagItem.substring(1)+'" data-val="'+value+'">'+this.getTag(value)+' '+this.setIcon()+'</span>';
+			var html = '<span class="'+this.classes.tagItem.substring(1)+'" data-val="'+value+'">'+this.getTag(value)+' '+this.setIcon(value)+'</span>';
 			$item    = $(html).insertBefore($(this.selectors.sTagsInput));
 			if(this.settings.defaultTagClass) {
 				$item.addClass(this.settings.defaultTagClass);
@@ -711,10 +711,10 @@ var AmsifySuggestags;
 			}
 		},
 
-		setIcon : function() {
+		setIcon : function(value) {
 			var removeClass = this.classes.removeTag.substring(1);
 			if(this.settings.type == 'bootstrap') {
-				return '<span class="fa fa-times '+removeClass+'"></span>';
+				return '<span class="fa fa-times '+removeClass+'" data-suggestion-remove="' + value + '"></span>';
 			} else if(this.settings.type == 'materialize') {
 				return '<i class="material-icons right '+removeClass+'">clear</i>';
 			} else {

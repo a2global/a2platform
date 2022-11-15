@@ -19,6 +19,10 @@ class EntityDataType implements DataTypeInterface
         return ObjectHelper::getReadableTitle($value);
     }
 
+    /**
+     * @codeCoverageIgnore
+     * todo
+     */
     public static function fromRaw($value)
     {
         return StringUtility::getShortClassName($value);

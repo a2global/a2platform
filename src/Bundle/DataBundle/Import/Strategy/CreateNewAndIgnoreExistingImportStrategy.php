@@ -18,11 +18,11 @@ class CreateNewAndIgnoreExistingImportStrategy extends AbstractImportStrategy
     public function processItem(string $entity, array $data, string $identificationField): string
     {
         if (!isset($data[$identificationField])) {
-            throw new Exception('Identification field must be mapped');
+            throw new Exception('Identification field must be mapped'); // @codeCoverageIgnore
         }
 
         if (empty($data[$identificationField])) {
-            throw new Exception('Identification field is empty');
+            throw new Exception('Identification field is empty'); // @codeCoverageIgnore
         }
         $objects = $this->entityManager->getRepository($entity)->findBy([
             $identificationField => $data[$identificationField],

@@ -45,7 +45,7 @@ class DataWorkflowController extends AbstractController
 
         try {
             if (!$stateMachine->can($object, $transitionName)) {
-                throw new Exception('This transition is not possible');
+                throw new Exception('This transition is not possible'); // @codeCoverageIgnore
             }
             $stateMachine->apply($object, $transitionName, $context);
             $workflowTransition = (new WorkflowTransition())
@@ -57,8 +57,8 @@ class DataWorkflowController extends AbstractController
             $this->getDoctrine()->getManager()->persist($workflowTransition);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'Saved');
-        } catch (Throwable $exception) {
-            $this->addFlash('danger', $exception->getMessage() . ' in ' . $exception->getTraceAsString());
+        } catch (Throwable $exception) { // @codeCoverageIgnore
+            $this->addFlash('danger', $exception->getMessage() . ' in ' . $exception->getTraceAsString()); // @codeCoverageIgnore
         }
 
         return $this->get(ControllerHelper::class)->redirectBackOrTo(

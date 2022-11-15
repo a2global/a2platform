@@ -23,6 +23,10 @@ class ObjectDataType implements DataTypeInterface
         return json_encode($value);
     }
 
+    /**
+     * @codeCoverageIgnore
+     * todo
+     */
     public static function fromRaw($value)
     {
         return StringUtility::getShortClassName($value);

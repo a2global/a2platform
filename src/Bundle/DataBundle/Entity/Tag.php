@@ -26,6 +26,9 @@ class Tag
      */
     private $name;
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getId(): ?int
     {
         return $this->id;
