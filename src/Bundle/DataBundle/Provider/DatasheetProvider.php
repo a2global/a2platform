@@ -47,7 +47,7 @@ class DatasheetProvider
         // Update typical columns
         if ($includeColumns) {
             $datasheet->getColumn($this->resolveIdentityColumnName($entityClassName))
-                ->setLink(['admin_data_view', ['entity' => $entityClassName]])
+                ->setLink(['admin_data_click', ['entity' => $entityClassName]])
                 ->setBold(true);
         }
 

@@ -2,9 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\Builder;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DataItem;
-use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetColumn;
 use A2Global\A2Platform\Bundle\DataBundle\Component\DatasheetExposed;
 use Symfony\Component\Routing\RouterInterface;

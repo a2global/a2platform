@@ -1,5 +1,6 @@
 {% extends '@Admin/layout.html.twig' %}
 {% set entityConfiguration = get_entity_configuration(object) %}
+{% set hasSidebarTabs = entityConfiguration.sidebarTabs|length > 0 %}
 
 {% block page_content %}
 
@@ -12,21 +13,47 @@
         {{ object|entityName }} #{{ object.id }}
     </h4>
 
-    <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs">
-            {% for action in entityConfiguration.actions %}
-                <li class="{{ app.request.requestUri == action.url ? 'active' : '' }}">
-                    <a href="{{ action.url }}" data-entity-menu="{{ action.name }}">
-                        {{ action.title|normalize|trans }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane active">
-                {% block content %}{% endblock %}
+    <div class="row">
+        <div class="{{ hasSidebarTabs ? 'col-md-7' : 'col-md-12' }}">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    {% for action in entityConfiguration.actions %}
+                        <li class="{{ app.request.requestUri == action.url ? 'active' : '' }}">
+                            <a href="{{ action.url }}" data-entity-menu="{{ action.name }}">
+                                {{ action.title|normalize|trans }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
             </div>
         </div>
+        {% if hasSidebarTabs %}
+            <div class="col-md-5">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        {% for tabName, tabSource in entityConfiguration.sidebarTabs %}
+                            <li class="{{ loop.index == 1 ? 'active' : '' }}">
+                                <a href="#sidebarTab{{ tabName|toPascalCase }}" data-toggle="tab" data-entity-sidebar-tab="{{ tabName }}">
+                                    {{ tabName|normalize|trans }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                        {% for tabName, tabSource in entityConfiguration.sidebarTabs %}
+                            <div class="tab-pane {{ loop.index == 1 ? 'active' : '' }}" id="sidebarTab{{ tabName|toPascalCase }}">
+                                {{ get_entity_sidebar_content(object, tabSource) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}

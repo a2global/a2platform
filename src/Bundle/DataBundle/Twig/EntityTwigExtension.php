@@ -14,15 +14,24 @@ class EntityTwigExtension extends AbstractExtension
     ) {
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getFunctions()
     {
         return [
             new TwigFunction('get_entity_configuration', [$this, 'getEntityConfiguration']),
+            new TwigFunction('get_entity_sidebar_content', [$this, 'getEntitySidebarTabContent'], ['is_safe' => ['html']]),
         ];
     }
 
     public function getEntityConfiguration($object)
     {
         return $this->entityConfigurationBuilder->build($object);
+    }
+
+    public function getEntitySidebarTabContent($object, $source): string
+    {
+        return $source($object);
     }
 }

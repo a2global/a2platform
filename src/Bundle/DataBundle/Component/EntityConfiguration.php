@@ -23,6 +23,9 @@ class EntityConfiguration
         return get_class($this->object);
     }
 
+    /**
+     * @return EntityAction[]
+     */
     public function getActions(): array
     {
         return $this->actions;
@@ -35,10 +38,15 @@ class EntityConfiguration
         return $this;
     }
 
-    public function addSidebarTab(string $name, callable $contentSource): self
+    public function addSidebarTab(string $name, $contentSource): self
     {
         $this->sidebarTabs[$name] = $contentSource;
 
         return $this;
+    }
+
+    public function getSidebarTabs(): array
+    {
+        return $this->sidebarTabs;
     }
 }

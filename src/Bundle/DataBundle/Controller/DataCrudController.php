@@ -3,8 +3,9 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
+use A2Global\A2Platform\Bundle\DataBundle\Builder\EntityConfigurationBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Builder\EntityDataBuilder;
-use A2Global\A2Platform\Bundle\DataBundle\Entity\TaggableEntityInterface;
+use A2Global\A2Platform\Bundle\DataBundle\Component\EntityAction;
 use A2Global\A2Platform\Bundle\DataBundle\Event\OnEntityListDatasheetBuild;
 use A2Global\A2Platform\Bundle\DataBundle\Form\ImportUploadFileFormType;
 use A2Global\A2Platform\Bundle\DataBundle\Import\EntityDataImporter;
@@ -38,6 +39,17 @@ class DataCrudController extends AbstractController
         return $this->render('@Admin/datasheet.html.twig', [
             'datasheet' => $datasheet,
         ]);
+    }
+
+    /**
+     * @Route("click/{entity}/{id}", name="click")
+     */
+    public function clickAction($entity, $id)
+    {
+        $object = $this->getDoctrine()->getRepository($entity)->find($id);
+        $action = $this->getDefaultEntityAction($object);
+
+        return $this->redirect($action->getUrl());
     }
 
     /**
@@ -158,6 +170,19 @@ class DataCrudController extends AbstractController
         ]);
     }
 
+    protected function getDefaultEntityAction($object): EntityAction
+    {
+        $entityConfiguration = $this->get(EntityConfigurationBuilder::class)->build($object);
+
+        foreach ($entityConfiguration->getActions() as $action) {
+            if ($action->isDefault()) {
+                return $action;
+            }
+        }
+
+        return $entityConfiguration->getActions()[0];  // @codeCoverageIgnore
+    }
+
     /**
      * @codeCoverageIgnore
      */
@@ -173,6 +198,7 @@ class DataCrudController extends AbstractController
             Environment::class,
             Registry::class,
             EntityDataBuilder::class,
+            EntityConfigurationBuilder::class,
         ]);
     }
 }
