@@ -27,7 +27,7 @@ class CommentsActionSubscriber implements EventSubscriberInterface
     public function addAction(EntityConfigurationBuildEvent $event)
     {
         $entityAction = (new EntityAction())
-            ->setName('Comments')
+            ->setName('comments')
             ->setUrl($this->router->generate('admin_data_comment_list', [
                 'entity' => $event->getClassname(),
                 'id' => $event->getObject()->getId(),
