@@ -36,6 +36,7 @@ class DatasheetBuilder
             $parameters['title'],
             $parameters['columnsToUpdate'],
             $parameters['controls'],
+            $parameters['massActions'],
         );
     }
 }

@@ -14,6 +14,7 @@ class Datasheet
         protected mixed   $datasource,
         protected ?string $title = null,
         protected ?string $id = null,
+        protected ?array  $massActions = [],
     ) {
         $backtrace = debug_backtrace();
         $this->invokedAt = sprintf('%s:%s', $backtrace[1]['class'], $backtrace[1]['line']);
@@ -28,23 +29,10 @@ class Datasheet
             'invokedAt' => $this->invokedAt,
             'columnsToUpdate' => $this->columns,
             'controls' => $this->controls,
+            'massActions' => $this->massActions,
         ];
     }
-//
-//    public function setActionUrl(string $urlWithIdPlaceholder): self
-//    {
-//        $this->config['actionUrl'] = $urlWithIdPlaceholder;
-//
-//        return $this;
-//    }
-//
-//    public function addColumn(DatasheetColumn $column): DatasheetColumn
-//    {
-//        $this->config['columns']['add'][] = $column;
-//
-//        return $column;
-//    }
-//
+
     public function getColumn($fieldName): DatasheetColumn
     {
         if (!isset($this->columns[$fieldName])) {
@@ -59,6 +47,13 @@ class Datasheet
         $this->controls[$text] = $url;
     }
 
+    public function setMassActions(array $actions): self
+    {
+        $this->massActions = $actions;
+
+        return $this;
+    }
+
     public function hideColumns(...$names): self
     {
         foreach ($names as $name) {
@@ -67,11 +62,4 @@ class Datasheet
 
         return $this;
     }
-
-//    public function showColumns(...$names): self
-//    {
-//        $this->config['columns']['show'] = $names;
-//
-//        return $this;
-//    }
 }

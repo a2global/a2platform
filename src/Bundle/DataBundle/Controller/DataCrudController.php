@@ -3,9 +3,10 @@
 namespace A2Global\A2Platform\Bundle\DataBundle\Controller;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
+use A2Global\A2Platform\Bundle\DataBundle\Builder\ActionUrlBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Builder\EntityConfigurationBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Builder\EntityDataBuilder;
-use A2Global\A2Platform\Bundle\DataBundle\Component\EntityAction;
+use A2Global\A2Platform\Bundle\DataBundle\Component\Action;
 use A2Global\A2Platform\Bundle\DataBundle\Event\OnEntityListDatasheetBuild;
 use A2Global\A2Platform\Bundle\DataBundle\Form\ImportUploadFileFormType;
 use A2Global\A2Platform\Bundle\DataBundle\Import\EntityDataImporter;
@@ -49,7 +50,13 @@ class DataCrudController extends AbstractController
         $object = $this->getDoctrine()->getRepository($entity)->find($id);
         $action = $this->getDefaultEntityAction($object);
 
-        return $this->redirect($action->getUrl());
+        if (!$action) {
+            return $this->redirectToRoute('admin_data_index', [
+                'entity' => $entity,
+            ]);
+        }
+
+        return $this->redirect($this->get(ActionUrlBuilder::class)->build($action, $object));
     }
 
     /**
@@ -87,6 +94,32 @@ class DataCrudController extends AbstractController
         return $this->render('@Data/entity/edit.html.twig', [
             'form' => $form->createView(),
             'object' => $object,
+        ]);
+    }
+
+    /**
+     * @Route("mass-edit/{entity}", name="mass_edit")
+     */
+    public function massEditAction(Request $request, $entity)
+    {
+        $ids = explode(',', $request->get('ids'));
+        $form = $this->get(FormProvider::class)->getMassEditForm($entity, $ids);
+//        $object = $this->getDoctrine()->getRepository($entity)->find($id);
+//        $form = $this->get(FormProvider::class)->getFor($object);
+//        $form->setData($object);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $this->getDoctrine()->getManager()->flush();
+//
+//            return $this->redirectToRoute('admin_data_view', [
+//                'entity' => $entity,
+//                'id' => $id,
+//            ]);
+//        }
+//
+        return $this->render('@Admin/form.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -170,17 +203,17 @@ class DataCrudController extends AbstractController
         ]);
     }
 
-    protected function getDefaultEntityAction($object): EntityAction
+    protected function getDefaultEntityAction($object): ?Action
     {
         $entityConfiguration = $this->get(EntityConfigurationBuilder::class)->build($object);
 
         foreach ($entityConfiguration->getActions() as $action) {
-            if ($action->isDefault()) {
+            if ($action->getName() == $entityConfiguration->getDefaultAction()) {
                 return $action;
             }
         }
 
-        return $entityConfiguration->getActions()[0];  // @codeCoverageIgnore
+        return null;
     }
 
     /**
@@ -199,6 +232,7 @@ class DataCrudController extends AbstractController
             Registry::class,
             EntityDataBuilder::class,
             EntityConfigurationBuilder::class,
+            ActionUrlBuilder::class,
         ]);
     }
 }

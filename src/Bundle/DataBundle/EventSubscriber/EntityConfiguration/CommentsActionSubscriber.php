@@ -2,18 +2,12 @@
 
 namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\EntityConfiguration;
 
-use A2Global\A2Platform\Bundle\DataBundle\Component\EntityAction;
+use A2Global\A2Platform\Bundle\DataBundle\Component\Action;
 use A2Global\A2Platform\Bundle\DataBundle\Event\EntityConfigurationBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 class CommentsActionSubscriber implements EventSubscriberInterface
 {
-    public function __construct(
-        protected RouterInterface $router,
-    ) {
-    }
-
     /**
      * @codeCoverageIgnore
      */
@@ -26,12 +20,12 @@ class CommentsActionSubscriber implements EventSubscriberInterface
 
     public function addAction(EntityConfigurationBuildEvent $event)
     {
-        $entityAction = (new EntityAction())
+        $entityAction = (new Action())
             ->setName('comments')
-            ->setUrl($this->router->generate('admin_data_comment_list', [
+            ->setRouteName('admin_data_comment_list')
+            ->setRouteParameters([
                 'entity' => $event->getClassname(),
-                'id' => $event->getObject()->getId(),
-            ]));
+            ]);
         $event->getConfiguration()->addAction($entityAction);
     }
 }

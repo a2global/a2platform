@@ -18,6 +18,7 @@ class DatasheetExposed
         protected ?string $title,
         protected array   $columnsToUpdate,
         protected array   $controls,
+        protected array   $massActions = [],
     ) {
     }
 
@@ -98,6 +99,23 @@ class DatasheetExposed
     public function getColumnsToUpdate(): array
     {
         return $this->columnsToUpdate;
+    }
+
+    public function getMassActions(): array
+    {
+        return $this->massActions;
+    }
+
+    public function setMassActions(array $massActions): self
+    {
+        $this->massActions = $massActions;
+        return $this;
+    }
+
+    public function addMassActions(Action $action): self
+    {
+        $this->massActions[] = $action;
+        return $this;
     }
 
     public function getControls(): array

@@ -12,10 +12,10 @@ class DataCollection
     ) {
     }
 
-//    public function getFields(): array
-//    {
-//        return $this->fields;
-//    }
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
 
     public function getItems(): array
     {

@@ -5,19 +5,20 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Provider;
 use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
+use A2Global\A2Platform\Bundle\DataBundle\Builder\EntityConfigurationBuilder;
 use A2Global\A2Platform\Bundle\DataBundle\Component\Datasheet;
 use Doctrine\ORM\EntityManagerInterface;
-use DoctrineExtensions\Query\Postgresql\StringAgg;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DatasheetProvider
 {
     public function __construct(
-        protected EntityManagerInterface $entityManager,
-        protected RouterInterface        $router,
-        protected TranslatorInterface    $translator,
-        protected EntityHelper           $entityHelper,
+        protected EntityManagerInterface     $entityManager,
+        protected RouterInterface            $router,
+        protected TranslatorInterface        $translator,
+        protected EntityHelper               $entityHelper,
+        protected EntityConfigurationBuilder $entityConfigurationBuilder,
     ) {
     }
 
@@ -50,6 +51,9 @@ class DatasheetProvider
                 ->setLink(['admin_data_click', ['entity' => $entityClassName]])
                 ->setBold(true);
         }
+
+        // Mass actions
+        $datasheet->setMassActions($this->entityConfigurationBuilder->build(new $entityClassName())->getMassActions());
 
         return $datasheet;
     }

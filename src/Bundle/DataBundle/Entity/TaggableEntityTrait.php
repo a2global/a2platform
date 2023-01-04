@@ -4,7 +4,7 @@ namespace A2Global\A2Platform\Bundle\DataBundle\Entity;
 
 trait TaggableEntityTrait
 {
-    protected $tags;
+    protected $tags = [];
 
     protected $tagsNeedsToBeUpdated = false;
 

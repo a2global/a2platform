@@ -38,6 +38,11 @@ class FormProvider
         'date' => DateType::class,
         'datetime' => DateTimeType::class,
     ];
+    private const FIELDS_NOT_FOR_EDIT = [
+        'id',
+        'createdAt',
+        'updatedAt',
+    ];
 
     public function __construct(
         protected FormFactoryInterface     $formFactory,
@@ -160,6 +165,52 @@ class FormProvider
         ]);
 
         return $form;
+    }
+
+    public function getMassEditForm($entityClassName, $ids)
+    {
+        $object = new $entityClassName();
+
+        $formBuilder = $this->formFactory->createBuilder(FormType::class, $object, [
+            'data_class' => $entityClassName,
+            'attr' => [
+                'data-form-mass-edit' => $entityClassName,
+            ],
+        ]);
+
+        foreach (EntityHelper::getEntityFields($entityClassName) as $fieldName => $fieldType) {
+            if (in_array($fieldName, self::FIELDS_NOT_FOR_EDIT)) {
+                continue;
+            }
+
+            if (array_key_exists($fieldType, self::FORM_FIELDS_MAPPING) && is_null(self::FORM_FIELDS_MAPPING[$fieldType])) {
+                continue;
+            }
+            $formBuilder->add('do_update_' . $fieldName, ChoiceType::class, [
+                'choices' => [
+                    'Don\'t change' => 0,
+                    'Update for all' => 1,
+                ],
+                'mapped' => false,
+                'label' => $this->entityHelper->getFieldName($entityClassName, $fieldName),
+                'attr' => [
+                    'data-form-mass-edit-field-action-control' => $fieldName,
+                ],
+            ]);
+
+            $formBuilder->add($fieldName, self::FORM_FIELDS_MAPPING[$fieldType] ?? null, [
+                'label' => false,
+                'attr' => [
+                    'data-form-mass-edit-field-value-control' => $fieldName,
+                ],
+                'required' => false,
+            ]);
+        }
+        $formBuilder->add('id', HiddenType::class, [
+            'data' => implode(',', $ids),
+        ]);
+
+        return $formBuilder->getForm();
     }
 
     protected function getChoicesAttr($fileField, $entityFields): array

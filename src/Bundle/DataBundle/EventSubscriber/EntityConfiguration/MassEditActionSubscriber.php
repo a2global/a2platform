@@ -5,9 +5,15 @@ namespace A2Global\A2Platform\Bundle\DataBundle\EventSubscriber\EntityConfigurat
 use A2Global\A2Platform\Bundle\DataBundle\Component\Action;
 use A2Global\A2Platform\Bundle\DataBundle\Event\EntityConfigurationBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\RouterInterface;
 
-class ViewActionSubscriber implements EventSubscriberInterface
+class MassEditActionSubscriber implements EventSubscriberInterface
 {
+    public function __construct(
+        protected RouterInterface $router,
+    ) {
+    }
+
     /**
      * @codeCoverageIgnore
      */
@@ -21,12 +27,11 @@ class ViewActionSubscriber implements EventSubscriberInterface
     public function addAction(EntityConfigurationBuildEvent $event)
     {
         $entityAction = (new Action())
-            ->setName('view')
-            ->setRouteName('admin_data_view')
+            ->setName('Edit')
+            ->setRouteName('admin_data_mass_edit')
             ->setRouteParameters([
                 'entity' => $event->getClassname(),
             ]);
-        $event->getConfiguration()->addAction($entityAction);
-        $event->getConfiguration()->setDefaultAction('view');
+        $event->getConfiguration()->addMassAction($entityAction);
     }
 }

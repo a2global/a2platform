@@ -18,9 +18,10 @@
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     {% for action in entityConfiguration.actions %}
-                        <li class="{{ app.request.requestUri == action.url ? 'active' : '' }}">
-                            <a href="{{ action.url }}" data-entity-menu="{{ action.name }}">
-                                {{ action.title|normalize|trans }}
+                        {% set actionUrl = buildActionUrl(action, object) %}
+                        <li class="{{ app.request.requestUri == actionUrl ? 'active' : '' }}">
+                            <a href="{{ actionUrl }}" data-entity-menu="{{ action.name }}">
+                                {{ action.name|normalize|trans }}
                             </a>
                         </li>
                     {% endfor %}
