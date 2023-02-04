@@ -10,9 +10,9 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Routing\RouterInterface;
 
-#[AsEventListener(event: 'a2platform.menu.build.admin_main', priority: 900, method: 'preAdminMainMenuBuild')]
-#[AsEventListener(event: 'a2platform.menu.build.admin_main', priority: 100, method: 'entitiesAdminMainMenuBuild')]
-#[AsEventListener(event: 'a2platform.menu.build.admin_main', priority: -900, method: 'postAdminMainMenuBuild')]
+#[AsEventListener(event: 'a2platform.menu.build.admin_main', method: 'preAdminMainMenuBuild', priority: 900)]
+#[AsEventListener(event: 'a2platform.menu.build.admin_main', method: 'entitiesAdminMainMenuBuild', priority: 100)]
+#[AsEventListener(event: 'a2platform.menu.build.admin_main', method: 'postAdminMainMenuBuild', priority: -900)]
 class AdminMenuEventListener
 {
     public function __construct(
@@ -21,7 +21,7 @@ class AdminMenuEventListener
     ) {
     }
 
-    public function preAdminMainMenuBuild(MenuBuildEvent $event)
+    public function preAdminMainMenuBuild(MenuBuildEvent $event): void
     {
         $event->getMenu()->addItem(
             (new MenuItem('Homepage'))->setUrl('/')
@@ -31,20 +31,25 @@ class AdminMenuEventListener
         );
     }
 
-    public function entitiesAdminMainMenuBuild(MenuBuildEvent $event)
+    public function entitiesAdminMainMenuBuild(MenuBuildEvent $event): void
     {
-        foreach ($this->entityHelper->getEntityList() as $entityFqcn){
+        $entityList = $this->entityHelper->getEntityList();
+        sort($entityList);
+
+        foreach ($entityList as $entityFqcn) {
             $entityName = StringUtility::toReadable(StringUtility::getShortClassName($entityFqcn));
-            $event->getMenu()->addItem(
-                (new MenuItem(StringUtility::toReadable($entityName)))
-            );
+            $menuItem = (new MenuItem(StringUtility::toReadable($entityName)))
+                ->setUrl($this->router->generate('admin_entity_list', [
+                    'fqcn' => $entityFqcn,
+                ]));
+            $event->getMenu()->addItem($menuItem);
         }
     }
 
-    public function postAdminMainMenuBuild(MenuBuildEvent $event)
+    public function postAdminMainMenuBuild(MenuBuildEvent $event): void
     {
-        $event->getMenu()->addItem(
-            (new MenuItem('Sign out'))->setUrl($this->router->generate('app_logout'))
-        );
+        $menuItem = (new MenuItem('Sign out'))
+            ->setUrl($this->router->generate('app_logout'));
+        $event->getMenu()->addItem($menuItem);
     }
 }

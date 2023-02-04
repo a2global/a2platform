@@ -14,7 +14,7 @@ class EntityHelper
     ) {
     }
 
-    public function getEntityList()
+    public function getEntityList(): array
     {
         if (!$this->entityListCached) {
             $this->entityListCached = $this->entityManager
