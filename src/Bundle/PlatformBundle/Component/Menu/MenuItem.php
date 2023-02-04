@@ -5,7 +5,11 @@ namespace A2Global\A2Platform\Bundle\PlatformBundle\Component\Menu;
 
 class MenuItem
 {
-    protected string $url;
+    protected ?string $url = null;
+
+    protected ?string $routeName = null;
+
+    protected array $routeParameters = [];
 
     public function __construct(
         protected string $text
@@ -17,14 +21,36 @@ class MenuItem
         return $this->text;
     }
 
-    public function setUrl(string $url): self
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): self
     {
         $this->url = $url;
         return $this;
     }
 
-    public function getUrl(): string
+    public function getRouteName(): ?string
     {
-        return $this->url;
+        return $this->routeName;
+    }
+
+    public function setRouteName(?string $routeName): self
+    {
+        $this->routeName = $routeName;
+        return $this;
+    }
+
+    public function getRouteParameters(): array
+    {
+        return $this->routeParameters;
+    }
+
+    public function setRouteParameters(array $routeParameters): self
+    {
+        $this->routeParameters = $routeParameters;
+        return $this;
     }
 }

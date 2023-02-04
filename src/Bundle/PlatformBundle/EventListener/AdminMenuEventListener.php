@@ -23,12 +23,13 @@ class AdminMenuEventListener
 
     public function preAdminMainMenuBuild(MenuBuildEvent $event): void
     {
-        $event->getMenu()->addItem(
-            (new MenuItem('Homepage'))->setUrl('/')
-        );
-        $event->getMenu()->addItem(
-            (new MenuItem('Admin'))->setUrl($this->router->generate('admin_default'))
-        );
+        $menuItem = (new MenuItem('Homepage'))
+            ->setUrl('/');
+        $event->getMenu()->addItem($menuItem);
+
+        $menuItem = (new MenuItem('Admin'))
+            ->setRouteName('admin_default');
+        $event->getMenu()->addItem($menuItem);
     }
 
     public function entitiesAdminMainMenuBuild(MenuBuildEvent $event): void
@@ -39,9 +40,10 @@ class AdminMenuEventListener
         foreach ($entityList as $entityFqcn) {
             $entityName = StringUtility::toReadable(StringUtility::getShortClassName($entityFqcn));
             $menuItem = (new MenuItem(StringUtility::toReadable($entityName)))
-                ->setUrl($this->router->generate('admin_entity_list', [
+                ->setRouteName('admin_entity_list')
+                ->setRouteParameters([
                     'fqcn' => $entityFqcn,
-                ]));
+                ]);
             $event->getMenu()->addItem($menuItem);
         }
     }
@@ -49,7 +51,7 @@ class AdminMenuEventListener
     public function postAdminMainMenuBuild(MenuBuildEvent $event): void
     {
         $menuItem = (new MenuItem('Sign out'))
-            ->setUrl($this->router->generate('app_logout'));
+            ->setRouteName('app_logout');
         $event->getMenu()->addItem($menuItem);
     }
 }
