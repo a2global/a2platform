@@ -1,3 +1,7 @@
 controller:
     resource: '../../Controller/'
     type: annotation
+
+entity_actions:
+    resource: A2Global\A2Platform\Bundle\PlatformBundle\Routing\EntityActionRouteLoader
+    type: service

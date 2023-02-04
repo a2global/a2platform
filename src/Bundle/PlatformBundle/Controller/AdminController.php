@@ -14,10 +14,4 @@ class AdminController extends AbstractController
     {
         return $this->render('@Platform/admin/dashboard.html.twig');
     }
-
-    #[Route('entity/list/{fqcn}', name: 'entity_list')]
-    public function entityListAction(string $fqcn)
-    {
-        dd($fqcn);
-    }
 }
