@@ -7,7 +7,7 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Component\Menu\Menu;
 
 class MenuBuildEvent
 {
-    const NAME = 'a2platform.menu.build';
+    public const NAME = 'a2platform.menu.build';
 
     public function __construct(
        protected Menu $menu

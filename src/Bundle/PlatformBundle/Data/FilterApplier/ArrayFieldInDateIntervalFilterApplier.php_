@@ -1,0 +1,60 @@
+<?php
+
+namespace A2Global\A2Platform\Bundle\PlatformBundle\Data\FilterApplier;
+
+use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\ContainsFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\EqualsFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\FieldBooleanFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\FieldDateFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\FieldEqualsDateFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\FieldEqualsFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\FieldExactDateFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\FieldInDateIntervalFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\FilterInterface;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\PaginationFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Reader\ArrayDataReader;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Reader\DataReaderInterface;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Reader\QueryBuilderDataReader;
+use DateTime;
+use Doctrine\ORM\QueryBuilder;
+use Throwable;
+
+class ArrayFieldInDateIntervalFilterApplier implements FilterApplierInterface
+{
+    public function supports(DataReaderInterface $dataReader, FilterInterface $filter): bool
+    {
+        return $dataReader instanceof ArrayDataReader && $filter instanceof FieldInDateIntervalFilter;
+    }
+
+    public function apply(DataReaderInterface $dataReader, FilterInterface $filter)
+    {
+        /** @var FieldInDateIntervalFilter $filter */
+        $filteredItems = [];
+        $from = $filter->getDateFrom();
+        $to = $filter->getDateTo();
+
+        foreach ($dataReader->getSource() as $item) {
+            $value = $item[$filter->getFieldName()];
+
+            if (empty($value)) {
+                continue;
+            }
+
+            if (!$value instanceof DateTime) {
+                try {
+                    $date = new DateTime($value);
+                } catch (Throwable $exception) {
+                    continue;
+                }
+            }
+            $value->setTime(0,0,0);
+
+            if ($value < $from || $value > $to) {
+                continue;
+            }
+            $filteredItems[] = $item;
+        }
+        $dataReader->setSource($filteredItems);
+    }
+}

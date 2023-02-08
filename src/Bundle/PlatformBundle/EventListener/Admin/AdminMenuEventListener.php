@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace A2Global\A2Platform\Bundle\PlatformBundle\EventListener;
+namespace A2Global\A2Platform\Bundle\PlatformBundle\EventListener\Admin;
 
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Menu\MenuItem;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\MenuBuildEvent;
@@ -37,12 +37,12 @@ class AdminMenuEventListener
         $entityList = $this->entityHelper->getEntityList();
         sort($entityList);
 
-        foreach ($entityList as $entityFqcn) {
-            $entityName = StringUtility::toReadable(StringUtility::getShortClassName($entityFqcn));
+        foreach ($entityList as $entityClassName) {
+            $entityName = StringUtility::toReadable(StringUtility::getShortClassName($entityClassName));
             $menuItem = (new MenuItem(StringUtility::toReadable($entityName)))
                 ->setRouteName('admin_entity_list')
                 ->setRouteParameters([
-                    'fqcn' => $entityFqcn,
+                    'className' => $entityClassName,
                 ]);
             $event->getMenu()->addItem($menuItem);
         }

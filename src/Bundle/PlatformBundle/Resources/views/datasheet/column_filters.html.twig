@@ -1,0 +1,12 @@
+<th data-datasheet-column-header="{{ column.name }}">
+    {% set columnFilterForms = datasheet_column_filters_form(filterForm, datasheet, column) %}
+    {% if columnFilterForms %}
+        {% for columnFilterName, columnFilterForm in columnFilterForms %}
+            <div data-datasheet-column-filter="{{ columnFilterName }}">
+                {% for form in columnFilterForm.children %}
+                    {{ form_widget(form) }}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% endif %}
+</th>

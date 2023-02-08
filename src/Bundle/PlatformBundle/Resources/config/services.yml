@@ -9,3 +9,23 @@ services:
             - '../../DependencyInjection/'
             - '../../Component/'
             - '../../Entity/'
+
+    _instanceof:
+        A2Global\A2Platform\Bundle\PlatformBundle\Data\Reader\DataReaderInterface:
+            tags: [ 'a2platform.data.reader' ]
+        A2Global\A2Platform\Bundle\PlatformBundle\Data\FilterApplier\FilterApplierInterface:
+            tags: [ 'a2platform.data.filter_applier' ]
+        A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\DataTypeInterface:
+            tags: [ 'a2platform.data.type' ]
+
+    A2Global\A2Platform\Bundle\PlatformBundle\Registry\DataReaderRegistry:
+        arguments:
+            - !tagged_iterator a2platform.data.reader
+
+    A2Global\A2Platform\Bundle\PlatformBundle\Registry\FilterApplierRegistry:
+        arguments:
+            - !tagged_iterator a2platform.data.filter_applier
+
+    A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper:
+        bind:
+            $dataTypes: !tagged_iterator a2platform.data.type

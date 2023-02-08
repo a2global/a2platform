@@ -1,0 +1,27 @@
+<?php
+declare(strict_types=1);
+
+namespace A2Global\A2Platform\Bundle\PlatformBundle\Data\Type;
+
+use DateTime;
+
+class DateTimeDataType implements DataTypeInterface
+{
+    public static function supportsByOrmType($type): bool
+    {
+        return in_array($type, [
+            'datetime',
+        ]);
+    }
+
+    public static function getReadablePreview($value): string
+    {
+        /** @var DateTime $value */
+        return $value ? $value->format('Y-m-d h:i:s') : '';
+    }
+
+    public static function fromRaw($value)
+    {
+        return new DateTime($value);
+    }
+}

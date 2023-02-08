@@ -1,0 +1,47 @@
+<?php
+
+namespace A2Global\A2Platform\Bundle\PlatformBundle\Data\FilterApplier;
+
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\FieldEqualsDateFilter;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\FilterInterface;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Reader\ArrayDataReader;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Reader\DataReaderInterface;
+use DateTime;
+use Throwable;
+
+class ArrayFieldEqualsDateFilterApplier implements FilterApplierInterface
+{
+    public function supports(DataReaderInterface $dataReader, FilterInterface $filter): bool
+    {
+        return $dataReader instanceof ArrayDataReader && $filter instanceof FieldEqualsDateFilter;
+    }
+
+    public function apply(DataReaderInterface $dataReader, FilterInterface $filter)
+    {
+        /** @var FieldEqualsDateFilter $filter */
+        $filteredItems = [];
+        $ymd = $filter->getDate()->format('ymd');
+
+        foreach ($dataReader->getSource() as $item) {
+            $value = $item[$filter->getFieldName()];
+
+            if (empty($value)) {
+                continue;
+            }
+
+            if (!$value instanceof DateTime) {
+                try {
+                    $date = new DateTime($value);
+                } catch (Throwable $exception) {
+                    continue;
+                }
+            }
+
+            if ($value->format('ymd') !== $ymd) {
+                continue;
+            }
+            $filteredItems[] = $item;
+        }
+        $dataReader->setSource($filteredItems);
+    }
+}
