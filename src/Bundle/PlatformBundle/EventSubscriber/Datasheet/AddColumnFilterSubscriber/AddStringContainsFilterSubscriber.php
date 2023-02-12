@@ -2,11 +2,11 @@
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\EventSubscriber\Datasheet\AddColumnFilterSubscriber;
 
-use A2Global\A2Platform\Bundle\PlatformBundle\DataType\DateDataType;
-use A2Global\A2Platform\Bundle\PlatformBundle\DataType\DateTimeDataType;
-use A2Global\A2Platform\Bundle\PlatformBundle\DataType\FloatDataType;
-use A2Global\A2Platform\Bundle\PlatformBundle\DataType\IntegerDataType;
-use A2Global\A2Platform\Bundle\PlatformBundle\DataType\StringDataType;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\DateDataType;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\DateTimeDataType;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\FloatDataType;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\IntegerDataType;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\StringDataType;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Datasheet\OnDatasheetColumnFiltersBuildEvent;
 use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\StringContainsDataFilter;
 use A2Global\A2Platform\Bundle\PlatformBundle\Manager\DatasheetParametersManager;

@@ -6,6 +6,7 @@ namespace A2Global\A2Platform\Bundle\PlatformBundle\Helper;
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -14,7 +15,7 @@ use ReflectionClass;
 
 class EntityHelper
 {
-    public static array $entityFieldsCached = [];
+    protected array $entityMetadataCached = [];
 
     protected array $entityListCached = [];
 
@@ -36,7 +37,48 @@ class EntityHelper
         return $this->entityListCached;
     }
 
-    public static function getEntityFields($class): array
+    public function getEntityFields($className): array
+    {
+        $classMetadata = $this->getEntityMetadata($className);
+        $fields = [];
+
+        foreach($classMetadata->getFieldNames() as $fieldName){
+            $fieldMapping = $classMetadata->getFieldMapping($fieldName);
+            $fields[$fieldName] = $fieldMapping['type'];
+        }
+
+        return $fields;
+
+//        $fields = array_map(function($field) use ($classMetadata){
+//
+//        }, $classMetadata->getFieldMappings());
+
+        $fields = array_merge($class->getColumnNames(), $fields);
+        foreach ($fields as $index => $field) {
+            if ($class->isInheritedField($field)) {
+                unset($fields[$index]);
+            }
+        }
+//        foreach ($class->getAssociationMappings() as $name => $relation) {
+//            if (!$class->isInheritedAssociation($name)) {
+//                foreach ($relation['joinColumns'] as $joinColumn) {
+//                    $fields[] = $joinColumn['name'];
+//                }
+//            }
+//        }
+        return $fields;
+    }
+
+    protected function getEntityMetadata($className): ClassMetadata
+    {
+        if (!array_key_exists($className, $this->entityMetadataCached)) {
+            $this->entityMetadataCached[$className] = $this->entityManager->getClassMetadata($className);
+        }
+
+        return $this->entityMetadataCached[$className];
+    }
+
+    public static function getEntityFieldsOld($class): array
     {
         if (is_object($class)) {
             $class = get_class($class);

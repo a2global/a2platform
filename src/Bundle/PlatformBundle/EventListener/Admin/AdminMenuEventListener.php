@@ -40,7 +40,7 @@ class AdminMenuEventListener
         foreach ($entityList as $entityClassName) {
             $entityName = StringUtility::toReadable(StringUtility::getShortClassName($entityClassName));
             $menuItem = (new MenuItem(StringUtility::toReadable($entityName)))
-                ->setRouteName('admin_entity_list')
+                ->setRouteName('admin_entity_index')
                 ->setRouteParameters([
                     'className' => $entityClassName,
                 ]);

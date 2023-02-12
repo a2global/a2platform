@@ -10,6 +10,7 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Component\Data\DataItem;
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet\Datasheet;
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet\DatasheetColumn;
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet\DatasheetExposed;
+use A2Global\A2Platform\Bundle\PlatformBundle\Manager\DatasheetParametersManager;
 use Symfony\Component\Form\FormView;
 use Throwable;
 use Twig\Extension\AbstractExtension;
@@ -40,15 +41,15 @@ class DatasheetTwigExtension extends AbstractExtension
     public function buildDatasheet(Datasheet $datasheet): string
     {
         try {
-        return $this->datasheetViewBuilder->buildDatasheet(
-            $this->datasheetBuilder->buildDatasheet($datasheet)
-        );
+            return $this->datasheetViewBuilder->buildDatasheet(
+                $this->datasheetBuilder->buildDatasheet($datasheet)
+            );
         } catch (Throwable $exception) {
             return implode('', [
                 '<div class="alert alert-danger">',
                 'Failed to build datasheet: ' . $exception->getMessage() . '<br>',
-                '<details><summary>on ' . $exception->getFile() . ':' . $exception->getLine().' &darr;</summary>',
-                $exception->getTraceAsString() .'</details>',
+                '<details><summary>on ' . $exception->getFile() . ':' . $exception->getLine() . ' &darr;</summary>',
+                $exception->getTraceAsString() . '</details>',
                 '</div>',
             ]);
         }

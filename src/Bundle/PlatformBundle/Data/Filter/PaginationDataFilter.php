@@ -22,9 +22,9 @@ class PaginationDataFilter extends AbstractDataFilter
         return $this->page;
     }
 
-    public function setPage(int $page): self
+    public function setPage($page): self
     {
-        $this->page = $page;
+        $this->page = max((int) $page, 1);
 
         return $this;
     }

@@ -2,10 +2,11 @@
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\EventSubscriber\Datasheet;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Helper\EntityHelper;
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\QueryBuilderUtility;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Datasheet\OnDatasheetBuildEvent;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Datasheet\OnQueryBuilderDatasheetColumnBuildEvent;
+use A2Global\A2Platform\Bundle\PlatformBundle\Exception\DatasheetBuildException;
+use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
+use A2Global\A2Platform\Bundle\PlatformBundle\Utility\QueryBuilderUtility;
 use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -16,7 +17,8 @@ class BuildQueryBuilderDatasheetColumns implements EventSubscriberInterface
     public const SUPPORTED_DATASHEET_TYPE = 'queryBuilder';
 
     public function __construct(
-        protected EventDispatcherInterface $eventDispatcher
+        protected EventDispatcherInterface $eventDispatcher,
+        protected EntityHelper             $entityHelper,
     ) {
     }
 
@@ -28,16 +30,14 @@ class BuildQueryBuilderDatasheetColumns implements EventSubscriberInterface
         $columns = [];
         $selectedFieldTypes = $this->getSelectedFieldTypes($event->getDatasheet()->getDatasource());
 
-        foreach ($selectedFieldTypes as $fieldName => $fieldType)  {
+        foreach ($selectedFieldTypes as $fieldName => $fieldType) {
             $event = new OnQueryBuilderDatasheetColumnBuildEvent($fieldName, $fieldType, $event->getDatasheet());
             $this->eventDispatcher->dispatch($event);
             $column = $event->getColumn();
 
-//            /** @codeCoverageIgnore */
-//            if (!$column) {
-//                /** @codeCoverageIgnore */
-//                throw new DatasheetBuildException('Failed to build datasheet column: ' . $fieldName . ' type: ' . $fieldType);
-//            }
+            if (!$column) {
+                throw new DatasheetBuildException('Failed to build datasheet column: ' . $fieldName . ' type: ' . $fieldType);
+            }
             $columns[] = $column;
         }
         $event->getDatasheet()->setColumns($columns);
@@ -57,13 +57,13 @@ class BuildQueryBuilderDatasheetColumns implements EventSubscriberInterface
                 $part = reset($parts);
 
                 if ($part === QueryBuilderUtility::getPrimaryAlias($queryBuilder)) {
-                    return EntityHelper::getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder));
+                    return $this->entityHelper->getEntityFields(QueryBuilderUtility::getPrimaryClass($queryBuilder));
                 }
             }
         }
 
-//        /** @codeCoverageIgnore */
-//        throw new DatasheetBuildException('complex QB is not supported yet');
+        /** @codeCoverageIgnore */
+        throw new DatasheetBuildException('complex QB is not supported yet');
     }
 
     /**

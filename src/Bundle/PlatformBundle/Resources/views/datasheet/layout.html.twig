@@ -1,8 +1,8 @@
 <div data-datasheet="{{ datasheet.id }}">
 
-    <form action="" method="post" id="datasheet-mass-action-form">
-        <input type="text" name="datasheet-mass-action-form-ids">
-    </form>
+{#    <form action="" method="post" id="datasheet-mass-action-form">#}
+{#        <input type="text" name="datasheet-mass-action-form-ids">#}
+{#    </form>#}
 
     <form action="?" method="get" data-datasheet-form="{{ datasheet.id }}">
         {% set filterForm = datasheet_filters_form(datasheet) %}
@@ -22,58 +22,63 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-2">
-                <select id="datasheet-mass-action-selector" class="form-control">
-                    <option value="">With selected:</option>
+        <div>
+{#            <div class="col-md-2">#}
+{#                <select id="datasheet-mass-action-selector" class="form-control">#}
+{#                    <option value="">With selected:</option>#}
 {#                    {% for action in datasheet.massActions %}#}
 {#                        <option value="{{ buildActionUrl(action) }}">{{ action.name|trans }}</option>#}
 {#                    {% endfor %}#}
-                </select>
-            </div>
+{#                </select>#}
+{#            </div>#}
 
-            <div class="col-md-5">
-                {% if filterForm.children[datasheet.id]['df']['tags']['value'] ?? false %}
-                    <div class="row">
-                        <div class="col-sm-10">{{ form_widget(filterForm.children[datasheet.id]['df']['tags']['value']) }}</div>
-                        <div class="col-sm-2">
-                            <input type="submit"
-                                   value="{{ 'Search'|trans }}"
-                                   class="btn btn-default"
-                                   data-datasheet-control-apply-filters="1">
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-            <div class="col-md-5">
-                <div class="btn-group" data-datasheet-items-total="{{ datasheet.data.itemsTotal }}"></div>
-            </div>
+{#            <div class="col-md-5">#}
+{#                {% if filterForm.children[datasheet.id]['df']['tags']['value'] ?? false %}#}
+{#                    <div class="row">#}
+{#                        <div class="col-sm-10">{{ form_widget(filterForm.children[datasheet.id]['df']['tags']['value']) }}</div>#}
+{#                        <div class="col-sm-2">#}
+{#                            <input type="submit"#}
+{#                                   value="{{ 'Search'|trans }}"#}
+{#                                   class="btn btn-default"#}
+{#                                   data-datasheet-control-apply-filters="1">#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endif %}#}
+{#            </div>#}
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end"
+                    data-datasheet-items-total="{{ datasheet.data.itemsTotal }}"
+                >
+                </ul>
+            </nav>
+{#                <div class="btn-group" data-datasheet-items-total="{{ datasheet.data.itemsTotal }}"></div>#}
         </div>
         <br>
-        <div class="table-responsive" data-datasheet-id="">
+        <div class="table-responsive">
             <table class="table table-striped table-bordered table-sm" style="table-layout: initial;width:auto;">
                 <thead>
                 <tr>
-                    <td>
-                        <input type="checkbox">
-                    </td>
+{#                    <td>#}
+{#                        <input type="checkbox">#}
+{#                    </td>#}
                     {% for column in datasheet.columns %}
-                        {% include '@Data/datasheet/column_header.html.twig' %}
+                        {% include '@Platform/datasheet/column_header.html.twig' %}
                     {% endfor %}
                 </tr>
                 <tr class="datasheet-column-filters-row">
-                    <td>&nbsp;</td>
+{#                    <td>&nbsp;</td>#}
                     {% for column in datasheet.columns %}
-                        {% include '@Data/datasheet/column_filters.html.twig' %}
+                        {% include '@Platform/datasheet/column_filters.html.twig' %}
                     {% endfor %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for item in datasheet.data.items %}
                     <tr>
-                        <td>
-                            <input type="checkbox" name="datasheet-mass-action-checkbox[]" value="{{ item.value('id') ?? '' }}">
-                        </td>
+{#                        <td>#}
+{#                            <input type="checkbox" name="datasheet-mass-action-checkbox[]" value="{{ item.value('id') ?? '' }}">#}
+{#                        </td>#}
                         {% for column in datasheet.columns %}
                             {{ datasheet_cell(datasheet, column, item) }}
                         {% endfor %}
@@ -84,11 +89,12 @@
         </div>
 
         <div class="{{ app.environment == 'dev' ? '' : 'hidden' }}">
-            {{ datasheet.data.itemsTotal }}
-            {{ form_end(filterForm) }}
+            <details>
+                <summary>Debug info</summary>
+                {{ datasheet.data.itemsTotal }}
+                {{ form_end(filterForm) }}
+            </details>
         </div>
-
-        {#        {{ app.environment == 'dev' ? dump(datasheet) : '' }} #}
 
     </form>
 </div>

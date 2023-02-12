@@ -5,6 +5,7 @@ namespace A2Global\A2Platform\Bundle\PlatformBundle\Component\Data;
 
 use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
 use Exception;
+use Throwable;
 
 class DataItem
 {
@@ -24,24 +25,26 @@ class DataItem
         }
     }
 
-    /** @codeCoverageIgnore  */
+    /** @codeCoverageIgnore */
     protected function getObjectValue($field)
     {
-        foreach (['', 'get', 'is', 'has'] as $prefix) {
-            $method = $prefix . StringUtility::toPascalCase($field);
+        try {
+            foreach (['', 'get', 'is', 'has'] as $prefix) {
+                $method = $prefix . StringUtility::toPascalCase($field);
 
-            if (method_exists($this->data, $method)) {
-                return $this->data->{$method}();
+                if (method_exists($this->data, $method)) {
+                    return $this->data->{$method}();
+                }
             }
+        } catch (Throwable $exception) {
+            throw new Exception(
+                sprintf(
+                    'Failed to get data %s from %s via get/is/has+%s',
+                    $field,
+                    get_class($this->data),
+                    StringUtility::toPascalCase($field)
+                )
+            );
         }
-
-        throw new Exception(
-            sprintf(
-                'Failed to get data %s from %s via get/is/has+%s',
-                $field,
-                get_class($this->data),
-                StringUtility::toPascalCase($field)
-            )
-        );
     }
 }

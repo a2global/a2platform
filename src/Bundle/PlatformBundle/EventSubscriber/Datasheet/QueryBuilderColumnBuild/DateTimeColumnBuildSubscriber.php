@@ -3,7 +3,7 @@
 namespace A2Global\A2Platform\Bundle\PlatformBundle\EventSubscriber\Datasheet\QueryBuilderColumnBuild;
 
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet\DatasheetColumn;
-use A2Global\A2Platform\Bundle\PlatformBundle\DataType\DateTimeDataType;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\DateTimeDataType;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Datasheet\OnQueryBuilderDatasheetColumnBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -13,6 +13,7 @@ class DateTimeColumnBuildSubscriber implements EventSubscriberInterface
     {
         if (!in_array($event->getFieldType(), [
             'datetime',
+            'datetime_immutable',
         ])) {
             return;
         }

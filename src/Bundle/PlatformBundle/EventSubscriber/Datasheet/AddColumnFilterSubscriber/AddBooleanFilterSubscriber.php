@@ -2,7 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\EventSubscriber\Datasheet\AddColumnFilterSubscriber;
 
-use A2Global\A2Platform\Bundle\PlatformBundle\DataType\BooleanDataType;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\BooleanDataType;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Datasheet\OnDatasheetColumnFiltersBuildEvent;
 use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\BooleanDataFilter;
 use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\StringContainsDataFilter;

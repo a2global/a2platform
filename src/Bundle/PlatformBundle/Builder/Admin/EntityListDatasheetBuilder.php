@@ -30,7 +30,7 @@ class EntityListDatasheetBuilder
         );
 
         // Set column titles translated
-        foreach (EntityHelper::getEntityFields($entityClassName) as $fieldName => $fieldType) {
+        foreach ($this->entityHelper->getEntityFields($entityClassName) as $fieldName => $fieldType) {
             $datasheet->getColumn($fieldName)->setTitle($fieldName);
         }
 

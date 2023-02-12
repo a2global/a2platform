@@ -3,7 +3,7 @@
 namespace A2Global\A2Platform\Bundle\PlatformBundle\EventSubscriber\Datasheet\QueryBuilderColumnBuild;
 
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet\DatasheetColumn;
-use A2Global\A2Platform\Bundle\PlatformBundle\DataType\TextDataType;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\TextDataType;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Datasheet\OnQueryBuilderDatasheetColumnBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
