@@ -1,0 +1,218 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set appTitle = parameter('app.meta.title') %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/data/css/datasheet.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/data/libs/amsify-suggestags/amsify.suggestags.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/core/libs/selectpicker/bootstrap-select.min.css') }}">
+
+    <style>
+        .tags-container {
+            padding: 10px 5px;
+            border: 1px #f3f3f3 solid;
+            border-radius: 4px;
+            background: #fafafa;
+            margin: 5px 0;
+        }
+
+        .tag,
+        .amsify-select-tag {
+            padding: 5px 10px !important;
+            font-size: 10pt !important;
+            font-weight: 600 !important;
+            border-radius: 4px !important;
+            background: #447788 !important;
+            color: #ffffff !important;
+            margin: 2px !important;
+        }
+
+        .amsify-list-item {
+            padding: 10px 10px !important;
+            padding-left: 20px !important;
+        }
+
+        .amsify-list-item.active {
+            background: #447788 !important;
+            color: #ffffff !important;
+        }
+
+        .amsify-list {
+            max-height: 300px !important;
+        }
+
+        .m-1 {
+            margin: 2px 4px;
+        }
+
+        .m-2 {
+            margin: 5px 10px;
+        }
+
+        .changed-field {
+            color: #cc0000;
+            font-weight: 800;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
+    {# {% if app.environment == 'dev' %} #}
+    {# <style> #}
+    {# .main-header .navbar { #}
+    {# background-color: #e8053a !important; #}
+    {# } #}
+
+    {# .main-header .navbar .sidebar-toggle:hover, #}
+    {# .main-header .logo { #}
+    {# background-color: #a10026 !important; #}
+    {# } #}
+    {# </style> #}
+    {# {% else %} #}
+    {# <style> #}
+    {# .main-header .navbar { #}
+    {# background-color: #667788 !important; #}
+    {# } #}
+
+    {# .main-header .logo { #}
+    {# background-color: #445566 !important; #}
+    {# } #}
+    {# </style> #}
+    {# {% endif %} #}
+    <style>
+        .content-header {
+            display: none;
+        }
+
+        .changed-field {
+            color: #cc0000;
+            font-weight: 800;
+        }
+
+        .ellipsis {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+    </style>
+{% endblock %}
+{# #}
+{# {% block javascripts %} #}
+{# {{ parent() }} #}
+{# <script src="{{ asset('bundles/a2crm/js/datasheet.js') }}"></script> #}
+{# {% endblock %} #}
+
+{% block navbar_tasks %}
+    <li class="dropdown tasks-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="far fa-globe-americas"></i>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">Language:</li>
+            <li>
+                <ul class="menu">
+                    <li>
+                        <a href="{{ path('locale_set', {'locale': 'en'}) }}">
+                            English
+                        </a>
+                        <a href="{{ path('locale_set', {'locale': 'ru'}) }}">
+                            Русский
+                        </a>
+                    </li>
+                </ul>
+        </ul>
+    </li>
+{% endblock %}
+
+{% block navbar_user %}
+    {#    {% include '@AdminLTE/Navbar/user.html.twig' with {'adminlte_direct_include': true} %} #}
+    <li class="dropdown user user-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="/bundles/admin/images/icons/user.png" width="16" hspace="10" vspace="0">
+            <span class="hidden-xs">{{ app.user.name }}</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('authentication_logout') }}">
+            <i class="far fa-power-off"></i>
+        </a>
+    </li>
+{% endblock %}
+
+{% block title %}
+    {{ appTitle }}
+{% endblock %}
+
+{% block logo_mini %}
+    <b>{{ appTitle|slice(0,1) }}</b>
+{% endblock %}
+
+{% block logo_large %}
+    <b>{{ appTitle }}</b>
+{% endblock %}
+
+{% block page_title %}
+{% endblock %}
+
+{% block page_subtitle %}
+{% endblock %}
+
+{% block page_content %}
+    Content goes here...
+{% endblock %}
+
+{% block footer %}
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+            &nbsp;
+        </div>
+        <!-- Default to the left -->
+        <strong><a href="/">{{ appTitle }}</a></strong>
+    </footer>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ asset('bundles/data/libs/amsify-suggestags/jquery.amsify.suggestags.js') }}"></script>
+    <script src="{{ asset('bundles/core/libs/selectpicker/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('bundles/data/js/datasheet.js') }}"></script>
+    <script src="{{ asset('bundles/data/js/admin.js') }}"></script>
+    {#    <script src="{{ asset('bundles/core/libs/chartjs/chartjs_3.9.1.js') }}"></script> #}
+    <script>
+        window.translations = {{ core_dump_translations() }}
+    </script>
+    <script>
+        $(function () {
+            initSelectPickers();
+        });
+
+        function initSelectPickers() {
+            $("[data-search-picker]").selectpicker({liveSearch: true});
+        }
+    </script>
+{% endblock %}
+
+{% block sidebar_search %}
+{% endblock %}
+
+{# <!-- search form --> #}
+{# <form action="{{ path('admin_search') }}" method="get" class="sidebar-form"> #}
+{# <div class="input-group"> #}
+{# <input type="text" name="searchQuery" class="form-control" #}
+{# placeholder="{{ 'Search'|trans({}, 'AdminLTEBundle') }}..." autofocus/> #}
+{# <span class="input-group-btn"> #}
+{# <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i #}
+{# class="fas fa-search"></i></button> #}
+{# </span> #}
+{# </div> #}
+{# </form> #}
+{# <!-- /.search form --> #}
+{# {% endblock %}   #}
