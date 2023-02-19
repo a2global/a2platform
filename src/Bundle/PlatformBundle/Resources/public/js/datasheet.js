@@ -24,7 +24,7 @@ $(function () {
     $('[data-datasheet]').each(function () {
         var datasheetId = $(this).data('datasheet');
         console.log(datasheetId);
-        var datasheetForm = $(this).find('[data-datasheet-form="' + datasheetId + '"]');
+        var datasheetForm = $('[data-datasheet-form="' + datasheetId + '"]');
 
         /**
          * Sorting
