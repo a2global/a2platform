@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Builder\Admin;
 
+use A2Global\A2Platform\Bundle\PlatformBundle\Builder\Menu\EntityMenuBuilder;
+use A2Global\A2Platform\Bundle\PlatformBundle\Builder\Menu\MenuBuilder;
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet\Datasheet;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
@@ -13,9 +15,10 @@ class EntityListDatasheetBuilder
 {
     public function __construct(
         protected EntityManagerInterface $entityManager,
-//        protected RouterInterface            $router,
         protected TranslatorInterface    $translator,
         protected EntityHelper           $entityHelper,
+        protected EntityMenuBuilder      $entityMenuBuilder,
+//        protected RouterInterface            $router,
 //        protected EntityConfigurationBuilder $entityConfigurationBuilder,
     )
     {
@@ -41,11 +44,16 @@ class EntityListDatasheetBuilder
 //        );
 
         // Update typical columns
-//        if ($includeColumns) {
-//            $datasheet->getColumn($this->resolveIdentityColumnName($entityClassName))
-//                ->setLink(['admin_data_click', ['entity' => $entityClassName]])
-//                ->setBold(true);
-//        }
+        if ($includeColumns) {
+            $entityMenu = $this->entityMenuBuilder->getSingleEntityMenu($entityClassName);
+            $defaultMenuItem = MenuBuilder::getDefault($entityMenu);
+
+            if ($defaultMenuItem) {
+                $datasheet->getColumn($this->resolvePrimaryActionColumnName($entityClassName))
+                    ->setLink([$defaultMenuItem->getRouteName(), $defaultMenuItem->getRouteParameters()])
+                    ->setBold(true);
+            }
+        }
 
         // Mass actions
 //        $datasheet->setMassActions($this->entityConfigurationBuilder->build(new $entityClassName())->getMassActions());
@@ -53,14 +61,14 @@ class EntityListDatasheetBuilder
         return $datasheet;
     }
 
-//    protected function resolveIdentityColumnName($entityClassName): string
-//    {
-//        foreach (EntityHelper::getEntityFields($entityClassName) as $fieldName => $fieldType) {
-//            if (in_array($fieldName, ObjectHelper::$identityFields)) {
-//                return $fieldName;
-//            }
-//        }
-//
-//        return 'id';
-//    }
+    protected function resolvePrimaryActionColumnName($entityClassName): string
+    {
+        foreach ($this->entityHelper->getEntityFields($entityClassName) as $fieldName => $fieldType) {
+            if (in_array($fieldName, Datasheet::TYPICAL_PRIMARY_ACTION_FIELDS)) {
+                return $fieldName;
+            }
+        }
+
+        return 'id';
+    }
 }

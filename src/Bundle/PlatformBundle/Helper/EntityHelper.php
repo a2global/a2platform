@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Helper;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\DataTypeInterface;
+use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\ObjectDataType;
+use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -11,7 +13,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
-use ReflectionClass;
+use Exception;
 
 class EntityHelper
 {
@@ -37,7 +39,7 @@ class EntityHelper
         return $this->entityListCached;
     }
 
-    public function getEntityFields($className): array
+    public function getEntityFields(string $className): array
     {
         $classMetadata = $this->getEntityMetadata($className);
         $fields = [];
@@ -69,42 +71,84 @@ class EntityHelper
         return $fields;
     }
 
-    protected function getEntityMetadata($className): ClassMetadata
+    public function resolveDataTypeByFieldType($fieldType): DataTypeInterface
     {
-        if (!array_key_exists($className, $this->entityMetadataCached)) {
-            $this->entityMetadataCached[$className] = $this->entityManager->getClassMetadata($className);
-        }
-
-        return $this->entityMetadataCached[$className];
-    }
-
-    public static function getEntityFieldsOld($class): array
-    {
-        if (is_object($class)) {
-            $class = get_class($class);
-        }
-
-        if (array_key_exists($class, self::$entityFieldsCached)) {
-            return self::$entityFieldsCached[$class];
-        }
-        $annotationReader = new AnnotationReader();
-        $reflectionClass = new ReflectionClass($class);
-        $properties = $reflectionClass->getProperties();
-        $fields = [];
-
-        foreach ($properties as $property) {
-            $fieldType = self::getFieldTypeFromAnnotation($property, $annotationReader);
-
-            if ($fieldType === false) {
-                continue;
+        /** @var DataTypeInterface $dataType */
+        foreach ($this->dataTypes as $dataType) {
+            if ($dataType::supportsByOrmType($fieldType)) {
+                return $dataType;
             }
-            $fields[$property->getName()] = $fieldType;
         }
 
-        return self::$entityFieldsCached[$class] = $fields;
+        return new ObjectDataType();
     }
 
-    protected static function getFieldTypeFromAnnotation($property, AnnotationReader $annotationReader)
+    public static function getProperty(mixed $object, string $propertyName)
+    {
+        foreach (['', 'get', 'is', 'has'] as $prefix) {
+            $method = $prefix . StringUtility::toPascalCase($propertyName);
+
+            if (method_exists($object, $method)) {
+                return $object->{$method}();
+            }
+        }
+
+        throw new Exception(
+            sprintf(
+                'Failed to get data %s from %s via get/is/has+%s',
+                $propertyName,
+                get_class($object),
+                StringUtility::toPascalCase($object)
+            )
+        );
+    }
+
+    public static function setProperty(mixed $object, string $propertyName, mixed $propertyValue)
+    {
+        foreach (['', 'set'] as $prefix) {
+            $method = $prefix . StringUtility::toPascalCase($propertyName);
+
+            if (method_exists($object, $method)) {
+                return $object->{$method}($propertyValue);
+            }
+        }
+
+        throw new Exception(
+            sprintf(
+                'Failed to set data %s to %s via set+%s',
+                $propertyName,
+                get_class($object),
+                StringUtility::toPascalCase($method)
+            )
+        );
+    }
+
+    public static function getReadableTitle(mixed $object, string $nullValue = '')
+    {
+        if(!$object){
+            return $nullValue;
+        }
+
+        if (method_exists($object, '__toString')) {
+            return (string)$object;
+        }
+
+        foreach (static::$identityFields as $field) {
+            $method = 'get' . $field;
+
+            if (method_exists($object, $method)) {
+                return (string)$object->$method();
+            }
+        }
+
+        return sprintf(
+            '%s #%s',
+            StringUtility::normalize(StringUtility::getShortClassName($object)),
+            $object->getId()
+        );
+    }
+
+    public static function getFieldTypeFromAnnotation($property, AnnotationReader $annotationReader)
     {
         $annotations = $annotationReader->getPropertyAnnotations($property);
 
@@ -123,5 +167,14 @@ class EntityHelper
         }
 
         return false;
+    }
+
+    protected function getEntityMetadata(string $className): ClassMetadata
+    {
+        if (!array_key_exists($className, $this->entityMetadataCached)) {
+            $this->entityMetadataCached[$className] = $this->entityManager->getClassMetadata($className);
+        }
+
+        return $this->entityMetadataCached[$className];
     }
 }

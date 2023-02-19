@@ -17,7 +17,7 @@
             <a class="navbar-brand" href="#">
                 {{ admin_header_brand_title ?? 'A2Platform' }}
             </a>
-            <button class="navbar-toggler p-2" data-bs-toggle="collapse" href="#collapseExample" role="button"
+            <button id="admin_sidebar_toggle_control" class="navbar-toggler p-2" data-bs-toggle="collapse" href="#collapseExample" role="button"
                     aria-expanded="false" aria-controls="collapseExample">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi" fill="currentColor"
                      viewBox="0 0 16 16">
@@ -36,7 +36,7 @@
                class="collapse col-sm-4 col-md-3 col-lg-2 d-sm-block flex-grow-sm-1 flex-shrink-1 flex-grow-0 sticky-top pb-sm-0">
             <div class="bg-light h-100 sticky-top">
                 <ul class="nav flex-column text-truncate">
-                    {% for item in menu('admin_main').items %}
+                    {% for item in menu('admin_sidebar').items %}
                         {% if item.url %}
                             {% set url = item.url %}
                         {% elseif item.routeName %}

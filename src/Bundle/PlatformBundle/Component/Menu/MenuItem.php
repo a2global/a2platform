@@ -9,6 +9,8 @@ class MenuItem
 
     protected ?string $routeName = null;
 
+    protected bool $isDefault = false;
+
     protected array $routeParameters = [];
 
     public function __construct(
@@ -51,6 +53,17 @@ class MenuItem
     public function setRouteParameters(array $routeParameters): self
     {
         $this->routeParameters = $routeParameters;
+        return $this;
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(bool $isDefault): self
+    {
+        $this->isDefault = $isDefault;
         return $this;
     }
 }

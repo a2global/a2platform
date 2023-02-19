@@ -10,10 +10,10 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Routing\RouterInterface;
 
-#[AsEventListener(event: 'a2platform.menu.build.admin_main', method: 'preAdminMainMenuBuild', priority: 900)]
-#[AsEventListener(event: 'a2platform.menu.build.admin_main', method: 'entitiesAdminMainMenuBuild', priority: 100)]
-#[AsEventListener(event: 'a2platform.menu.build.admin_main', method: 'postAdminMainMenuBuild', priority: -900)]
-class AdminMenuEventListener
+#[AsEventListener(event: 'a2platform.menu.build.admin_sidebar', method: 'preAdminSidebarMenuBuild', priority: 900)]
+#[AsEventListener(event: 'a2platform.menu.build.admin_sidebar', method: 'entitiesAdminSidebarMenuBuild', priority: 100)]
+#[AsEventListener(event: 'a2platform.menu.build.admin_sidebar', method: 'postAdminSidebarMenuBuild', priority: -900)]
+class AdminSidebarMenuBuildEventListener
 {
     public function __construct(
         protected RouterInterface $router,
@@ -21,7 +21,7 @@ class AdminMenuEventListener
     ) {
     }
 
-    public function preAdminMainMenuBuild(MenuBuildEvent $event): void
+    public function preAdminSidebarMenuBuild(MenuBuildEvent $event): void
     {
         $menuItem = (new MenuItem('Homepage'))
             ->setUrl('/');
@@ -32,7 +32,7 @@ class AdminMenuEventListener
         $event->getMenu()->addItem($menuItem);
     }
 
-    public function entitiesAdminMainMenuBuild(MenuBuildEvent $event): void
+    public function entitiesAdminSidebarMenuBuild(MenuBuildEvent $event): void
     {
         $entityList = $this->entityHelper->getEntityList();
         sort($entityList);
@@ -48,7 +48,7 @@ class AdminMenuEventListener
         }
     }
 
-    public function postAdminMainMenuBuild(MenuBuildEvent $event): void
+    public function postAdminSidebarMenuBuild(MenuBuildEvent $event): void
     {
         $menuItem = (new MenuItem('Sign out'))
             ->setRouteName('app_logout');

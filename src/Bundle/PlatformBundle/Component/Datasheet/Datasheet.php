@@ -5,6 +5,12 @@ namespace A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet;
 
 class Datasheet
 {
+    public const TYPICAL_PRIMARY_ACTION_FIELDS = [
+        'name',
+        'fullname',
+        'title',
+    ];
+
     protected string $invokedAt;
 
     protected array $columns = [];

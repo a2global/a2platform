@@ -1,0 +1,15 @@
+{% extends '@Platform/admin/layout.html.twig' %}
+
+{% block page_body %}
+
+    <table class="table table-bordered table-striped">
+{#        {{ tag_list(object) }}#}
+        {% for item in data %}
+            <tr>
+                <td width="200"><b>{{ item.name }}:</b></td>
+                <td>{{ item.value }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
