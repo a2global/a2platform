@@ -9,9 +9,11 @@ class MenuItem
 
     protected ?string $routeName = null;
 
+    protected array $routeParameters = [];
+
     protected bool $isDefault = false;
 
-    protected array $routeParameters = [];
+    protected bool $isActive = false;
 
     public function __construct(
         protected string $text
@@ -64,6 +66,17 @@ class MenuItem
     public function setIsDefault(bool $isDefault): self
     {
         $this->isDefault = $isDefault;
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
         return $this;
     }
 }

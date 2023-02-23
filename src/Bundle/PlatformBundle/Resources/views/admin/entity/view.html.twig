@@ -1,9 +1,16 @@
 {% extends '@Platform/admin/layout.html.twig' %}
 
-{% block page_body %}
+{% block page_title %}
+    {{ objectName }} #{{ object.id }}
+{% endblock %}
 
+{% block page_menu %}
+    {% include '@Platform/admin/entity/menu.html.twig' with {object: object} %}
+{% endblock %}
+
+{% block page_body %}
     <table class="table table-bordered table-striped">
-{#        {{ tag_list(object) }}#}
+        {#        {{ tag_list(object) }} #}
         {% for item in data %}
             <tr>
                 <td width="200"><b>{{ item.name }}:</b></td>
@@ -11,5 +18,4 @@
             </tr>
         {% endfor %}
     </table>
-
 {% endblock %}

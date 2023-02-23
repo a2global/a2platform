@@ -12,23 +12,44 @@ class EntityMenuBuilder
 {
     public function __construct(
         protected EventDispatcherInterface $eventDispatcher,
+        protected ActiveMenuItemMarker     $activeMenuItemMarker,
     ) {
     }
 
-    public function getSingleEntityMenu(string $entityClassname): Menu
+    public function getSingleEntityMenu($objectOrClassName): Menu
     {
+        $className = is_object($objectOrClassName) ? get_class($objectOrClassName) : $objectOrClassName;
         $menu = new Menu();
-        $event = new EntityMenuBuildEvent($menu, $entityClassname);
+        $event = new EntityMenuBuildEvent($menu, $className);
 
-        /** Common menu */
+        /**
+         * Common menu
+         * a2platform.menu.build.entity.single
+         */
         $this->eventDispatcher->dispatch($event, sprintf('%s.single', EntityMenuBuildEvent::NAME));
 
-        /** Entity-specific menu */
+        /**
+         * Entity-specific menu
+         * a2platform.menu.build.entity.single.app_entity_person
+         */
         $this->eventDispatcher->dispatch($event, sprintf(
             '%s.single.%s',
             EntityMenuBuildEvent::NAME,
-            StringUtility::toSnakeCase($entityClassname),
+            StringUtility::toSnakeCase($className),
         ));
+
+        if (is_object($objectOrClassName)) {
+            foreach ($menu->getItems() as $menuItem) {
+                $menuItem->setRouteParameters(
+                    array_merge(
+                        $menuItem->getRouteParameters(),
+                        ['id' => $objectOrClassName->getId()]
+                    )
+                );
+            }
+        }
+
+        $this->activeMenuItemMarker->process($menu);
 
         return $menu;
     }

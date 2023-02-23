@@ -26,5 +26,12 @@ class EntityMenuBuildEventListener
                 'className' => $event->getClassName(),
             ]);
         $event->getMenu()->addItem($menuItem);
+
+        $menuItem = (new MenuItem('Edit'))
+            ->setRouteName('admin_entity_edit')
+            ->setRouteParameters([
+                'className' => $event->getClassName(),
+            ]);
+        $event->getMenu()->addItem($menuItem);
     }
 }

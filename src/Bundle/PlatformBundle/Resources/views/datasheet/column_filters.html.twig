@@ -4,7 +4,7 @@
         {% for columnFilterName, columnFilterForm in columnFilterForms %}
             <div data-datasheet-column-filter="{{ columnFilterName }}">
                 {% for form in columnFilterForm.children %}
-                    {{ form_widget(form) }}
+                    {{ form_widget(form, {'attr': {'class': 'w-100'}}) }}
                 {% endfor %}
             </div>
         {% endfor %}
