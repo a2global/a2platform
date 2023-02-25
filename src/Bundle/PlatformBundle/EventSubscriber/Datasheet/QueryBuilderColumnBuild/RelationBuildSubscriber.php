@@ -7,7 +7,7 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\EntityDataType;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Datasheet\OnQueryBuilderDatasheetColumnBuildEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ManyToOneBuildSubscriber implements EventSubscriberInterface
+class RelationBuildSubscriber implements EventSubscriberInterface
 {
     public function buildColumn(OnQueryBuilderDatasheetColumnBuildEvent $event)
     {

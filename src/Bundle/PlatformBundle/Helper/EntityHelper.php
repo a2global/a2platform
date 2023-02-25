@@ -14,12 +14,19 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Exception;
+use ReflectionClass;
 
 class EntityHelper
 {
     protected array $entityMetadataCached = [];
 
     protected array $entityListCached = [];
+
+    public const TYPICAL_TITLE_FIELDS = [
+        'name',
+        'fullname',
+        'title',
+    ];
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
@@ -52,8 +59,16 @@ class EntityHelper
         foreach ($classMetadata->getAssociationMappings() as $relation) {
             $fields[$relation['fieldName']] = 'relation';
         }
+        $sortedFields = [];
 
-        return $fields;
+        foreach ((new ReflectionClass($className))->getProperties() as $property) {
+            if (!array_key_exists($property->getName(), $fields)) {
+                continue;
+            }
+            $sortedFields[$property->getName()] = $fields[$property->getName()];
+        }
+
+        return $sortedFields;
     }
 
     public function resolveDataTypeByFieldType($fieldType): DataTypeInterface
@@ -118,7 +133,7 @@ class EntityHelper
             return (string)$object;
         }
 
-        foreach (static::$identityFields as $field) {
+        foreach (self::TYPICAL_TITLE_FIELDS as $field) {
             $method = 'get' . $field;
 
             if (method_exists($object, $method)) {
@@ -128,7 +143,7 @@ class EntityHelper
 
         return sprintf(
             '%s #%s',
-            StringUtility::normalize(StringUtility::getShortClassName($object)),
+            StringUtility::toReadable(StringUtility::getShortClassName($object)),
             $object->getId()
         );
     }

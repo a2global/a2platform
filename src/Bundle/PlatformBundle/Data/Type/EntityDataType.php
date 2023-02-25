@@ -3,21 +3,21 @@ declare(strict_types=1);
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Data\Type;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\StringUtility;
+use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
+use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 
 class EntityDataType implements DataTypeInterface
 {
     public static function supportsByOrmType($type): bool
     {
         return in_array($type, [
-            'many_to_one',
+            'relation',
         ]);
     }
 
     public static function getReadablePreview($value): string
     {
-        return ObjectHelper::getReadableTitle($value);
+        return EntityHelper::getReadableTitle($value);
     }
 
     /**
