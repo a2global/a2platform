@@ -44,30 +44,15 @@ class EntityHelper
         $classMetadata = $this->getEntityMetadata($className);
         $fields = [];
 
-        foreach($classMetadata->getFieldNames() as $fieldName){
+        foreach ($classMetadata->getFieldNames() as $fieldName) {
             $fieldMapping = $classMetadata->getFieldMapping($fieldName);
             $fields[$fieldName] = $fieldMapping['type'];
         }
 
-        return $fields;
-
-//        $fields = array_map(function($field) use ($classMetadata){
-//
-//        }, $classMetadata->getFieldMappings());
-
-        $fields = array_merge($class->getColumnNames(), $fields);
-        foreach ($fields as $index => $field) {
-            if ($class->isInheritedField($field)) {
-                unset($fields[$index]);
-            }
+        foreach ($classMetadata->getAssociationMappings() as $relation) {
+            $fields[$relation['fieldName']] = 'relation';
         }
-//        foreach ($class->getAssociationMappings() as $name => $relation) {
-//            if (!$class->isInheritedAssociation($name)) {
-//                foreach ($relation['joinColumns'] as $joinColumn) {
-//                    $fields[] = $joinColumn['name'];
-//                }
-//            }
-//        }
+
         return $fields;
     }
 
@@ -125,7 +110,7 @@ class EntityHelper
 
     public static function getReadableTitle(mixed $object, string $nullValue = '')
     {
-        if(!$object){
+        if (!$object) {
             return $nullValue;
         }
 

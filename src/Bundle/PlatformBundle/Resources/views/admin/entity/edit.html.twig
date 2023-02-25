@@ -1,0 +1,34 @@
+{% extends '@Platform/admin/layout.html.twig' %}
+
+{% block page_title %}
+    {{ objectName }} #{{ object.id }}
+{% endblock %}
+
+{% block page_menu %}
+    {% include '@Platform/admin/entity/menu.html.twig' with {object: object} %}
+{% endblock %}
+
+{% block page_body %}
+    {{ form_start(form) }}
+    <table class="table table-bordered table-striped">
+        {% for child in form.children %}
+            {% if child.vars.name != '_token' %}
+                <tr>
+                    <td width="200"><b>{{ child.vars.label }}:</b></td>
+                    <td>
+                        {{ form_widget(child, {'attr': {'class':'w-100'}}) }}
+                        {% if form_errors(child) %}
+                            {{ form_errors(child) }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        <tr>
+            <td width="200"></td>
+            <td><input type="submit" value="{{ 'Save'|trans }}" class="btn btn-primary"
+                       data-entity-crud-edit-submit-button=""></td>
+        </tr>
+    </table>
+    {{ form_end(form) }}
+{% endblock %}
