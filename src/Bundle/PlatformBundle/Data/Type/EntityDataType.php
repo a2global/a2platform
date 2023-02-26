@@ -11,7 +11,7 @@ class EntityDataType implements DataTypeInterface
     public static function supportsByOrmType($type): bool
     {
         return in_array($type, [
-            'relation',
+            'many_to_one',
         ]);
     }
 

@@ -9,6 +9,7 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -57,7 +58,9 @@ class EntityHelper
         }
 
         foreach ($classMetadata->getAssociationMappings() as $relation) {
-            $fields[$relation['fieldName']] = 'relation';
+            if ($relation['type'] === ClassMetadataInfo::MANY_TO_ONE) {
+                $fields[$relation['fieldName']] = 'many_to_one';
+            }
         }
         $sortedFields = [];
 

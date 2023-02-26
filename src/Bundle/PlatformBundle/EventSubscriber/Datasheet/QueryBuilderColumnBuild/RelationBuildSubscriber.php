@@ -12,7 +12,7 @@ class RelationBuildSubscriber implements EventSubscriberInterface
     public function buildColumn(OnQueryBuilderDatasheetColumnBuildEvent $event)
     {
         if (!in_array($event->getFieldType(), [
-            'relation',
+            'many_to_one',
         ])) {
             return;
         }
