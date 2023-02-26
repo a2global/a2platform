@@ -11,6 +11,7 @@ use Twig\Environment;
 class DatasheetViewBuilder
 {
     private const TEXT_LIMIT = 20;
+    private const EMPTY_LINK_TEXT_PLACEHOLDER = '<i>empty</i>';
 
     public function __construct(
         protected Environment     $twig,
@@ -27,7 +28,7 @@ class DatasheetViewBuilder
 
     public function buildDatasheetCell(DatasheetExposed $datasheet, DatasheetColumn $column, DataItem $dataItem)
     {
-        $text = $column->getReadableView($dataItem);
+        $text = trim($column->getReadableView($dataItem));
 
         if (mb_strlen($text) > self::TEXT_LIMIT) {
             $text = trim(mb_substr($text, 0, self::TEXT_LIMIT)) . '…';
@@ -39,6 +40,10 @@ class DatasheetViewBuilder
                 'id' => $dataItem->getValue('id'),
             ]));
             $linkId = sprintf('%s.%s.%s', $datasheet->getId(), $column->getName(), $dataItem->getValue('id'));
+
+            if (length($text) === 0) {
+                $text = self::EMPTY_LINK_TEXT_PLACEHOLDER;
+            }
         }
         $classes = [];
 

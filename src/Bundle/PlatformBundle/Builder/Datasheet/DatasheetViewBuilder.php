@@ -13,6 +13,8 @@ class DatasheetViewBuilder
 {
     private const TEXT_LIMIT = 20;
 
+    private const EMPTY_LINK_TEXT_PLACEHOLDER = '<i>empty</i>';
+
     public function __construct(
         protected Environment     $twig,
         protected RouterInterface $router,
@@ -40,12 +42,20 @@ class DatasheetViewBuilder
                 'id' => $dataItem->getValue('id'),
             ]));
             $linkId = sprintf('%s.%s.%s', $datasheet->getId(), $column->getName(), $dataItem->getValue('id'));
+
         }
         $classes = [];
 
         if ($column->isBold()) {
             $classes[] = 'text-bold';
         }
+
+        if ($link && mb_strlen($text) === 0) {
+            $text = self::EMPTY_LINK_TEXT_PLACEHOLDER;
+        }else{
+            $text = htmlspecialchars($text);
+        }
+
 
         return $this->twig->render('@Platform/datasheet/cell.html.twig', [
             'text' => $text,

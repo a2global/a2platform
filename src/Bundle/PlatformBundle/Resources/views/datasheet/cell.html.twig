@@ -3,7 +3,7 @@
     <a href="{{ link }}" class="text-primary" data-datasheet-cell-link="{{ linkId }}">
         {% endif %}
 
-        <span class="{{ classes }}" style="white-space: nowrap">{{ text }}</span>
+        <span class="{{ classes }}" style="white-space: nowrap">{{ text|raw }}</span>
 
         {% if link %}
     </a>
