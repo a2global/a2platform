@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block head %}
+    {% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('bundles/platform/libs/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css') }}"
+              rel="stylesheet">
+
+        <link href="{{ asset('bundles/platform/css/bootstrap.customized.css') }}"
+              rel="stylesheet">
+    {% endblock %}
+</head>
+<body class="d-flex flex-column h-100">
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand mx-2" href="#">{% block header_brand %}{% endblock %}</a>
+            <button id="admin_sidebar_toggle_control" class="navbar-toggler p-2" data-bs-toggle="collapse"
+                    href="#collapseExample" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi" fill="currentColor"
+                     viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<div class="container-fluid pb-3 flex-grow-1 d-flex flex-column flex-sm-row overflow-auto mt-5 pt-4">
+    <div class="row flex-grow-sm-1 flex-grow-0 w-100">
+        <aside id="collapseExample"
+               class="collapse col-sm-4 col-md-3 col-lg-2 d-sm-block flex-grow-sm-1 flex-shrink-1 flex-grow-0 sticky-top pb-sm-0">
+            <div class="bg-light h-100 sticky-top">
+                {% block sidebar %}
+                {% endblock %}
+            </div>
+        </aside>
+        <main class="col overflow-auto h-100 p-2">
+            {% block main %}
+            {% endblock %}
+        </main>
+    </div>
+</div>
+
+<footer class="footer mt-auto py-2 bg-secondary text-white">
+    {% block footer %}
+    {% endblock %}
+</footer>
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/platform/libs/bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js') }}"></script>
+{% endblock %}
+
+</body>
+</html>

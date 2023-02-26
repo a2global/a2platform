@@ -1,0 +1,15 @@
+{% extends '@Platform/layout/centered.html.twig' %}
+
+{% block page_body %}
+    <h4 class="text-center mb-4">Register</h4>
+
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+        {{ form_row(registrationForm.agreeTerms) }}
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    {{ form_end(registrationForm) }}
+{% endblock %}
