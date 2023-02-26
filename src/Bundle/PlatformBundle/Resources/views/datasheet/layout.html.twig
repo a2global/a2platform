@@ -7,7 +7,7 @@
     <form action="?" method="get" data-datasheet-form="{{ datasheet.id }}">
         {% set filterForm = datasheet_filters_form(datasheet) %}
         {{ form_start(filterForm) }}
-        <div class="row pt-3 px-3">
+        <div class="row pt-3 px-1">
             <div class="col-md-6">
                 <input type="submit"
                        value="{{ 'Search'|trans }}"

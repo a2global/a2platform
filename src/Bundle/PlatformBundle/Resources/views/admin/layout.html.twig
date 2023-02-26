@@ -9,6 +9,9 @@
     <link href="{{ asset('bundles/platform/libs/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css') }}"
           rel="stylesheet">
 
+    <link href="{{ asset('bundles/platform/css/bootstrap.customized.css') }}"
+          rel="stylesheet">
+
 </head>
 <body class="d-flex flex-column h-100">
 <header>
@@ -56,7 +59,7 @@
         <main class="col overflow-auto h-100 p-2">
             <div class="p-2">
 
-                <h5 class="px-3">
+                <h5>
                     {% block page_title %}
                         Bootstrap design sample
                     {% endblock %}
@@ -64,7 +67,7 @@
 
                 <div class="mt-4">
                     {% block page_menu %}
-                        <ul class="nav nav-tabs">
+                        <ul class="nav nav-pills">
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">Active</a>
                             </li>
@@ -80,7 +83,7 @@
                         </ul>
                     {% endblock %}
                 </div>
-                <div class="p-2 border border-top-0">
+                <div class="mt-4">
                     {% block page_body %}
                         <div class="row">
                             <div class="col-sm-8">
