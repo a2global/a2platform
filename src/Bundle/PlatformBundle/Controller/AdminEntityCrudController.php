@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[Route('/admin/entity/', name: 'admin_entity_')]
-class AdminEntityController extends AbstractController
+class AdminEntityCrudController extends AbstractController
 {
     #[Route('list/{className}', name: 'index')]
     public function indexAction(EventDispatcherInterface $eventDispatcher, $className)

@@ -1,0 +1,36 @@
+<ul class="timeline">
+    <li class="time-label">
+            <span class="bg-red">
+                {{ startDatetime|formatDateSimple('Y-m-d H:i') }}
+            </span>
+    </li>
+    {% for step in steps %}
+        <li>
+            <i class="fa fa-play-circle bg-blue"></i>
+            {% if step.isTabs %}
+                <div class="timeline-item" style="border:3px #e7e7e7 solid;border-radius:0 0 7px 7px;">
+                    {{ step.content|raw }}
+                </div>
+            {% else %}
+                <div class="timeline-item" style="border:3px #e7e7e7 solid;border-radius:7px;">
+                    {% if step.datetime is not null %}
+                        <span class="time">
+                        <i class="fa fa-clock-o"></i>
+                        {{ step.datetime|formatDateSimple('Y-m-d H:i') }}
+                    </span>
+                    {% endif %}
+
+                    <h3 class="timeline-header" style="border:0;">
+                        {{ step.name }}
+                    </h3>
+
+                    {% if step.content %}
+                        <div class="timeline-body" style="border-top:1px #eeeeee solid;">
+                            {{ step.content|raw }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

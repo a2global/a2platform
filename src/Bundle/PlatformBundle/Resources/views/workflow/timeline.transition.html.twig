@@ -1,0 +1,18 @@
+<div class="nav-tabs-custom" style="margin:0;">
+    <ul class="nav nav-tabs">
+        {% for transition in transitions %}
+            <li {{ loop.first ? 'class="active"' : '' }}>
+                <a href="#{{ transition.name }}" data-toggle="tab" aria-expanded="true" style="font-size:13pt;">
+                    {{ transition.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content">
+        {% for transition in transitions %}
+            <div class="tab-pane {{ loop.first ? 'active' : '' }}" id="{{ transition.name }}">
+                {{ form(transition.form) }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
