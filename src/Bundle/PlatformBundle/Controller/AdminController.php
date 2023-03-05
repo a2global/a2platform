@@ -12,6 +12,6 @@ class AdminController extends AbstractController
     #[Route('', name: 'default')]
     public function defaultAction()
     {
-        return $this->render('@Platform/admin/dashboard.html.twig');
+        return $this->render('@Platform/admin/index.html.twig');
     }
 }

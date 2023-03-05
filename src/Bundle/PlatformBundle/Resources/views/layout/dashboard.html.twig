@@ -17,7 +17,7 @@
 </head>
 <body class="d-flex flex-column h-100">
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-md fixed-top {% block header_nav_style_classes %}bg-dark navbar-dark{% endblock %}">
         <div class="container-fluid">
             <a class="navbar-brand mx-2" href="#">{% block header_brand %}{% endblock %}</a>
             <button id="admin_sidebar_toggle_control" class="navbar-toggler p-2" data-bs-toggle="collapse"
@@ -37,7 +37,7 @@
     <div class="row flex-grow-sm-1 flex-grow-0 w-100">
         <aside id="collapseExample"
                class="collapse col-sm-4 col-md-3 col-lg-2 d-sm-block flex-grow-sm-1 flex-shrink-1 flex-grow-0 sticky-top pb-sm-0">
-            <div class="bg-light h-100 sticky-top">
+            <div class="{% block sidebar_style_classes %}bg-light{% endblock%} rounded-2 h-100 sticky-top">
                 {% block sidebar %}
                 {% endblock %}
             </div>

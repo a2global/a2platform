@@ -1,9 +1,5 @@
 {% extends '@Platform/layout/dashboard.html.twig' %}
 
-{% block header_brand %}
-    Admin
-{% endblock %}
-
 {% block sidebar %}
     <ul class="nav flex-column text-truncate">
         {% for item in menu('admin_sidebar').items %}
@@ -38,11 +34,6 @@
             {% block page_body %}
             {% endblock %}
         </div>
-    </div>
-{% endblock %}
-
-{% block footer %}
-    <div class="px-4 small">
     </div>
 {% endblock %}
 
