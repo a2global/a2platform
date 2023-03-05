@@ -20,9 +20,13 @@ class MenuBuildListener
         $activeRouteName = $this->requestStack->getMainRequest()->attributes->get('_route');
 
         foreach ($event->getMenu()->getItems() as $menuItem) {
-            $menuItemRouteName = $menuItem->getRouteName();//$this->router->generate(, $menuItem->getRouteParameters());
+            if ($menuItem->getIsActiveHandler()) {
+                $menuItem->setIsActive($menuItem->getIsActiveHandler()($this->requestStack->getMainRequest()));
 
-            if ($activeRouteName === $menuItemRouteName) {
+                continue;
+            }
+
+            if ($activeRouteName === $menuItem->getRouteName()) {
                 $menuItem->setIsActive(true);
             }
         }

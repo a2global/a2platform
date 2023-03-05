@@ -15,6 +15,8 @@ class MenuItem
 
     protected bool $isActive = false;
 
+    protected mixed $isActiveHandler = null;
+
     public function __construct(
         protected string $text
     ) {
@@ -77,6 +79,17 @@ class MenuItem
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+        return $this;
+    }
+
+    public function getIsActiveHandler(): mixed
+    {
+        return $this->isActiveHandler;
+    }
+
+    public function setIsActiveHandler(mixed $isActiveHandler): self
+    {
+        $this->isActiveHandler = $isActiveHandler;
         return $this;
     }
 }
