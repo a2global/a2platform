@@ -19,10 +19,12 @@ class MenuBuilder
     public function build(string $name): Menu
     {
         $menu = new Menu();
+        $event = new MenuBuildEvent($menu);
         $this->eventDispatcher->dispatch(
-            new MenuBuildEvent($menu),
+            $event,
             sprintf('%s.%s', MenuBuildEvent::NAME, StringUtility::toSnakeCase($name)),
         );
+        $this->eventDispatcher->dispatch($event);
 
         return $menu;
     }

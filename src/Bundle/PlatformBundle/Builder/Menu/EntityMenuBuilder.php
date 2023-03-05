@@ -5,6 +5,7 @@ namespace A2Global\A2Platform\Bundle\PlatformBundle\Builder\Menu;
 
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Menu\Menu;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\EntityMenuBuildEvent;
+use A2Global\A2Platform\Bundle\PlatformBundle\Event\MenuBuildEvent;
 use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -21,22 +22,15 @@ class EntityMenuBuilder
         $className = is_object($objectOrClassName) ? get_class($objectOrClassName) : $objectOrClassName;
         $menu = new Menu();
         $event = new EntityMenuBuildEvent($menu, $className);
+        $eventNames = [
+            sprintf('%s.entity.single', MenuBuildEvent::NAME),
+            sprintf('%s.entity.single.%s', MenuBuildEvent::NAME, StringUtility::toSnakeCase($className)),
+            MenuBuildEvent::NAME,
+        ];
 
-        /**
-         * Common menu
-         * a2platform.menu.build.entity.single
-         */
-        $this->eventDispatcher->dispatch($event, sprintf('%s.single', EntityMenuBuildEvent::NAME));
-
-        /**
-         * Entity-specific menu
-         * a2platform.menu.build.entity.single.app_entity_person
-         */
-        $this->eventDispatcher->dispatch($event, sprintf(
-            '%s.single.%s',
-            EntityMenuBuildEvent::NAME,
-            StringUtility::toSnakeCase($className),
-        ));
+        foreach ($eventNames as $eventName) {
+            $this->eventDispatcher->dispatch($event, $eventName);
+        }
 
         if (is_object($objectOrClassName)) {
             foreach ($menu->getItems() as $menuItem) {
@@ -48,8 +42,6 @@ class EntityMenuBuilder
                 );
             }
         }
-
-        $this->activeMenuItemMarker->process($menu);
 
         return $menu;
     }
