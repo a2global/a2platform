@@ -10,13 +10,13 @@
 
 {% block page_body %}
     {{ form_start(form) }}
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-hover bg-light">
         {% for child in form.children %}
             {% if child.vars.name != '_token' %}
                 <tr>
                     <td width="200"><b>{{ child.vars.label }}:</b></td>
                     <td>
-                        {{ form_widget(child, {'attr': {'class':'w-100'}}) }}
+                        {{ form_widget(child, {'attr': {'class':''}}) }}
                         {% if form_errors(child) %}
                             {{ form_errors(child) }}
                         {% endif %}

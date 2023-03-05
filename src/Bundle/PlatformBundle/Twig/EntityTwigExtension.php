@@ -32,7 +32,7 @@ class EntityTwigExtension extends AbstractExtension
     {
         $timeline = $this->workflowTimeLineBuilder->build($object, $workflowName);
 
-        return $this->twig->render('@Data/workflow/timeline.layout.twig', [
+        return $this->twig->render('@Platform/workflow/timeline.layout.twig', [
             'startDatetime' => $object->getCreatedAt(),
             'steps' => $timeline['steps'],
         ]);

@@ -1,14 +1,20 @@
-.nav-pills{
-    border:0;
-    border-bottom:2px #eeeeee solid;
+.nav-pills {
+    border: 0;
+    border-bottom: 2px #eeeeee solid;
 }
-.nav-pills .nav-link{
-    border:0;
-    border-radius:0;
+
+.nav-pills .nav-link {
+    border: 0;
+    border-radius: 0;
 }
-.nav-pills .nav-link.active{
-    background:none;
-    color:#000000;
+
+.nav-pills .nav-link.active {
+    background: none;
+    color: #000000;
     font-weight: 600;
-    border-bottom:3px #999999 solid;
+    border-bottom: 3px #999999 solid;
+}
+
+.text-right {
+    text-align: right;
 }

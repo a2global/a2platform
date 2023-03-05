@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Provider;
 
+use A2Global\A2Platform\Bundle\PlatformBundle\Event\Workflow\WorkflowTransitionFormBuildEvent;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class FormProvider
 {
@@ -39,8 +43,8 @@ class FormProvider
         protected EntityHelper             $entityHelper,
 //        protected DataReaderRegistry       $dataReaderRegistry,
 //        protected ImportStrategyRegistry   $importStrategyRegistry,
-//        protected RouterInterface          $router,
-//        protected EventDispatcherInterface $eventDispatcher,
+        protected RouterInterface          $router,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -133,30 +137,30 @@ class FormProvider
 //        ]);
 //    }
 //
-//    public function getTransitionForm($object, $workflowName, $transitionName): FormInterface
-//    {
-//        $form = $this->formFactory->create(FormType::class, null, [
-//            'action' => $this->router->generate('admin_data_workflow_apply_transition'),
-//        ]);
-//        $form->add('objectClass', HiddenType::class, ['data' => get_class($object)]);
-//        $form->add('objectId', HiddenType::class, ['data' => $object->getId()]);
-//        $form->add('workflowName', HiddenType::class, ['data' => $workflowName]);
-//        $form->add('transitionName', HiddenType::class, ['data' => $transitionName]);
-//
-//        // Dispatching event in order to customize transition form
-//        $event = new OnWorkflowTransitionFormBuild($object, $workflowName, $transitionName, $form);
-//        $this->eventDispatcher->dispatch($event, $event->getName());
-//
-//        $form->add('submit', SubmitType::class, [
-//            'label' => 'Apply',
-//            'attr' => [
-//                'data-entity-workflow-transition-apply' => $workflowName . ':' . $transitionName,
-//            ],
-//        ]);
-//
-//        return $form;
-//    }
-//
+    public function getTransitionForm($object, $workflowName, $transitionName): FormInterface
+    {
+        $form = $this->formFactory->create(FormType::class, null, [
+            'action' => $this->router->generate('admin_entity_workflow_apply_transition'),
+        ]);
+        $form->add('objectClass', HiddenType::class, ['data' => get_class($object)]);
+        $form->add('objectId', HiddenType::class, ['data' => $object->getId()]);
+        $form->add('workflowName', HiddenType::class, ['data' => $workflowName]);
+        $form->add('transitionName', HiddenType::class, ['data' => $transitionName]);
+
+        // Dispatching event in order to customize transition form
+        $event = new WorkflowTransitionFormBuildEvent($object, $workflowName, $transitionName, $form);
+        $this->eventDispatcher->dispatch($event, $event->getName());
+
+        $form->add('submit', SubmitType::class, [
+            'label' => 'Apply',
+            'attr' => [
+                'data-entity-workflow-transition-apply' => $workflowName . ':' . $transitionName,
+            ],
+        ]);
+
+        return $form;
+    }
+
 //    public function getMassEditForm($entityClassName, $ids)
 //    {
 //        $object = new $entityClassName();

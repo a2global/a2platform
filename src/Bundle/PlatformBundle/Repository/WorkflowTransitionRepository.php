@@ -1,8 +1,8 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DataBundle\Repository;
+namespace A2Global\A2Platform\Bundle\PlatformBundle\Repository;
 
-use A2Global\A2Platform\Bundle\DataBundle\Entity\WorkflowTransition;
+use A2Global\A2Platform\Bundle\PlatformBundle\Entity\WorkflowTransition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,5 +19,23 @@ class WorkflowTransitionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, WorkflowTransition::class);
+    }
+
+    public function save(WorkflowTransition $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(WorkflowTransition $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 }

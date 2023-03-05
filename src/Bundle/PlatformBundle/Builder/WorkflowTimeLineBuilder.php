@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Builder;
 
-use A2Global\A2Platform\Bundle\DataBundle\Entity\WorkflowTransition;
+use A2Global\A2Platform\Bundle\PlatformBundle\Component\TimeLineStep;
+use A2Global\A2Platform\Bundle\PlatformBundle\Entity\WorkflowTransition;
+use A2Global\A2Platform\Bundle\PlatformBundle\Event\Workflow\WorkflowTransitionViewBuildEvent;
 use A2Global\A2Platform\Bundle\PlatformBundle\Provider\FormProvider;
+use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\Registry;
@@ -36,11 +39,11 @@ class WorkflowTimeLineBuilder
         ], ['id' => 'ASC']);
 
         foreach ($pastTransitions as $pastTransition) {
-            $event = new OnWorkflowTransitionViewBuild($object, $workflowName, $pastTransition->getTransitionName());
+            $event = new WorkflowTransitionViewBuildEvent($object, $workflowName, $pastTransition->getTransitionName());
             $this->eventDispatcher->dispatch($event, $event->getName());
 
-            if($event->getParameters()->count() > 0){
-                $content = $this->twig->render('@Data/workflow/timeline.parameters.twig', [
+            if ($event->getParameters()->count() > 0) {
+                $content = $this->twig->render('@Platform/workflow/timeline.parameters.twig', [
                     'parameters' => $event->getParameters(),
                 ]);
                 $event->addContent($content);
@@ -69,7 +72,7 @@ class WorkflowTimeLineBuilder
                         ->createView(),
                 ];
             }
-            $content = $this->twig->render('@Data/workflow/timeline.transition.html.twig', [
+            $content = $this->twig->render('@Platform/workflow/timeline.transition.html.twig', [
                 'workflowName' => $workflowName,
                 'object' => $object,
                 'transitions' => $availableTransitions,
@@ -97,6 +100,6 @@ class WorkflowTimeLineBuilder
         );
         $translated = $this->translator->trans($code);
 
-        return $translated === $code ? StringUtility::normalize($transitionName) : $translated;
+        return $translated === $code ? StringUtility::toReadable($transitionName) : $translated;
     }
 }
