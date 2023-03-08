@@ -18,4 +18,9 @@ class MenuBuildEvent
     {
         return $this->menu;
     }
+
+    public function setMenu(Menu $menu): void
+    {
+        $this->menu = $menu;
+    }
 }
