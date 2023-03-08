@@ -1,5 +1,9 @@
 {% extends '@Platform/layout/dashboard.html.twig' %}
 
+{% block header_brand %}
+    Admin panel
+{% endblock %}
+
 {% block sidebar %}
     <ul class="nav flex-column text-truncate">
         {% for item in menu('admin_sidebar').items %}
