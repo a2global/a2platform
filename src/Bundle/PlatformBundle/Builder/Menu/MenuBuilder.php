@@ -18,15 +18,14 @@ class MenuBuilder
 
     public function build(string $name): Menu
     {
-        $menu = new Menu();
-        $event = new MenuBuildEvent($menu);
+        $event = new MenuBuildEvent(new Menu());
         $this->eventDispatcher->dispatch(
             $event,
             sprintf('%s.%s', MenuBuildEvent::NAME, StringUtility::toSnakeCase($name)),
         );
         $this->eventDispatcher->dispatch($event);
 
-        return $menu;
+        return $event->getMenu();
     }
 
     public static function getDefault(Menu $menu): ?MenuItem
