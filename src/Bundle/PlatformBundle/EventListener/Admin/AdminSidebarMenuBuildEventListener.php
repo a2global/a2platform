@@ -23,11 +23,11 @@ class AdminSidebarMenuBuildEventListener
 
     public function preAdminSidebarMenuBuild(MenuBuildEvent $event): void
     {
-        $menuItem = (new MenuItem('Homepage'))
+        $menuItem = (new MenuItem('homepage'))
             ->setUrl('/');
         $event->getMenu()->addItem($menuItem);
 
-        $menuItem = (new MenuItem('Admin'))
+        $menuItem = (new MenuItem('admin'))
             ->setRouteName('admin_default');
         $event->getMenu()->addItem($menuItem);
     }
@@ -39,7 +39,7 @@ class AdminSidebarMenuBuildEventListener
 
         foreach ($entityList as $entityClassName) {
             $entityName = StringUtility::toReadable(StringUtility::getShortClassName($entityClassName));
-            $menuItem = (new MenuItem(StringUtility::toReadable($entityName)))
+            $menuItem = (new MenuItem(StringUtility::toSnakeCase($entityName)))
                 ->setRouteName('admin_entity_index')
                 ->setRouteParameters([
                     'className' => $entityClassName,
@@ -50,7 +50,7 @@ class AdminSidebarMenuBuildEventListener
 
     public function postAdminSidebarMenuBuild(MenuBuildEvent $event): void
     {
-        $menuItem = (new MenuItem('Sign out'))
+        $menuItem = (new MenuItem('sign_out'))
             ->setRouteName('app_logout');
         $event->getMenu()->addItem($menuItem);
     }

@@ -29,14 +29,14 @@ class EntityMenuBuildEventListener
     {
         $object = new ($event->getClassName());
 
-        $menuItem = (new MenuItem('View'))
+        $menuItem = (new MenuItem('view'))
             ->setRouteName('admin_entity_view')
             ->setRouteParameters([
                 'className' => $event->getClassName(),
             ]);
         $event->getMenu()->addItem($menuItem);
 
-        $menuItem = (new MenuItem('Edit'))
+        $menuItem = (new MenuItem('edit'))
             ->setRouteName('admin_entity_edit')
             ->setRouteParameters([
                 'className' => $event->getClassName(),

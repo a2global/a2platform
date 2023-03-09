@@ -10,11 +10,20 @@ class Menu
 
     public function addItem(MenuItem $item)
     {
-        $this->items[] = $item;
+        $this->items[$item->getName()] = $item;
     }
 
     public function getItems(): array
     {
         return $this->items;
+    }
+
+    public function removeItems(...$names): self
+    {
+        foreach ($names as $name) {
+            unset($this->items[$name]);
+        }
+
+        return $this;
     }
 }

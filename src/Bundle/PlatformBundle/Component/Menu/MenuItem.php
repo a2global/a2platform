@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Component\Menu;
 
+use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
+
 class MenuItem
 {
+    protected ?string $text = null;
+
     protected ?string $url = null;
 
     protected ?string $routeName = null;
@@ -18,13 +22,30 @@ class MenuItem
     protected mixed $isActiveHandler = null;
 
     public function __construct(
-        protected string $text
+        protected string $name
     ) {
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
     }
 
     public function getText(): string
     {
-        return $this->text;
+        return $this->text ?? StringUtility::toReadable($this->getName());
+    }
+
+    public function setText(?string $text): self
+    {
+        $this->text = $text;
+        return $this;
     }
 
     public function getUrl(): ?string
