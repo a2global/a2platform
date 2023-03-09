@@ -1,4 +1,5 @@
 {% extends '@Platform/admin/layout.html.twig' %}
+{% set twigBlockContainerName = constant('A2Global\\A2Platform\\Bundle\\PlatformBundle\\Twig\\Block\\AdminTwigBlockContainer::ENTITY_CRUD_VIEW') %}
 
 {% block page_title %}
     {{ objectName }} #{{ object.id }}
@@ -9,13 +10,23 @@
 {% endblock %}
 
 {% block page_body %}
-    <table class="table table-bordered table-hover bg-light">
-        {#        {{ tag_list(object) }} #}
-        {% for item in data %}
-            <tr>
-                <td width="200"><b>{{ item.name }}:</b></td>
-                <td>{{ item.value }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% set hasTwigBlocks = hasTwigBlocks(twigBlockContainerName) %}
+    <div class="row">
+        <div class="{{ hasTwigBlocks ? 'col-md-7' : 'col-md-12' }}">
+            <table class="table table-bordered table-hover bg-light">
+                {#        {{ tag_list(object) }} #}
+                {% for item in data %}
+                    <tr>
+                        <td width="200"><b>{{ item.name }}:</b></td>
+                        <td>{{ item.value }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% if hasTwigBlocks %}
+            <div class="col-md-5">
+                {{ twigBlocks(twigBlockContainerName) }}
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

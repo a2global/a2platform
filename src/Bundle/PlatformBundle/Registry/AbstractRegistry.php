@@ -7,16 +7,29 @@ use Exception;
 abstract class AbstractRegistry
 {
     public function __construct(
-        protected $services
+        protected iterable $services,
     ) {
     }
 
-    public function get()
+    public function get(): iterable
     {
         return $this->services;
     }
 
-    public function find(string $className)
+    public function findSupporting(...$parameters): array
+    {
+        $supporting = [];
+
+        foreach ($this->services as $service) {
+            if ($service->supports(...$parameters)) {
+                $supporting[] = $service;
+            }
+        }
+
+        return $supporting;
+    }
+
+    public function findByClassname(string $className): mixed
     {
         foreach ($this->services as $service) {
             if (get_class($service) === $className) {

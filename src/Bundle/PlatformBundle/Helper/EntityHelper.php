@@ -6,6 +6,7 @@ namespace A2Global\A2Platform\Bundle\PlatformBundle\Helper;
 use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\DataTypeInterface;
 use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\ObjectDataType;
 use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
+use Attribute;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -16,12 +17,15 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Exception;
 use ReflectionClass;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class EntityHelper
 {
     protected array $entityMetadataCached = [];
 
     protected array $entityListCached = [];
+
+    protected iterable $dataTypes;
 
     public const TYPICAL_TITLE_FIELDS = [
         'name',
@@ -30,9 +34,10 @@ class EntityHelper
     ];
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
-        protected                        $dataTypes,
+        protected EntityManagerInterface                   $entityManager,
+        #[TaggedIterator('a2platform.data.type')] iterable $dataTypes,
     ) {
+        $this->dataTypes = $dataTypes;
     }
 
     public function getEntityList(): array

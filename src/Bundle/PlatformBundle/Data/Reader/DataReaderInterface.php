@@ -4,7 +4,9 @@ namespace A2Global\A2Platform\Bundle\PlatformBundle\Data\Reader;
 
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Data\DataCollection;
 use A2Global\A2Platform\Bundle\PlatformBundle\Data\Filter\DataFilterInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
+#[AutoconfigureTag('a2platform.data.reader')]
 interface DataReaderInterface
 {
     public function supports($data): bool;
