@@ -14,6 +14,7 @@ use Symfony\Component\Workflow\Registry;
 use Symfony\Component\Workflow\StateMachine;
 
 #[AsEventListener(event: 'a2platform.menu.build.entity.single', method: 'singleEntityMenuBuild', priority: 900)]
+#[AsEventListener(event: 'a2platform.menu.build.entity.single', method: 'setDefault', priority: -900)]
 class EntityMenuBuildEventListener
 {
     private const WORKFLOW_VIEW_ROUTE_NAME = 'admin_entity_workflow_view';
@@ -43,13 +44,15 @@ class EntityMenuBuildEventListener
             ]);
         $event->getMenu()->addItem($menuItem);
 
+        $a = $this->registry->all($object);
+
         /**
          * todo: change to classname to avoid creating an empty object?
          * @var StateMachine $stateMachine
          */
         foreach ($this->registry->all($object) as $stateMachine) {
             $workflowName = $stateMachine->getName();
-            $menuItem = (new MenuItem(StringUtility::toReadable($stateMachine->getName())))
+            $menuItem = (new MenuItem(StringUtility::toSnakeCase($stateMachine->getName())))
                 ->setRouteName('admin_entity_workflow_view')
                 ->setRouteParameters([
                     'className' => $event->getClassName(),
@@ -67,6 +70,19 @@ class EntityMenuBuildEventListener
                     return true;
                 });
             $event->getMenu()->addItem($menuItem);
+        }
+    }
+
+    public function setDefault(EntityMenuBuildEvent $event)
+    {
+        foreach ($event->getMenu()->getItems() as $menuItem){
+            if($menuItem->isDefault()){
+                return;
+            }
+        }
+
+        if($event->getMenu()->itemExists('view')){
+            $event->getMenu()->getItem('view')->setIsDefault(true);
         }
     }
 }
