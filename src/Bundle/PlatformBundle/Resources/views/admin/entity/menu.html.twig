@@ -5,7 +5,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ menuItem.active ? 'active' : '' }} px-4"
                    data-page-menu-item="{{ menuItem.text|toSnakeCase }}"
-                   href="{{ path(menuItem.routeName, menuItem.routeParameters) }}">{{ menuItem.text }}</a>
+                   href="{{ path(menuItem.routeName, menuItem.routeParameters) }}">{{ menuItem.text|translate }}</a>
             </li>
         {% endfor %}
     </ul>
