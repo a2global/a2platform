@@ -103,3 +103,14 @@ data:
       fullname: 'Полное имя'
       status: 'Статус'
 
+ui:
+  apply_filters: 'Применить фильтры'
+  back: 'Назад'
+  edit: 'Правка'
+  import: 'Импорт'
+  language: 'Язык'
+  page_first: 'Первая'
+  page_last: 'Последняя'
+  save: 'Сохранить'
+  add: 'Добавить'
+  send: 'Отправить'
