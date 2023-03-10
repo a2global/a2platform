@@ -15,7 +15,7 @@
             <li class="nav-item">
                 <a class="nav-link active text-black" aria-current="page" href="{{ url ?? '#' }}">
                     <span data-feather="home" class="align-text-bottom"></span>
-                    {{ item.text }}
+                    {{ item.text|translate }}
                 </a>
             </li>
         {% endfor %}
