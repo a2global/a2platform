@@ -28,7 +28,7 @@ class PlatformTwigExtension extends AbstractExtension
             new TwigFunction('menu', [$this, 'getMenu'], ['is_safe' => ['html']]),
             new TwigFunction('singleEntityMenu', [$this, 'getSingleEntityMenu'], ['is_safe' => ['html']]),
             new TwigFunction('hasTwigBlocks', [$this, 'hasTwigBlocks']),
-            new TwigFunction('twigBlocks', [$this, 'twigBlocks']),
+            new TwigFunction('twigBlocks', [$this, 'twigBlocks'], ['is_safe' => ['html']]),
         ];
     }
 
