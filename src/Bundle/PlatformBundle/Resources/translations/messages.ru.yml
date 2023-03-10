@@ -61,8 +61,6 @@ data:
   entity:
     user:
       title: 'Пользователь'
-
-data:
   admin_menu:
     data: 'Данные'
   crud:

@@ -32,7 +32,6 @@ core:
       password_placeholder: 'password'
       register: 'Register'
 
-
 data:
   admin_menu:
     data: 'Data'
