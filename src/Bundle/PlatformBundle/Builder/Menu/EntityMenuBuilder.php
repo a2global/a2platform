@@ -19,8 +19,7 @@ class EntityMenuBuilder
     public function getSingleEntityMenu($objectOrClassName): Menu
     {
         $className = is_object($objectOrClassName) ? get_class($objectOrClassName) : $objectOrClassName;
-        $menu = new Menu();
-        $event = new EntityMenuBuildEvent($menu, $className);
+        $event = new EntityMenuBuildEvent(new Menu(), $className);
         $eventNames = [
             sprintf('%s.entity.single', MenuBuildEvent::NAME),
             sprintf('%s.entity.single.%s', MenuBuildEvent::NAME, StringUtility::toSnakeCase($className)),
@@ -32,7 +31,7 @@ class EntityMenuBuilder
         }
 
         if (is_object($objectOrClassName)) {
-            foreach ($menu->getItems() as $menuItem) {
+            foreach ($event->getMenu()->getItems() as $menuItem) {
                 $menuItem->setRouteParameters(
                     array_merge(
                         $menuItem->getRouteParameters(),
@@ -42,6 +41,6 @@ class EntityMenuBuilder
             }
         }
 
-        return $menu;
+        return $event->getMenu();
     }
 }

@@ -15,7 +15,7 @@ class Menu
 
     public function getItem(string $name): ?MenuItem
     {
-        if ($this->itemExists($name)) {
+        if ($this->hasItem($name)) {
             return $this->items[$name];
         }
     }
@@ -28,7 +28,7 @@ class Menu
     public function removeItems(...$names): self
     {
         foreach ($names as $name) {
-            if ($this->itemExists($name)) {
+            if ($this->hasItem($name)) {
                 unset($this->items[$name]);
             }
         }
@@ -36,7 +36,7 @@ class Menu
         return $this;
     }
 
-    public function itemExists(string $name): bool
+    public function hasItem(string $name): bool
     {
         return isset($this->items[$name]);
     }

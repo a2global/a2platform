@@ -30,21 +30,23 @@ class EntityMenuBuildEventListener
     {
         $object = new ($event->getClassName());
 
-        $menuItem = (new MenuItem('view'))
-            ->setRouteName('admin_entity_view')
-            ->setRouteParameters([
-                'className' => $event->getClassName(),
-            ]);
-        $event->getMenu()->addItem($menuItem);
+        if (!$event->getMenu()->hasItem('view')) {
+            $menuItem = (new MenuItem('view'))
+                ->setRouteName('admin_entity_view')
+                ->setRouteParameters([
+                    'className' => $event->getClassName(),
+                ]);
+            $event->getMenu()->addItem($menuItem);
+        }
 
-        $menuItem = (new MenuItem('edit'))
-            ->setRouteName('admin_entity_edit')
-            ->setRouteParameters([
-                'className' => $event->getClassName(),
-            ]);
-        $event->getMenu()->addItem($menuItem);
-
-        $a = $this->registry->all($object);
+        if (!$event->getMenu()->hasItem('edit')) {
+            $menuItem = (new MenuItem('edit'))
+                ->setRouteName('admin_entity_edit')
+                ->setRouteParameters([
+                    'className' => $event->getClassName(),
+                ]);
+            $event->getMenu()->addItem($menuItem);
+        }
 
         /**
          * todo: change to classname to avoid creating an empty object?
@@ -52,7 +54,12 @@ class EntityMenuBuildEventListener
          */
         foreach ($this->registry->all($object) as $stateMachine) {
             $workflowName = $stateMachine->getName();
-            $menuItem = (new MenuItem(StringUtility::toSnakeCase($stateMachine->getName())))
+            $menuItemName = StringUtility::toSnakeCase($stateMachine->getName());
+
+            if ($event->getMenu()->hasItem($menuItemName)) {
+                continue;
+            }
+            $menuItem = (new MenuItem($menuItemName))
                 ->setRouteName('admin_entity_workflow_view')
                 ->setRouteParameters([
                     'className' => $event->getClassName(),
@@ -75,13 +82,13 @@ class EntityMenuBuildEventListener
 
     public function setDefault(EntityMenuBuildEvent $event)
     {
-        foreach ($event->getMenu()->getItems() as $menuItem){
-            if($menuItem->isDefault()){
+        foreach ($event->getMenu()->getItems() as $menuItem) {
+            if ($menuItem->isDefault()) {
                 return;
             }
         }
 
-        if($event->getMenu()->itemExists('view')){
+        if ($event->getMenu()->hasItem('view')) {
             $event->getMenu()->getItem('view')->setIsDefault(true);
         }
     }
