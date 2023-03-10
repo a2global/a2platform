@@ -31,3 +31,24 @@ core:
       name_placeholder: 'username'
       password_placeholder: 'password'
       register: 'Register'
+
+
+data:
+  admin_menu:
+    data: 'Data'
+  crud:
+    list:
+      datasheet:
+        title: 'List of the objects «%entity%»'
+  comment:
+    list_title: 'Comments'
+    form_title: 'Add comment'
+    added: 'Comment added'
+    no_comments: 'No comment'
+  tags:
+    form_field_title: 'Tags'
+    no_tags: 'Without tags'
+  typical_entity:
+    field:
+      id: 'ID'
+      email: 'e-mail'

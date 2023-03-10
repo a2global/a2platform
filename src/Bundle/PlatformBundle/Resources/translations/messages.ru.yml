@@ -61,3 +61,47 @@ data:
   entity:
     user:
       title: 'Пользователь'
+
+data:
+  admin_menu:
+    data: 'Данные'
+  crud:
+    list:
+      datasheet:
+        title: 'Список объектов «%entity%»'
+  comment:
+    list_title: 'Комментарии'
+    form_title: 'Добавить комментарий'
+    added: 'Комментарий добавлен'
+    no_comments: 'Комментариев нет'
+  tags:
+    form_field_title: 'Теги'
+    no_tags: 'Без тегов'
+  typical_entity:
+    field:
+      createdAt: 'Создано'
+      updatedAt: 'Обновлено'
+      deletedAt: 'Удалено'
+      user: 'Пользователь'
+      author: 'Автор'
+      name: 'Имя'
+      title: 'Название'
+      password: 'Пароль'
+      enabled: 'Включено'
+      isActive: 'Активно'
+      address: 'Адрес'
+      phonenumber: 'Номер телефона'
+      city: 'Город'
+      country: 'Страна'
+      company: 'Компания'
+      version: 'Версия'
+      birthdate: 'Дата рождения'
+      latitude: 'Широта'
+      longitude: 'Долгота'
+      role: 'Роль'
+      roles: 'Роли'
+      locale: 'Локализация'
+      age: 'Возраст'
+      fullname: 'Полное имя'
+      status: 'Статус'
+
