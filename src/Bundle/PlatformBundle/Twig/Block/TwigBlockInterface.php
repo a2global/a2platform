@@ -11,5 +11,5 @@ interface TwigBlockInterface
 {
     public function supports(string $containerName, Request $request): bool;
 
-    public function getContent(): string;
+    public function getContent(Request $request): string;
 }

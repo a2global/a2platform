@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block page_body %}
-    {% set hasTwigBlocks = hasTwigBlocks(entitySidebarName) %}
+    {% set hasTwigBlocks = entitySidebarName is defined and hasTwigBlocks(entitySidebarName) %}
     <div class="row">
         <div class="{{ hasTwigBlocks ? 'col-md-7' : 'col-md-12' }}">
             {% block entity_page_body %}

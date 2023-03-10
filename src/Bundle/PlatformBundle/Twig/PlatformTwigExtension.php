@@ -40,8 +40,9 @@ class PlatformTwigExtension extends AbstractExtension
 
     public function twigBlocks(string $containerName, string $separator = '<div class="my-2">&nbsp;</div>'): string
     {
-        $contentBlocks = array_map(function (TwigBlockInterface $block) {
-            return $block->getContent();
+        $request = $this->requestStack->getMainRequest();
+        $contentBlocks = array_map(function (TwigBlockInterface $block) use ($request){
+            return $block->getContent($request);
         }, $this->twigBlockRegistry->findSupporting($containerName, $this->requestStack->getMainRequest()));
 
         return implode($separator, $contentBlocks);
