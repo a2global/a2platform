@@ -38,8 +38,9 @@ class AdminSidebarMenuBuildEventListener
         sort($entityList);
 
         foreach ($entityList as $entityClassName) {
-            $entityName = StringUtility::toReadable(StringUtility::getShortClassName($entityClassName));
-            $menuItem = (new MenuItem(StringUtility::toSnakeCase($entityName)))
+            $entityName = StringUtility::toSnakeCase($entityClassName);
+            $menuItem = (new MenuItem('entity.' . $entityName))
+                ->setText('entity.name.single.'.StringUtility::toSnakeCase(StringUtility::getShortClassName($entityClassName)))
                 ->setRouteName('admin_entity_index')
                 ->setRouteParameters([
                     'className' => $entityClassName,
