@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    <ul class="nav flex-column text-truncate">
+    <ul class="nav {% block sidebar_nav_style_classes %}navbar-dark{% endblock %} flex-column text-truncate">
         {% for item in menu('admin_sidebar').items %}
             {% if item.url %}
                 {% set url = item.url %}
@@ -13,8 +13,7 @@
                 {% set url = path(item.routeName, item.routeParameters) %}
             {% endif %}
             <li class="nav-item">
-                <a class="nav-link active text-black" aria-current="page" href="{{ url ?? '#' }}">
-                    <span data-feather="home" class="align-text-bottom"></span>
+                <a class="nav-link active {{ sidebar_nav_link_style_classes ?? ' m-0 p-0 py-1 text-white' }}" aria-current="page" href="{{ url ?? '#' }}">
                     {{ item.text|translate }}
                 </a>
             </li>
