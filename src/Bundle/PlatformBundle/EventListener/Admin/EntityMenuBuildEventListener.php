@@ -42,7 +42,7 @@ class EntityMenuBuildEventListener
 
         if (!$event->getMenu()->hasItem('edit')) {
             $menuItem = (new MenuItem('edit'))
-                ->setText('admin.entity.menu.single.view')
+                ->setText('admin.entity.menu.single.edit')
                 ->setRouteName('admin_entity_edit')
                 ->setRouteParameters([
                     'className' => $event->getClassName(),
