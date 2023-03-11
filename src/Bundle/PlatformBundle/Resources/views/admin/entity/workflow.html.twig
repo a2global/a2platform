@@ -1,13 +1,5 @@
-{% extends '@Platform/admin/layout.html.twig' %}
+{% extends '@Platform/admin/entity/layout.html.twig' %}
 
-{% block page_title %}
-    {{ objectName }} #{{ object.id }}
-{% endblock %}
-
-{% block page_menu %}
-    {% include '@Platform/admin/entity/menu.html.twig' with {object: object} %}
-{% endblock %}
-
-{% block page_body %}
+{% block entity_page_body %}
     {{ workflowTimeline(object, workflow) }}
 {% endblock %}
