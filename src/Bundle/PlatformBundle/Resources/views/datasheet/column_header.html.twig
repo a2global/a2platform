@@ -5,6 +5,6 @@
     <div data-datasheet-column-title="{{ column.name }}"
          class="ellipsis"
          style="text-align: {{ column.align }};">
-        {{ column.title ?? (column.name|normalize) }}
+        {{ column.title|translate }}
     </div>
 </th>

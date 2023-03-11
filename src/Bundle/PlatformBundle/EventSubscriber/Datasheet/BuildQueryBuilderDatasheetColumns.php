@@ -33,12 +33,11 @@ class BuildQueryBuilderDatasheetColumns implements EventSubscriberInterface
         foreach ($selectedFieldTypes as $fieldName => $fieldType) {
             $event = new OnQueryBuilderDatasheetColumnBuildEvent($fieldName, $fieldType, $event->getDatasheet());
             $this->eventDispatcher->dispatch($event);
-            $column = $event->getColumn();
 
-            if (!$column) {
+            if (!$event->getColumn()) {
                 throw new DatasheetBuildException('Failed to build datasheet column: ' . $fieldName . ' type: ' . $fieldType);
             }
-            $columns[] = $column;
+            $columns[] = $event->getColumn();
         }
         $event->getDatasheet()->setColumns($columns);
     }

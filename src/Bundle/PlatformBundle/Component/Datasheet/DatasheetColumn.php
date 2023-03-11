@@ -6,6 +6,7 @@ namespace A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet;
 
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Data\DataItem;
 use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\DataTypeInterface;
+use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 
 class DatasheetColumn
 {
@@ -41,9 +42,9 @@ class DatasheetColumn
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
-        return $this->title;
+        return $this->title ?? StringUtility::toReadable($this->name);
     }
 
     public function getType(): ?DataTypeInterface

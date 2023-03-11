@@ -9,6 +9,7 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet\Datasheet;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Doctrine\ORM\EntityManagerInterface;
+use Phalcon\Db\Column;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EntityListDatasheetBuilder
@@ -53,6 +54,12 @@ class EntityListDatasheetBuilder
                     ->setLink([$defaultMenuItem->getRouteName(), $defaultMenuItem->getRouteParameters()])
                     ->setBold(true);
             }
+        }
+
+        foreach ($datasheet->getColumns() as $column) {
+            $column->setTitle(
+                sprintf('%s.field.%s', StringUtility::toSnakeCase($entityClassName), $column->getName())
+            );
         }
 
         // Mass actions

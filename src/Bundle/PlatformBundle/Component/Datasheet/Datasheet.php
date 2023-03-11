@@ -49,6 +49,14 @@ class Datasheet
         return $this->columns[$fieldName];
     }
 
+    /**
+     * @return DatasheetColumn[]
+     */
+    public function getColumns(): array
+    {
+        return $this->columns;
+    }
+
     public function addControl($text, $url)
     {
         $this->controls[$text] = $url;
