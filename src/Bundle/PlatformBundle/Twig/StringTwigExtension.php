@@ -2,17 +2,16 @@
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Twig;
 
+use A2Global\A2Platform\Bundle\PlatformBundle\Helper\TranslationHelper;
 use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use DateTimeInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use function PHPUnit\Framework\stringContains;
 
 class StringTwigExtension extends AbstractExtension
 {
     public function __construct(
-        protected TranslatorInterface $translator
+        protected TranslationHelper $translationHelper,
     ) {
     }
 
@@ -67,32 +66,6 @@ class StringTwigExtension extends AbstractExtension
 
     public function translate($originalString): string
     {
-        $translated = $this->translator->trans($originalString);
-
-        if ($translated != $originalString) {
-            return $translated;
-        }
-        $hasPath = str_contains($originalString, '.');
-
-        if ($hasPath) {
-            $tmp = explode('.', $originalString);
-            $simpleString = $tmp[count($tmp) - 1];
-        } else {
-            $simpleString = $originalString;
-        }
-        $simpleString = StringUtility::toReadable($simpleString);
-        $translated = $this->translator->trans($simpleString);
-
-        if ($translated != $simpleString) {
-            return $translated;
-        }
-        $typicalString = sprintf('typical_translation.%s', StringUtility::toSnakeCase($simpleString));
-        $translated = $this->translator->trans($typicalString);
-
-        if ($translated != $typicalString) {
-            return $translated;
-        }
-
-        return $simpleString;
+        return $this->translationHelper->translate($originalString);
     }
 }
