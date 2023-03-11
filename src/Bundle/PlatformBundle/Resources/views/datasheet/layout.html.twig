@@ -26,7 +26,7 @@
                 {#                <div class="btn-group"> #}
                 {#                    {% for text, url in datasheet.controls %} #}
                 {#                        <a href="{{ url }}" class="btn btn-default" #}
-                {#                           data-datasheet-control="{{ text }}">{{ text|trans }}</a> #}
+                {#                           data-datasheet-control="{{ text }}">{{ text|translate }}</a> #}
                 {#                    {% endfor %} #}
                 {#                </div> #}
             </div>
@@ -37,7 +37,7 @@
         {#                <select id="datasheet-mass-action-selector" class="form-control"> #}
         {#                    <option value="">With selected:</option> #}
         {#                    {% for action in datasheet.massActions %} #}
-        {#                        <option value="{{ buildActionUrl(action) }}">{{ action.name|trans }}</option> #}
+        {#                        <option value="{{ buildActionUrl(action) }}">{{ action.name|translate }}</option> #}
         {#                    {% endfor %} #}
         {#                </select> #}
         {#            </div> #}

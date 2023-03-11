@@ -5,6 +5,7 @@ namespace A2Global\A2Platform\Bundle\PlatformBundle\Provider;
 
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Workflow\WorkflowTransitionFormBuildEvent;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
+use A2Global\A2Platform\Bundle\PlatformBundle\Helper\TranslationHelper;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -45,6 +46,7 @@ class FormProvider
 //        protected ImportStrategyRegistry   $importStrategyRegistry,
         protected RouterInterface          $router,
         protected EventDispatcherInterface $eventDispatcher,
+        protected TranslationHelper        $translationHelper,
     ) {
     }
 
@@ -152,7 +154,7 @@ class FormProvider
         $this->eventDispatcher->dispatch($event, $event->getName());
 
         $form->add('submit', SubmitType::class, [
-            'label' => 'Apply',
+            'label' => $this->translationHelper->translate('Apply'),
             'attr' => [
                 'data-entity-workflow-transition-apply' => $workflowName . ':' . $transitionName,
             ],
