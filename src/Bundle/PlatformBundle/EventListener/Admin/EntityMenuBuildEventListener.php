@@ -29,10 +29,11 @@ class EntityMenuBuildEventListener
     public function singleEntityMenuBuild(EntityMenuBuildEvent $event): void
     {
         $object = new ($event->getClassName());
+        $classNameSnakeCase = StringUtility::toSnakeCase($event->getClassName());
 
         if (!$event->getMenu()->hasItem('view')) {
             $menuItem = (new MenuItem('view'))
-                ->setText('admin.entity.menu.single.view')
+                ->setText(sprintf('%s.menu.single.view', $classNameSnakeCase))
                 ->setRouteName('admin_entity_view')
                 ->setRouteParameters([
                     'className' => $event->getClassName(),
@@ -42,7 +43,7 @@ class EntityMenuBuildEventListener
 
         if (!$event->getMenu()->hasItem('edit')) {
             $menuItem = (new MenuItem('edit'))
-                ->setText('admin.entity.menu.single.edit')
+                ->setText(sprintf('%s.menu.single.edit', $classNameSnakeCase))
                 ->setRouteName('admin_entity_edit')
                 ->setRouteParameters([
                     'className' => $event->getClassName(),
@@ -62,7 +63,7 @@ class EntityMenuBuildEventListener
                 continue;
             }
             $menuItem = (new MenuItem($menuItemName))
-                ->setText('admin.entity.menu.single.workflow.' . $menuItemName)
+                ->setText(sprintf('%s.workflow.%s.name', $classNameSnakeCase, $menuItemName))
                 ->setRouteName('admin_entity_workflow_view')
                 ->setRouteParameters([
                     'className' => $event->getClassName(),
@@ -81,6 +82,7 @@ class EntityMenuBuildEventListener
                 });
             $event->getMenu()->addItem($menuItem);
         }
+        dd($event->getMenu());
     }
 
     public function setDefault(EntityMenuBuildEvent $event)
