@@ -19,17 +19,19 @@ class StringTwigExtension extends AbstractExtension
     {
         return [
             new TwigFilter('translate', [$this, 'translate']),
-            new TwigFilter('normalize', [$this, 'normalize']),
+            new TwigFilter('readable', [$this, 'readable']),
             new TwigFilter('urlize', [$this, 'urlize']),
             new TwigFilter('toCamelCase', [$this, 'toCamelCase']),
             new TwigFilter('toSnakeCase', [$this, 'toSnakeCase']),
             new TwigFilter('toPascalCase', [$this, 'toPascalCase']),
             new TwigFilter('removeEmoji', [$this, 'removeEmoji']),
             new TwigFilter('formatDateSimple', [$this, 'formatDateSimple']),
+            new TwigFilter('className', [$this, 'getClassName']),
+            new TwigFilter('shortClassName', [$this, 'getShortClassName']),
         ];
     }
 
-    public function normalize($input)
+    public function readable($input)
     {
         return StringUtility::toReadable($input);
     }
@@ -67,5 +69,15 @@ class StringTwigExtension extends AbstractExtension
     public function translate($originalString): string
     {
         return $this->translationHelper->translate($originalString);
+    }
+
+    public function getClassName($object): string
+    {
+        return get_class($object);
+    }
+
+    public function getShortClassName($object): string
+    {
+        return StringUtility::getShortClassName($object);
     }
 }

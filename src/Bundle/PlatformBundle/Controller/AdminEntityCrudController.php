@@ -34,10 +34,10 @@ class AdminEntityCrudController extends AbstractController
     ) {
         $object = $entityManager->getRepository($request->get('className'))->find($request->get('id'));
 
-        return $this->render('@Platform/admin/entity/view.html.twig', $this->getObjectVars($object) + [
-                'data' => $entityDataBuilder->getData($object),
-            ]
-        );
+        return $this->render('@Platform/admin/entity/view.html.twig', [
+            'object' => $object,
+            'data' => $entityDataBuilder->getData($object),
+        ]);
     }
 
     #[Route('edit', name: 'edit')]
@@ -59,20 +59,9 @@ class AdminEntityCrudController extends AbstractController
             ]);
         }
 
-        return $this->render('@Platform/admin/entity/edit.html.twig', $this->getObjectVars($object) + [
-                'form' => $form->createView(),
-            ]
-        );
-    }
-
-    protected function getObjectVars($object): array
-    {
-        $className = get_class($object);
-
-        return [
+        return $this->render('@Platform/admin/entity/edit.html.twig', [
             'object' => $object,
-            'objectClass' => $className,
-            'objectName' => StringUtility::toReadable(StringUtility::getShortClassName($className)),
-        ];
+            'form' => $form->createView(),
+        ]);
     }
 }

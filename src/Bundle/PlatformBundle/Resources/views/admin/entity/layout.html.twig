@@ -1,7 +1,7 @@
 {% extends '@Platform/admin/layout.html.twig' %}
 
 {% block page_title %}
-    {{ objectName }} #{{ object.id }}
+    {{ object|shortClassName|readable }} #{{ object.id }}
 {% endblock %}
 
 {% block page_menu %}
@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block page_body %}
-    {% set sidebarName = 'admin.entity.sidebar.' ~ (objectClass|toSnakeCase) %}
+    {% set sidebarName = 'admin.entity.sidebar.' ~ (object|className|toSnakeCase) %}
     {% set hasTwigBlocks = hasTwigBlocks(sidebarName) %}
     <div class="row">
         <div class="{{ hasTwigBlocks ? 'col-md-7' : 'col-md-12' }}">
