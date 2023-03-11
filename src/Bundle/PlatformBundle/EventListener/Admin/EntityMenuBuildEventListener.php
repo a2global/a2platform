@@ -82,7 +82,6 @@ class EntityMenuBuildEventListener
                 });
             $event->getMenu()->addItem($menuItem);
         }
-        dd($event->getMenu());
     }
 
     public function setDefault(EntityMenuBuildEvent $event)
