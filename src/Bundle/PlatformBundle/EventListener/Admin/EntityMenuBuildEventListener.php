@@ -42,6 +42,7 @@ class EntityMenuBuildEventListener
 
         if (!$event->getMenu()->hasItem('edit')) {
             $menuItem = (new MenuItem('edit'))
+                ->setText('admin.entity.menu.single.view')
                 ->setRouteName('admin_entity_edit')
                 ->setRouteParameters([
                     'className' => $event->getClassName(),
@@ -61,6 +62,7 @@ class EntityMenuBuildEventListener
                 continue;
             }
             $menuItem = (new MenuItem($menuItemName))
+                ->setText('admin.entity.menu.single.workflow.' . $menuItemName)
                 ->setRouteName('admin_entity_workflow_view')
                 ->setRouteParameters([
                     'className' => $event->getClassName(),
