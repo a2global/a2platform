@@ -63,7 +63,7 @@ class EntityMenuBuildEventListener
                 continue;
             }
             $menuItem = (new MenuItem($menuItemName))
-                ->setText(sprintf('%s.workflow.%s.name', $classNameSnakeCase, $menuItemName))
+                ->setText(sprintf('%s.workflow.name.%s', $classNameSnakeCase, $menuItemName))
                 ->setRouteName('admin_entity_workflow_view')
                 ->setRouteParameters([
                     'className' => $event->getClassName(),
