@@ -40,57 +40,6 @@ class EntityHelper
         $this->dataTypes = $dataTypes;
     }
 
-    public function getEntityList(): array
-    {
-        if (!$this->entityListCached) {
-            $this->entityListCached = $this->entityManager
-                ->getConfiguration()
-                ->getMetadataDriverImpl()
-                ->getAllClassNames();
-        }
-
-        return $this->entityListCached;
-    }
-
-    public function getEntityFields(string $className): array
-    {
-        $classMetadata = $this->getEntityMetadata($className);
-        $fields = [];
-
-        foreach ($classMetadata->getFieldNames() as $fieldName) {
-            $fieldMapping = $classMetadata->getFieldMapping($fieldName);
-            $fields[$fieldName] = $fieldMapping['type'];
-        }
-
-        foreach ($classMetadata->getAssociationMappings() as $relation) {
-            if ($relation['type'] === ClassMetadataInfo::MANY_TO_ONE) {
-                $fields[$relation['fieldName']] = 'many_to_one';
-            }
-        }
-        $sortedFields = [];
-
-        foreach ((new ReflectionClass($className))->getProperties() as $property) {
-            if (!array_key_exists($property->getName(), $fields)) {
-                continue;
-            }
-            $sortedFields[$property->getName()] = $fields[$property->getName()];
-        }
-
-        return $sortedFields;
-    }
-
-    public function resolveDataTypeByFieldType($fieldType): DataTypeInterface
-    {
-        /** @var DataTypeInterface $dataType */
-        foreach ($this->dataTypes as $dataType) {
-            if ($dataType::supportsByOrmType($fieldType)) {
-                return $dataType;
-            }
-        }
-
-        return new ObjectDataType();
-    }
-
     public static function getProperty(mixed $object, string $propertyName)
     {
         foreach (['', 'get', 'is', 'has'] as $prefix) {
@@ -175,6 +124,57 @@ class EntityHelper
         }
 
         return false;
+    }
+
+    public function getEntityList(): array
+    {
+        if (!$this->entityListCached) {
+            $this->entityListCached = $this->entityManager
+                ->getConfiguration()
+                ->getMetadataDriverImpl()
+                ->getAllClassNames();
+        }
+
+        return $this->entityListCached;
+    }
+
+    public function getEntityFields(string $className): array
+    {
+        $classMetadata = $this->getEntityMetadata($className);
+        $fields = [];
+
+        foreach ($classMetadata->getFieldNames() as $fieldName) {
+            $fieldMapping = $classMetadata->getFieldMapping($fieldName);
+            $fields[$fieldName] = $fieldMapping['type'];
+        }
+
+        foreach ($classMetadata->getAssociationMappings() as $relation) {
+            if ($relation['type'] === ClassMetadataInfo::MANY_TO_ONE) {
+                $fields[$relation['fieldName']] = 'many_to_one';
+            }
+        }
+        $sortedFields = [];
+
+        foreach ((new ReflectionClass($className))->getProperties() as $property) {
+            if (!array_key_exists($property->getName(), $fields)) {
+                continue;
+            }
+            $sortedFields[$property->getName()] = $fields[$property->getName()];
+        }
+
+        return $sortedFields;
+    }
+
+    public function resolveDataTypeByFieldType($fieldType): DataTypeInterface
+    {
+        /** @var DataTypeInterface $dataType */
+        foreach ($this->dataTypes as $dataType) {
+            if ($dataType::supportsByOrmType($fieldType)) {
+                return $dataType;
+            }
+        }
+
+        return new ObjectDataType();
     }
 
     protected function getEntityMetadata(string $className): ClassMetadata

@@ -1,7 +1,7 @@
 {% extends '@Platform/admin/layout.html.twig' %}
 
 {% block page_title %}
-    {{ object|shortClassName|readable }} #{{ object.id }}
+    {{ object|readableTitle }}
 {% endblock %}
 
 {% block page_menu %}

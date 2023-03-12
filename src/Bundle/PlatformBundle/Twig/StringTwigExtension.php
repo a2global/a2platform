@@ -2,6 +2,7 @@
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Twig;
 
+use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\TranslationHelper;
 use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use DateTimeInterface;
@@ -20,6 +21,7 @@ class StringTwigExtension extends AbstractExtension
         return [
             new TwigFilter('translate', [$this, 'translate']),
             new TwigFilter('readable', [$this, 'readable']),
+            new TwigFilter('readableTitle', [$this, 'getReadableTitle']),
             new TwigFilter('urlize', [$this, 'urlize']),
             new TwigFilter('toCamelCase', [$this, 'toCamelCase']),
             new TwigFilter('toSnakeCase', [$this, 'toSnakeCase']),
@@ -34,6 +36,11 @@ class StringTwigExtension extends AbstractExtension
     public function readable($input)
     {
         return StringUtility::toReadable($input);
+    }
+
+    public function getReadableTitle($object): string
+    {
+        return EntityHelper::getReadableTitle($object);
     }
 
     public function urlize($input)
