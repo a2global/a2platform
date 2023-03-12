@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace A2Global\A2Platform\Bundle\PlatformBundle\EventListener\Admin;
 
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Menu\MenuItem;
+use A2Global\A2Platform\Bundle\PlatformBundle\Entity\EntityComment;
 use A2Global\A2Platform\Bundle\PlatformBundle\Entity\WorkflowTransition;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\MenuBuildEvent;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
@@ -18,6 +19,7 @@ class AdminSidebarMenuBuildEventListener
 {
     const EXCLUDE_ENTITIES_LIST = [
         WorkflowTransition::class,
+        EntityComment::class,
     ];
 
     public function __construct(

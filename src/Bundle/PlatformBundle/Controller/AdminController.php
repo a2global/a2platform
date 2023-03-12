@@ -56,7 +56,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('entity/comments', name: 'entity_comments')]
-    public function entityCommentIndexAction(
+    public function entityCommentsAction(
         EntityManagerInterface $entityManager,
         FormProvider           $formProvider,
         Request                $request
@@ -130,14 +130,13 @@ class AdminController extends AbstractController
         Request                $request,
         EntityManagerInterface $entityManager,
         Registry               $workflowRegistry,
-        ControllerHelper       $controllerHelper,
     ) {
         $requestData = $request->request->all();
         $context = $requestData['form'];
         $workflowName = $context['workflowName'] ?: null;
         $transitionName = $context['transitionName'];
         $objectClass = $context['objectClass'];
-        $objectId = $context['objectId'];
+        $objectId = (int)$context['objectId'];
         $object = $entityManager->getRepository($objectClass)->find($objectId);
         $stateMachine = $workflowRegistry->get($object, $workflowName);
 
@@ -159,13 +158,10 @@ class AdminController extends AbstractController
             $this->addFlash('danger', $exception->getMessage() . ' in ' . $exception->getTraceAsString()); // @codeCoverageIgnore
         }
 
-        return $controllerHelper->redirectBackOrTo(
-            $this->generateUrl('admin_entity_view', [
-                'entity' => $objectClass,
-                'id' => $objectId,
-                'general_tab' => 'workflow_' . $workflowName,
-            ]),
-            ['general_tab' => 'workflow_' . $workflowName,]
-        );
+        return $this->redirectToRoute('admin_entity_workflow_view', [
+            'className' => $objectClass,
+            'id' => $objectId,
+            'workflow' => $workflowName,
+        ]);
     }
 }

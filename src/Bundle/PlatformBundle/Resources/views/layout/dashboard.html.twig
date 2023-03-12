@@ -49,6 +49,15 @@
             </div>
         </aside>
         <main class="col overflow-auto h-100 p-2" id="dashboard-main">
+            {% block main_flash_messages %}
+                {% for type, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type }} mb-3" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endblock %}
             {% block main %}
             {% endblock %}
         </main>
