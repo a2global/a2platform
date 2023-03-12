@@ -26,19 +26,19 @@ class AdminEntityWorkflowController extends AbstractController
     ) {
         $object = $entityManager->getRepository($className)->find($id);
 
-        return $this->render('@Platform/admin/entity/workflow.html.twig', $this->getObjectVars($object) + [
-                'object' => $object,
-                'workflow' => $workflow,
-            ]);
+        return $this->render('@Platform/admin/entity/workflow.html.twig', [
+            'workflow' => $workflow,
+            'object' => $object,
+        ]);
     }
 
 
     #[Route('apply_transition', name: 'apply_transition')]
     public function applyTransitionAction(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        Registry $workflowRegistry,
-        ControllerHelper $controllerHelper,
+        Registry               $workflowRegistry,
+        ControllerHelper       $controllerHelper,
     ) {
         $requestData = $request->request->all();
         $context = $requestData['form'];
@@ -75,16 +75,5 @@ class AdminEntityWorkflowController extends AbstractController
             ]),
             ['general_tab' => 'workflow_' . $workflowName,]
         );
-    }
-
-    protected function getObjectVars($object): array
-    {
-        $className = get_class($object);
-
-        return [
-            'object' => $object,
-            'objectClass' => $className,
-            'objectName' => StringUtility::toReadable(StringUtility::getShortClassName($className)),
-        ];
     }
 }

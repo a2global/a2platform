@@ -11,7 +11,6 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\Registry;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class WorkflowTimeLineBuilder
@@ -20,7 +19,6 @@ class WorkflowTimeLineBuilder
         protected Registry                 $workflowRegistry,
         protected EntityManagerInterface   $entityManager,
         protected Environment              $twig,
-        protected TranslatorInterface      $translator,
         protected FormProvider             $formProvider,
         protected EventDispatcherInterface $eventDispatcher,
     ) {
@@ -30,6 +28,7 @@ class WorkflowTimeLineBuilder
     {
         $timelineSteps = [];
         $stateMachine = $this->workflowRegistry->get($object, $workflowName);
+        $objectClassNameSnakeCase = StringUtility::toSnakeCase(get_class($object));
 
         // Past steps
         $pastTransitions = $this->entityManager->getRepository(WorkflowTransition::class)->findBy([
@@ -48,13 +47,8 @@ class WorkflowTimeLineBuilder
                 ]);
                 $event->addContent($content);
             }
-            $name = $this->getTransitionName(
-                $pastTransition->getTransitionName(),
-                $object,
-                $pastTransition->getWorkflowName(),
-            );
             $timelineSteps[] = (new TimeLineStep())
-                ->setName($name)
+                ->setName($pastTransition->getTransitionName())
                 ->setDatetime($pastTransition->getCreatedAt())
                 ->setContent($event->getContent());
         }
@@ -64,9 +58,15 @@ class WorkflowTimeLineBuilder
 
         if (count($stateMachine->getEnabledTransitions($object))) {
             foreach ($stateMachine->getEnabledTransitions($object) as $transition) {
+                $title = sprintf(
+                    '%s.workflow.transition.name.%s.%s',
+                    $objectClassNameSnakeCase,
+                    $workflowName,
+                    $transition->getName(),
+                );
                 $availableTransitions[] = [
                     'name' => $transition->getName(),
-                    'title' => $this->getTransitionName($transition->getName(), $object, $workflowName),
+                    'title' => $title,
                     'form' => $this->formProvider
                         ->getTransitionForm($object, $workflowName, $transition->getName())
                         ->createView(),
@@ -79,7 +79,7 @@ class WorkflowTimeLineBuilder
             ]);
             $timelineSteps[] = (new TimeLineStep())
                 ->setIsTabs(true)
-                ->setName($this->translator->trans('Next step') . ':')
+                ->setName('Next step')
                 ->setContent($content);
         }
 
@@ -87,19 +87,5 @@ class WorkflowTimeLineBuilder
             'object' => $object,
             'steps' => $timelineSteps,
         ];
-    }
-
-    protected function getTransitionName($transitionName, $object, $workflowName = null)
-    {
-        $snakeCasedEntityName = StringUtility::toSnakeCase(StringUtility::getShortClassName($object));
-        $code = sprintf(
-            'workflow.%s.%s.transition.%s.name',
-            $snakeCasedEntityName,
-            $workflowName ?: $snakeCasedEntityName,
-            $transitionName
-        );
-        $translated = $this->translator->trans($code);
-
-        return $translated === $code ? StringUtility::toReadable($transitionName) : $translated;
     }
 }
