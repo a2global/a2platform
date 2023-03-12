@@ -18,6 +18,7 @@
     <div>
         <div class="tab-content px-3 pt-3" id="nav-tabContent">
             {% for transition in transitions %}
+                {% form_theme transition.form 'bootstrap_5_layout.html.twig' %}
                 <div class="tab-pane fade {{ loop.first ? 'show active' : '' }}"
                      id="{{ transition.name }}"
                      role="tabpanel" aria-labelledby="timeline-item-tab-{{ transition.name }}"
