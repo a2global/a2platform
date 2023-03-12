@@ -8,10 +8,10 @@
     {% endblock %}
 
     {% block stylesheets %}
-        <link href="{{ asset('bundles/platform/libs/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css') }}"
+        <link href="{{ asset('bundles/platform/libs/a2bootstrap/bootstrap.min.css') }}"
               rel="stylesheet">
 
-        <link href="{{ asset('bundles/platform/css/bootstrap.customized.css') }}"
+        <link href="{{ asset('bundles/platform/libs/a2bootstrap/bootstrap.customized.css') }}"
               rel="stylesheet">
 
         <style>
@@ -23,9 +23,9 @@
 </head>
 <body class="d-flex flex-column h-100">
 <header>
-    <nav class="navbar navbar-expand-md fixed-top {% block header_nav_style_classes %}bg-dark navbar-dark{% endblock %}">
-        <div class="container-fluid">
-            <a class="navbar-brand mx-2" href="#">{% block header_brand %}{% endblock %}</a>
+    <nav class="navbar navbar-expand-md fixed-top {% block header_nav_style_classes %}bg-primary navbar-dark{% endblock %}">
+        <div class="container-fluid px-1">
+            <a class="navbar-brand" href="#">{% block header_brand %}{% endblock %}</a>
             <button id="admin_sidebar_toggle_control" class="navbar-toggler p-2" data-bs-toggle="collapse"
                     href="#collapseExample" role="button"
                     aria-expanded="false" aria-controls="collapseExample">
@@ -39,11 +39,11 @@
     </nav>
 </header>
 
-<div class="container-fluid pb-3 flex-grow-1 d-flex flex-column flex-sm-row overflow-auto mt-5 pt-4">
-    <div class="row flex-grow-sm-1 flex-grow-0 w-100">
+<div class="container-fluid pb-0 flex-grow-1 d-flex flex-column flex-sm-row overflow-auto mt-5 pt-0 px-0">
+    <div class="row flex-grow-sm-1 flex-grow-0 w-100 no-gutters">
         <aside id="collapseExample"
-               class="collapse col-sm-4 col-md-3 col-lg-2 d-sm-block flex-grow-sm-1 flex-shrink-1 flex-grow-0 sticky-top pb-sm-0">
-            <div class="{% block sidebar_style_classes %}bg-secondary{% endblock %} rounded-2 h-100 sticky-top">
+               class="collapse col-sm-4  col-md-3 col-lg-2 d-sm-block flex-grow-sm-1 flex-shrink-1 flex-grow-0 sticky-top pb-sm-0">
+            <div class="{% block sidebar_style_classes %}bg-dark{% endblock %} h-100 sticky-top">
                 {% block sidebar %}
                 {% endblock %}
             </div>
@@ -65,10 +65,10 @@
 </div>
 
 {% block footer_holder %}
-    <footer class="footer mt-auto py-2 bg-secondary text-white">
-        {% block footer %}
-        {% endblock %}
-    </footer>
+{#    <footer class="footer mt-auto py-2 bg-secondary text-white">#}
+{#        {% block footer %}#}
+{#        {% endblock %}#}
+{#    </footer>#}
 {% endblock %}
 
 {% block javascripts %}

@@ -7,8 +7,8 @@
         {% for comment in comments %}
             <div class="px-2 mb-4">
                 {{ comment.body|nl2br }}
-                <div class="text-secondary">
-                    <small>{{ 'Created at'|translate }}: {{ comment.createdAt|formatDateSimple('Y-m-d H:i') }}</small>
+                <div class="text-muted">
+                    {{ 'Created at'|translate }}: {{ comment.createdAt|formatDateSimple('Y-m-d H:i') }}
                 </div>
             </div>
         {% endfor %}
