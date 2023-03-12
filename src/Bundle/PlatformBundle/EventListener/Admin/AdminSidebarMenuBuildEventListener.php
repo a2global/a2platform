@@ -36,7 +36,7 @@ class AdminSidebarMenuBuildEventListener
         $event->getMenu()->addItem($menuItem);
 
         $menuItem = (new MenuItem('admin'))
-            ->setRouteName('admin_default')
+            ->setUrl('/admin')
             ->setIcon('shield');
         $event->getMenu()->addItem($menuItem);
     }
