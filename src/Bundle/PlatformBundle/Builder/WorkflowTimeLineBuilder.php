@@ -9,6 +9,7 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Event\Workflow\WorkflowTransitionV
 use A2Global\A2Platform\Bundle\PlatformBundle\Provider\FormProvider;
 use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Environment;
@@ -47,8 +48,14 @@ class WorkflowTimeLineBuilder
                 ]);
                 $event->addContent($content);
             }
+            $name = sprintf(
+                '%s.workflow.place.name.%s.%s',
+                $objectClassNameSnakeCase,
+                $workflowName,
+                $this->getTransitionTargetPlace($object, $workflowName, $pastTransition->getTransitionName()),
+            );
             $timelineSteps[] = (new TimeLineStep())
-                ->setName($pastTransition->getTransitionName())
+                ->setName($name)
                 ->setDatetime($pastTransition->getCreatedAt())
                 ->setContent($event->getContent());
         }
@@ -87,5 +94,18 @@ class WorkflowTimeLineBuilder
             'object' => $object,
             'steps' => $timelineSteps,
         ];
+    }
+
+    protected function getTransitionTargetPlace($object, string $workflowName, string $transitionName): string
+    {
+        foreach ($this->workflowRegistry->get($object, $workflowName)->getDefinition()->getTransitions() as $transition) {
+            if ($transition->getName() === $transitionName) {
+                $tos = $transition->getTos();
+
+                return reset($tos);
+            }
+        }
+
+        throw new Exception('Transition place not found');
     }
 }
