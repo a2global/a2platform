@@ -1,7 +1,7 @@
 <?php
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Entity;
 
-use App\Repository\EntityCommentRepository;
+use A2Global\A2Platform\Bundle\PlatformBundle\Repository\EntityCommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
