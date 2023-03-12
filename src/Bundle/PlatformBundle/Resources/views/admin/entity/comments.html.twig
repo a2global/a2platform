@@ -1,0 +1,31 @@
+{% extends '@Platform/admin/entity/layout.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block entity_page_body %}
+
+    {% if comments|length > 0 %}
+        {% for comment in comments %}
+            <div class="px-2 mb-4">
+                {{ comment.body|nl2br }}
+                <div class="text-secondary">
+                    <small>{{ 'Created at'|translate }}: {{ comment.createdAt|formatDateSimple('Y-m-d H:i') }}</small>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="p-3 my-3 border rounded text-muted">
+            {{ 'No comments'|translate }}
+        </div>
+    {% endif %}
+
+    <div class="pb-3 px-2">
+        <b>{{ 'Add comment'|translate }}</b>
+    </div>
+    {{ form_start(form) }}
+    {{ form_widget(form.body, {'attr': {'rows': 4}}) }}
+    <div class="py-3">
+        <input type="submit" value="{{ 'Submit'|translate }}" class="btn btn-primary">
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}

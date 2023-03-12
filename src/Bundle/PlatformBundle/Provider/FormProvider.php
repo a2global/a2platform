@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\Provider;
 
+use A2Global\A2Platform\Bundle\PlatformBundle\Entity\EntityComment;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Workflow\WorkflowTransitionFormBuildEvent;
+use A2Global\A2Platform\Bundle\PlatformBundle\Form\Type\EntityCommentFormType;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\TranslationHelper;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -124,21 +126,19 @@ class FormProvider
 //        return $form;
 //    }
 //
-//    public function getCommentForm($object = null): FormInterface
-//    {
-//        $comment = new Comment();
-//
-//        if ($object) {
-//            $comment
-//                ->setTargetClass(get_class($object))
-//                ->setTargetId($object->getId());
-//        }
-//
-//        return $this->formFactory->create(CommentFormType::class, $comment, [
-//            'action' => $this->router->generate('admin_data_comment_add'),
-//        ]);
-//    }
-//
+    public function getCommentForm($object = null): FormInterface
+    {
+        $comment = new EntityComment();
+
+        if ($object) {
+            $comment
+                ->setClassName(get_class($object))
+                ->setEntityId($object->getId());
+        }
+
+        return $this->formFactory->create(EntityCommentFormType::class, $comment);
+    }
+
     public function getTransitionForm($object, $workflowName, $transitionName): FormInterface
     {
         $form = $this->formFactory->create(FormType::class, null, [

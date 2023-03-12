@@ -13,7 +13,8 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Component\Workflow\StateMachine;
 
-#[AsEventListener(event: 'a2platform.menu.build.entity.single', method: 'singleEntityMenuBuild', priority: 900)]
+#[AsEventListener(event: 'a2platform.menu.build.entity.single', method: 'singleEntityMenuBuildEarly', priority: 900)]
+#[AsEventListener(event: 'a2platform.menu.build.entity.single', method: 'singleEntityMenuBuildLate', priority: -800)]
 #[AsEventListener(event: 'a2platform.menu.build.entity.single', method: 'setDefault', priority: -900)]
 class EntityMenuBuildEventListener
 {
@@ -26,7 +27,7 @@ class EntityMenuBuildEventListener
     ) {
     }
 
-    public function singleEntityMenuBuild(EntityMenuBuildEvent $event): void
+    public function singleEntityMenuBuildEarly(EntityMenuBuildEvent $event): void
     {
         $object = new ($event->getClassName());
         $classNameSnakeCase = StringUtility::toSnakeCase($event->getClassName());
@@ -80,6 +81,18 @@ class EntityMenuBuildEventListener
 
                     return true;
                 });
+            $event->getMenu()->addItem($menuItem);
+        }
+    }
+
+    public function singleEntityMenuBuildLate(EntityMenuBuildEvent $event): void
+    {
+        if (!$event->getMenu()->hasItem('comments')) {
+            $menuItem = (new MenuItem('comments'))
+                ->setRouteName('admin_entity_comments')
+                ->setRouteParameters([
+                    'className' => $event->getClassName(),
+                ]);
             $event->getMenu()->addItem($menuItem);
         }
     }
