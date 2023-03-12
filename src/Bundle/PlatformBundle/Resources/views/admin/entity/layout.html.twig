@@ -1,8 +1,8 @@
 {% extends '@Platform/admin/layout.html.twig' %}
 
 {% block page_title %}
-    {{ object|readableTitle }}
-    {% block page_title_badges %}{% endblock %}
+    {% set objectReadableTitle = object|readableTitle(false) %}
+    {{ object|shortClassName }} #{{ object.id }}{{ objectReadableTitle ? ':' : '' }} {{ objectReadableTitle }}
 {% endblock %}
 
 {% block page_menu %}

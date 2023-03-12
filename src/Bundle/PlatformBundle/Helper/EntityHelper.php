@@ -80,12 +80,8 @@ class EntityHelper
         );
     }
 
-    public static function getReadableTitle(mixed $object, string $nullValue = '')
+    public static function getReadableTitle(object $object, bool $entityNameWithIdByDefault = true): ?string
     {
-        if (!$object) {
-            return $nullValue;
-        }
-
         if (method_exists($object, '__toString')) {
             return (string)$object;
         }
@@ -96,6 +92,10 @@ class EntityHelper
             if (method_exists($object, $method)) {
                 return (string)$object->$method();
             }
+        }
+
+        if (!$entityNameWithIdByDefault) {
+            return null;
         }
 
         return sprintf(

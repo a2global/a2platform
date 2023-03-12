@@ -1,5 +1,9 @@
 {% extends '@Platform/admin/layout.html.twig' %}
 
+{% block page_title %}
+    {{ entityName|translate }}
+{% endblock %}
+
 {% block page_body %}
     {{ datasheet(datasheet) }}
 {% endblock %}

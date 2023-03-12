@@ -38,9 +38,9 @@ class StringTwigExtension extends AbstractExtension
         return StringUtility::toReadable($input);
     }
 
-    public function getReadableTitle($object): string
+    public function getReadableTitle($object, bool $entityNameWithIdByDefault = true): ?string
     {
-        return EntityHelper::getReadableTitle($object);
+        return EntityHelper::getReadableTitle($object, $entityNameWithIdByDefault);
     }
 
     public function urlize($input)
