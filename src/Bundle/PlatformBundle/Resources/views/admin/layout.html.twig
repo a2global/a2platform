@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    <ul class="nav {% block sidebar_nav_style_classes %}navbar-dark{% endblock %} flex-column text-truncate">
+    <ul class="nav {% block sidebar_nav_style_classes %}navbar-dark{% endblock %} flex-column text-truncate py-4 px-3">
         {% for item in menu('admin_sidebar').items %}
             {% if item.url %}
                 {% set url = item.url %}
@@ -13,7 +13,9 @@
                 {% set url = path(item.routeName, item.routeParameters) %}
             {% endif %}
             <li class="nav-item">
-                <a class="nav-link active {{ sidebar_nav_link_style_classes ?? ' m-0 p-0 py-1 text-white' }}" aria-current="page" href="{{ url ?? '#' }}">
+                <a class="nav-link active {{ sidebar_nav_link_style_classes ?? ' m-0 p-0 py-1 text-white' }}"
+                   aria-current="page" href="{{ url ?? '#' }}">
+                    <i class="fa-solid fa-{{ item.icon ?? 'angle-right' }} px-2"></i>
                     {{ item.text|translate }}
                 </a>
             </li>
@@ -37,6 +39,11 @@
             {% endblock %}
         </div>
     </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <script src="https://kit.fontawesome.com/7dc3caeb7e.js" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block javascripts %}

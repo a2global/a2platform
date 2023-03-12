@@ -29,11 +29,13 @@ class AdminSidebarMenuBuildEventListener
     public function preAdminSidebarMenuBuild(MenuBuildEvent $event): void
     {
         $menuItem = (new MenuItem('homepage'))
-            ->setUrl('/');
+            ->setUrl('/')
+            ->setIcon('house');
         $event->getMenu()->addItem($menuItem);
 
         $menuItem = (new MenuItem('admin'))
-            ->setRouteName('admin_default');
+            ->setRouteName('admin_default')
+            ->setIcon('shield');
         $event->getMenu()->addItem($menuItem);
     }
 
@@ -52,7 +54,8 @@ class AdminSidebarMenuBuildEventListener
                 ->setRouteName('admin_entity_index')
                 ->setRouteParameters([
                     'className' => $entityClassName,
-                ]);
+                ])
+                ->setIcon('layer-group');
             $event->getMenu()->addItem($menuItem);
         }
     }
@@ -60,7 +63,8 @@ class AdminSidebarMenuBuildEventListener
     public function postAdminSidebarMenuBuild(MenuBuildEvent $event): void
     {
         $menuItem = (new MenuItem('sign_out'))
-            ->setRouteName('app_logout');
+            ->setRouteName('app_logout')
+            ->setIcon('power-off');
         $event->getMenu()->addItem($menuItem);
     }
 }

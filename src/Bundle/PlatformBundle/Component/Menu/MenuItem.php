@@ -13,6 +13,8 @@ class MenuItem
 
     protected ?string $routeName = null;
 
+    protected ?string $icon = null;
+
     protected array $routeParameters = [];
 
     protected bool $isDefault = false;
@@ -56,6 +58,17 @@ class MenuItem
     public function setUrl(?string $url): self
     {
         $this->url = $url;
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
         return $this;
     }
 

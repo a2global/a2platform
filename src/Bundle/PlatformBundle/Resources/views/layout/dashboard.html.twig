@@ -13,6 +13,12 @@
 
         <link href="{{ asset('bundles/platform/css/bootstrap.customized.css') }}"
               rel="stylesheet">
+
+        <style>
+            #dashboard-main {
+                scroll-behavior: smooth;
+            }
+        </style>
     {% endblock %}
 </head>
 <body class="d-flex flex-column h-100">
@@ -37,22 +43,24 @@
     <div class="row flex-grow-sm-1 flex-grow-0 w-100">
         <aside id="collapseExample"
                class="collapse col-sm-4 col-md-3 col-lg-2 d-sm-block flex-grow-sm-1 flex-shrink-1 flex-grow-0 sticky-top pb-sm-0">
-            <div class="{% block sidebar_style_classes %}bg-secondary{% endblock%} rounded-2 h-100 sticky-top px-4 py-3">
+            <div class="{% block sidebar_style_classes %}bg-secondary{% endblock %} rounded-2 h-100 sticky-top">
                 {% block sidebar %}
                 {% endblock %}
             </div>
         </aside>
-        <main class="col overflow-auto h-100 p-2">
+        <main class="col overflow-auto h-100 p-2" id="dashboard-main">
             {% block main %}
             {% endblock %}
         </main>
     </div>
 </div>
 
-<footer class="footer mt-auto py-2 bg-secondary text-white">
-    {% block footer %}
-    {% endblock %}
-</footer>
+{% block footer_holder %}
+    <footer class="footer mt-auto py-2 bg-secondary text-white">
+        {% block footer %}
+        {% endblock %}
+    </footer>
+{% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('bundles/platform/libs/bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js') }}"></script>
