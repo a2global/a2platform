@@ -2,7 +2,7 @@
 
 {% block page_title %}
     {% set objectReadableTitle = object|readableTitle(false) %}
-    {{ object|shortClassName }} #{{ object.id }}{{ objectReadableTitle ? ':' : '' }} {{ objectReadableTitle }}
+    {{ object|shortClassName|readable|translate }} #{{ object.id }}{{ objectReadableTitle ? ':' : '' }} {{ objectReadableTitle }}
 {% endblock %}
 
 {% block page_menu %}

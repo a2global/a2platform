@@ -23,7 +23,7 @@ class AdminEntityCrudController extends AbstractController
 
         return $this->render('@Platform/admin/entity/list.html.twig', [
             'datasheet' => $event->getDatasheet(),
-            'entityName' => StringUtility::toReadable(StringUtility::getShortClassName($className)),
+            'entityName' => 'entity.name.single.' . StringUtility::toSnakeCase(StringUtility::getShortClassName($className)),
         ]);
     }
 
