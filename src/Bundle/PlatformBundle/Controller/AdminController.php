@@ -7,8 +7,6 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Builder\Entity\EntityDataBuilder;
 use A2Global\A2Platform\Bundle\PlatformBundle\Entity\EntityComment;
 use A2Global\A2Platform\Bundle\PlatformBundle\Entity\WorkflowTransition;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Admin\BuildEntityListEvent;
-use A2Global\A2Platform\Bundle\PlatformBundle\Helper\ControllerHelper;
-use A2Global\A2Platform\Bundle\PlatformBundle\Manager\EntityCommentManager;
 use A2Global\A2Platform\Bundle\PlatformBundle\Provider\FormProvider;
 use A2Global\A2Platform\Bundle\PlatformBundle\Utility\StringUtility;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,12 +21,6 @@ use Throwable;
 #[Route('/admin/', name: 'admin_')]
 class AdminController extends AbstractController
 {
-    #[Route('', name: 'default')]
-    public function defaultAction()
-    {
-        return $this->render('@Platform/admin/index.html.twig');
-    }
-
     #[Route('entity/list/{className}', name: 'entity_index')]
     public function entityIndexAction(EventDispatcherInterface $eventDispatcher, $className)
     {
