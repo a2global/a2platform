@@ -50,4 +50,9 @@
     {{ parent() }}
     <script src="{{ asset('bundles/platform/libs/jquery-3.6.3/jquery-3.6.3.min.js') }}"></script>
     <script src="{{ asset('bundles/platform/js/datasheet.js') }}"></script>
+    <script>
+        $(function () {
+            $("[data-search-picker]").selectpicker({liveSearch: true});
+        });
+    </script>
 {% endblock %}
