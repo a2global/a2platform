@@ -43,13 +43,17 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <script src="https://kit.fontawesome.com/7dc3caeb7e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/platform/libs/selectpicker/bootstrap-select.min.css') }}">
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('bundles/platform/libs/jquery-3.6.3/jquery-3.6.3.min.js') }}"></script>
+    <script src="{{ asset('bundles/platform/libs/selectpicker/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('bundles/platform/js/datasheet.js') }}"></script>
+    <script src="https://kit.fontawesome.com/7dc3caeb7e.js" crossorigin="anonymous"></script>
     <script>
         $(function () {
             $("[data-search-picker]").selectpicker({liveSearch: true});
