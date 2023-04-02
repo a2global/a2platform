@@ -1,6 +1,6 @@
 <?php
 
-namespace A2Global\A2Platform\Bundle\DevelopmentBundle\Behat;
+namespace A2Global\A2Platform\Bundle\PlatformBundle\Behat;
 
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\MinkContext;
