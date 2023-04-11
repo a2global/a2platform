@@ -80,17 +80,21 @@ class EntityHelper
         );
     }
 
-    public static function getReadableTitle(object $object, bool $entityNameWithIdByDefault = true): ?string
+    public static function getReadableTitle(object $object = null, bool $entityNameWithIdByDefault = true): ?string
     {
+        if (is_null($object)) {
+            return '';
+        }
+
         if (method_exists($object, '__toString')) {
-            return (string)$object;
+            return (string) $object;
         }
 
         foreach (self::TYPICAL_TITLE_FIELDS as $field) {
             $method = 'get' . $field;
 
             if (method_exists($object, $method)) {
-                return (string)$object->$method();
+                return (string) $object->$method();
             }
         }
 
