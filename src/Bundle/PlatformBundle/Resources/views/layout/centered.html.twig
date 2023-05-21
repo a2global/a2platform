@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>Signin</title>
+    <title>{% block page_tilte %}{% endblock %}</title>
 
 
     <link href="{{ asset('bundles/platform/libs/a2bootstrap/bootstrap.min.css') }}"
@@ -17,7 +17,7 @@
     {% endblock %}
 
 </head>
-<body class="bg-light">
+<body class="{% block body_classes %}bg-light{% endblock %}">
 
 <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
     <div style="min-width: 300px">
