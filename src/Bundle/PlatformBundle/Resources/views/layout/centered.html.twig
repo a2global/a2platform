@@ -13,6 +13,9 @@
     <link href="{{ asset('bundles/platform/libs/a2bootstrap/bootstrap.customized.css') }}"
           rel="stylesheet">
 
+    {% block stylesheets %}
+    {% endblock %}
+
 </head>
 <body class="bg-light">
 
@@ -22,6 +25,9 @@
         {% endblock %}
     </div>
 </div>
+
+{% block javascripts %}
+{% endblock %}
 
 </body>
 </html>
