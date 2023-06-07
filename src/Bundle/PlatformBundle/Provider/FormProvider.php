@@ -8,6 +8,8 @@ use A2Global\A2Platform\Bundle\PlatformBundle\Event\Workflow\WorkflowTransitionF
 use A2Global\A2Platform\Bundle\PlatformBundle\Form\Type\EntityCommentFormType;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
 use A2Global\A2Platform\Bundle\PlatformBundle\Helper\TranslationHelper;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -31,7 +33,7 @@ class FormProvider
         'datetime',
     ];
     private const FORM_FIELDS_MAPPING = [
-        'many_to_one' => null,
+        'many_to_one' => EntityType::class,
         'date' => DateType::class,
         'datetime' => DateTimeType::class,
     ];
@@ -66,9 +68,20 @@ class FormProvider
             if (array_key_exists($fieldType, self::FORM_FIELDS_MAPPING) && is_null(self::FORM_FIELDS_MAPPING[$fieldType])) {
                 continue;
             }
-            $formBuilder->add($fieldName, self::FORM_FIELDS_MAPPING[$fieldType] ?? null, [
+            $type = self::FORM_FIELDS_MAPPING[$fieldType] ?? null;
+            $options = [
                 'label' => $fieldName,
-            ]);
+            ];
+
+            if ($type === EntityType::class) {
+                $metadata = $this->entityHelper->getEntityMetadata(get_class($object));
+                $fieldParams = $metadata->getAssociationMapping($fieldName);
+                $options['class'] = $fieldParams['targetEntity'];
+                $options['empty_data'] = null;
+                $options['required'] = false;
+            }
+
+            $formBuilder->add($fieldName, $type, $options);
         }
 
         return $formBuilder->getForm();

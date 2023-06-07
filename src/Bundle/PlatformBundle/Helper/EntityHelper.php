@@ -181,7 +181,7 @@ class EntityHelper
         return new ObjectDataType();
     }
 
-    protected function getEntityMetadata(string $className): ClassMetadata
+    public function getEntityMetadata(string $className): ClassMetadata
     {
         if (!array_key_exists($className, $this->entityMetadataCached)) {
             $this->entityMetadataCached[$className] = $this->entityManager->getClassMetadata($className);
