@@ -36,6 +36,7 @@ class FormProvider
         'many_to_one' => EntityType::class,
         'date' => DateType::class,
         'datetime' => DateTimeType::class,
+        'json' => null,
     ];
     private const FIELDS_NOT_FOR_EDIT = [
         'id',
