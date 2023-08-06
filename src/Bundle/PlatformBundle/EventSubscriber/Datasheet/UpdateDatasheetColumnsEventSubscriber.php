@@ -2,10 +2,10 @@
 
 namespace A2Global\A2Platform\Bundle\PlatformBundle\EventSubscriber\Datasheet;
 
-use A2Global\A2Platform\Bundle\CoreBundle\Utility\ObjectHelper;
 use A2Global\A2Platform\Bundle\PlatformBundle\Component\Datasheet\DatasheetColumn;
 use A2Global\A2Platform\Bundle\PlatformBundle\Data\Type\ObjectDataType;
 use A2Global\A2Platform\Bundle\PlatformBundle\Event\Datasheet\OnDatasheetBuildEvent;
+use A2Global\A2Platform\Bundle\PlatformBundle\Helper\EntityHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdateDatasheetColumnsEventSubscriber implements EventSubscriberInterface
@@ -43,24 +43,24 @@ class UpdateDatasheetColumnsEventSubscriber implements EventSubscriberInterface
         DatasheetColumn $predefinedColumn
     ) {
         foreach (self::COLUMN_PARAMETERS_DEFAULTS as $paramName => $defaultValue) {
-            $value = ObjectHelper::getProperty($predefinedColumn, $paramName);
+            $value = EntityHelper::getProperty($predefinedColumn, $paramName);
 
             if (is_null($value)) {
                 continue;
             }
-            ObjectHelper::setProperty($datasheetColumn, $paramName, $value);
+            EntityHelper::setProperty($datasheetColumn, $paramName, $value);
         }
     }
 
     protected function updateWithDefaultParameters(DatasheetColumn $datasheetColumn)
     {
         foreach (self::COLUMN_PARAMETERS_DEFAULTS as $paramName => $defaultValue) {
-            $value = ObjectHelper::getProperty($datasheetColumn, $paramName);
+            $value = EntityHelper::getProperty($datasheetColumn, $paramName);
 
             if (!is_null($value) || is_null($defaultValue)) {
                 continue;
             }
-            ObjectHelper::setProperty($datasheetColumn, $paramName, $defaultValue);
+            EntityHelper::setProperty($datasheetColumn, $paramName, $defaultValue);
         }
     }
 
