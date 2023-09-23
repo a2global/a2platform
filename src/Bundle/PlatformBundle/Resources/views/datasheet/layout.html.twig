@@ -7,8 +7,8 @@
     <form action="?" method="get" data-datasheet-form="{{ datasheet.id }}">
         {% set filterForm = datasheet_filters_form(datasheet) %}
         {{ form_start(filterForm) }}
-        <div class="row pt-3 px-1">
-            <div class="col-md-6 mb-3">
+        <div class="row pt-3 px-1 mb-3">
+            <div class="col-md-6">
                 <input type="submit"
                        value="{{ 'Apply filters'|translate }}"
                        class="btn btn-primary"
